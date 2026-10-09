@@ -1,0 +1,121 @@
+.lives {
+  display: inline-flex;
+  gap: 3px;
+  font-size: 0.9rem;
+}
+.lives span {
+  color: var(--coral);
+}
+.lives span[data-on='0'] {
+  color: var(--surface-3);
+}
+.levelPick {
+  display: inline-flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.levelPick button {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+.levelPick button[data-cleared='1'] {
+  border-color: color-mix(in srgb, var(--green) 60%, transparent);
+  color: var(--green);
+}
+.levelPick button[aria-pressed='true'] {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+.latticeHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.note {
+  color: var(--amber);
+  font-size: 0.9rem;
+  margin: 10px 0 0;
+}
+.ghost {
+  pointer-events: none;
+}
+.ghostRing {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 2.5;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ghost-pulse 1.4s ease-in-out infinite;
+}
+.ghostLabel {
+  fill: var(--blue);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+@keyframes ghost-pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.twistBack {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 15, 0.7);
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  animation: fade-in var(--t-slow) var(--ease) both;
+}
+.twist {
+  max-width: 560px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  box-shadow: var(--shadow);
+}
+.twistStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0 18px;
+}
+.twistStats > div {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.big {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+@media (max-width: 480px) {
+  .twistStats {
+    grid-template-columns: 1fr;
+  }
+}
