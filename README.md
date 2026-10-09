@@ -2,7 +2,7 @@
 
 **Keep a quantum computer alive.** An interactive game that teaches quantum error correction, ending on why real-time decoding is the bottleneck for fault-tolerant quantum computing.
 
-> Live demo: _add the deployed URL here_ · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
+> Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
 
 ![The decoder solving a real seeded puzzle](docs/media/decoder.gif)
 
@@ -61,8 +61,8 @@ Explainer animations are rendered with Manim from real simulation data; see [med
 
 ## Deploy
 
-- **Vercel:** import the repo; `vercel.json` adds SPA rewrites and cross-origin-isolation headers (microsecond timer resolution for real-time mode).
-- **GitHub Pages:** enable Pages ("GitHub Actions" source); `.github/workflows/pages.yml` builds with the repo name as base path. Pages cannot set isolation headers; decoder timing still works because each decode is repeated until at least 0.5 ms has elapsed.
+- **GitHub Pages (live deployment):** every push to `main` runs `.github/workflows/pages.yml`, which builds with the repo name as base path and deploys to https://bbfutaba.github.io/below-threshold/. Pages cannot set cross-origin-isolation headers; decoder timing still works because each decode is repeated until at least 0.5 ms has elapsed. The page carries a `noindex, nofollow` robots tag.
+- **Vercel (alternative):** import the repo; `vercel.json` adds SPA rewrites and cross-origin-isolation headers (microsecond timer resolution for real-time mode).
 - **Optional shared leaderboard:** set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (table schema in `src/ui/leaderboardApi.ts`). The app works fully without it.
 - **Offline at the venue:** `npm run build && npm run preview`.
 
