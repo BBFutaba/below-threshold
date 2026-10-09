@@ -1,0 +1,204 @@
+.stackHead {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.stack {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.layer {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px;
+  background: var(--surface-2);
+}
+.layer:last-of-type {
+  border-style: dashed;
+}
+.layerLabel {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+@media (max-width: 700px) {
+  .stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.badgeSvg {
+  fill: var(--amber);
+}
+.badgeText {
+  fill: #141828;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.liedText {
+  fill: var(--coral);
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.pairList {
+  display: grid;
+  gap: 8px;
+}
+.pairRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+}
+.pairRow[data-state='right'] {
+  border-color: color-mix(in srgb, var(--green) 50%, transparent);
+  background: var(--green-tint);
+}
+.pairRow[data-state='wrong'] {
+  border-color: color-mix(in srgb, var(--coral) 50%, transparent);
+  background: var(--coral-tint);
+}
+.badge {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: #141828;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+
+.clockLine {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+.clockDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface-3);
+}
+.clockDot[data-on='1'] {
+  background: var(--green);
+  animation: pulse-fire 0.6s ease infinite;
+}
+.lane {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: var(--surface-2);
+  display: grid;
+  gap: 10px;
+  transition: border-color var(--t-slow);
+}
+.lane[data-state='behind'] {
+  border-color: color-mix(in srgb, var(--amber) 55%, transparent);
+}
+.lane[data-state='ok'] {
+  border-color: color-mix(in srgb, var(--green) 40%, transparent);
+}
+.laneHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.laneStats,
+.laneFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 0.86rem;
+  color: var(--text-muted);
+}
+.laneStats b,
+.laneFoot b {
+  color: var(--text);
+}
+.backlog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  min-height: 22px;
+  align-items: center;
+}
+.block {
+  width: 12px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--amber);
+  animation: fade-in var(--t-med) var(--ease) both;
+}
+.block[data-old='0'] {
+  background: color-mix(in srgb, var(--amber) 60%, var(--surface-3));
+}
+.more {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--amber);
+  margin-left: 6px;
+}
+.vs {
+  display: grid;
+  gap: 6px;
+  font-size: 0.92rem;
+}
+.vs span {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+}
+.vs b {
+  color: var(--text);
+}
+.verdict {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.verdict > div {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.verdict > div[data-ok='1'] {
+  border-color: color-mix(in srgb, var(--green) 50%, transparent);
+}
+.verdict > div[data-ok='0'] {
+  border-color: color-mix(in srgb, var(--coral) 40%, transparent);
+}
+.verdictMark {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+[data-ok='1'] .verdictMark {
+  color: var(--green);
+}
+[data-ok='0'] .verdictMark {
+  color: var(--coral);
+}
+@media (max-width: 520px) {
+  .verdict {
+    grid-template-columns: 1fr;
+  }
+}
