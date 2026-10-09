@@ -72,3 +72,17 @@
   border-radius: 2px;
   display: inline-block;
 }
+@media (max-width: 560px) {
+  /* The chart scales down on phones; keep labels readable (SVG units, ~0.55 px each). */
+  .yTick,
+  .xTick {
+    font-size: 19px;
+  }
+  .axisLabel,
+  .crossLabel {
+    font-size: 19px;
+  }
+  .markerText {
+    font-size: 16px;
+  }
+}
