@@ -76,3 +76,19 @@ export function quantile(xs: number[], q: number): number {
     hi = Math.ceil(pos);
   return s[lo] + (s[hi] - s[lo]) * (pos - lo);
 }
+
+/** Interpolate log(pL) linearly in log(p) between sampled points (null outside the range). */
+export function interpLogLog(points: CurvePoint[], p: number): number | null {
+  const pts = points.filter((x) => x.pL > 0).sort((a, b) => a.p - b.p);
+  if (pts.length === 0) return null;
+  if (p <= pts[0].p) return p === pts[0].p ? pts[0].pL : null;
+  for (let i = 0; i + 1 < pts.length; i++) {
+    const a = pts[i],
+      b = pts[i + 1];
+    if (p >= a.p && p <= b.p) {
+      const t = (Math.log(p) - Math.log(a.p)) / (Math.log(b.p) - Math.log(a.p));
+      return Math.exp(Math.log(a.pL) + t * (Math.log(b.pL) - Math.log(a.pL)));
+    }
+  }
+  return null;
+}
