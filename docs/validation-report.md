@@ -32,8 +32,11 @@ Phenomenological thresholds use the failure probability of a whole d-round memor
 ### phenomenological
 
 - **MWPM (ours)**: scaling fit (d >= 7) 2.84%, all distances 2.80%; pairwise crossings d=5/7: 2.71% [2.64%, 2.80%]; d=7/9: 2.85% [2.77%, 2.93%]; d=9/11: 2.88% [2.81%, 2.95%]
+  - per-round rates instead of per-memory: crossings d=5/7: n/a; d=7/9: n/a; d=9/11: 3.59% (n/a = no crossing below the top of the sampled range, 3.6%; per-round curves cross higher, as expected)
 - **Union-find (ours)**: scaling fit (d >= 7) 2.48%, all distances 2.39%; pairwise crossings d=5/7: 2.23% [2.17%, 2.29%]; d=7/9: 2.48% [2.42%, 2.56%]; d=9/11: 2.58% [2.51%, 2.66%]
+  - per-round rates instead of per-memory: crossings d=5/7: 3.44%; d=7/9: n/a; d=9/11: 3.26% (n/a = no crossing below the top of the sampled range, 3.6%; per-round curves cross higher, as expected)
 - **PyMatching (independent sampling and graph)**: scaling fit (d >= 7) 2.85%, all distances 2.81%; pairwise crossings d=5/7: 2.73% [2.65%, 2.81%]; d=7/9: 2.84% [2.77%, 2.91%]; d=9/11: 2.96% [2.88%, 3.04%]
+  - per-round rates instead of per-memory: crossings d=5/7: n/a; d=7/9: n/a; d=9/11: n/a (n/a = no crossing below the top of the sampled range, 3.6%; per-round curves cross higher, as expected)
 
 ![phenomenological_mwpm.png](../validate/plots/phenomenological_mwpm.png)
 ![phenomenological_unionFind.png](../validate/plots/phenomenological_unionFind.png)
@@ -70,18 +73,18 @@ Phenomenological thresholds use the failure probability of a whole d-round memor
 
 | d | p | MWPM median (us) | MWPM p99 | Union-find median | Union-find p99 | Greedy median | Greedy p99 |
 |---|---|---|---|---|---|---|---|
-| 3 | 0.01 | 0.2 | 14.9 | 0.1 | 4.1 | 0.2 | 0.7 |
-| 3 | 0.03 | 0.3 | 52.0 | 2.5 | 23.4 | 0.3 | 1.3 |
-| 3 | 0.05 | 2.8 | 20.7 | 2.5 | 6.4 | 0.4 | 1.6 |
-| 5 | 0.01 | 3.6 | 37.5 | 3.4 | 56.6 | 0.4 | 2.3 |
-| 5 | 0.03 | 11.2 | 39.7 | 4.2 | 38.2 | 1.0 | 3.8 |
-| 5 | 0.05 | 27.7 | 249.6 | 5.5 | 52.0 | 2.7 | 18.3 |
-| 7 | 0.01 | 12.4 | 39.4 | 4.5 | 28.0 | 0.6 | 2.1 |
-| 7 | 0.03 | 67.4 | 335.6 | 3.9 | 30.6 | 3.7 | 9.2 |
-| 7 | 0.05 | 103.9 | 345.2 | 4.0 | 9.2 | 10.6 | 37.3 |
-| 9 | 0.01 | 17.4 | 50.1 | 3.6 | 47.6 | 3.0 | 21.3 |
-| 9 | 0.03 | 108.9 | 210.3 | 4.0 | 7.2 | 17.6 | 36.0 |
-| 9 | 0.05 | 390.7 | 931.0 | 6.3 | 34.1 | 41.0 | 84.6 |
-| 11 | 0.01 | 54.5 | 126.3 | 3.5 | 9.4 | 5.9 | 13.4 |
-| 11 | 0.03 | 453.7 | 1046.1 | 7.6 | 22.1 | 48.5 | 100.6 |
-| 11 | 0.05 | 1630.4 | 3854.4 | 9.7 | 23.6 | 149.2 | 213.3 |
+| 3 | 0.01 | 0.2 | 14.9 | 0.1 | 3.6 | 0.2 | 2.4 |
+| 3 | 0.03 | 2.7 | 15.8 | 2.2 | 26.2 | 0.3 | 1.7 |
+| 3 | 0.05 | 2.7 | 30.6 | 2.4 | 7.0 | 0.5 | 3.5 |
+| 5 | 0.01 | 2.6 | 27.7 | 2.7 | 23.3 | 0.2 | 1.1 |
+| 5 | 0.03 | 12.4 | 93.6 | 1.7 | 17.5 | 0.6 | 2.6 |
+| 5 | 0.05 | 23.9 | 137.1 | 1.9 | 7.4 | 1.4 | 4.4 |
+| 7 | 0.01 | 8.0 | 49.1 | 1.7 | 21.5 | 0.5 | 2.3 |
+| 7 | 0.03 | 23.2 | 74.7 | 2.5 | 5.4 | 4.2 | 13.4 |
+| 7 | 0.05 | 60.9 | 155.5 | 3.4 | 8.0 | 9.1 | 20.4 |
+| 9 | 0.01 | 12.0 | 56.5 | 2.4 | 11.3 | 2.2 | 9.3 |
+| 9 | 0.03 | 103.5 | 261.0 | 4.0 | 9.3 | 15.4 | 33.3 |
+| 9 | 0.05 | 324.9 | 670.8 | 5.8 | 18.8 | 36.5 | 61.4 |
+| 11 | 0.01 | 33.7 | 105.2 | 3.3 | 15.0 | 6.3 | 16.1 |
+| 11 | 0.03 | 544.9 | 1193.1 | 9.2 | 31.7 | 63.1 | 114.9 |
+| 11 | 0.05 | 1926.7 | 3949.2 | 12.8 | 35.1 | 146.0 | 241.9 |

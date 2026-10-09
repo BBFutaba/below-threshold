@@ -75,8 +75,10 @@ export function ThresholdChart({
   const yTicks = (() => {
     const out: number[] = [];
     for (let e = Math.floor(Math.log10(yMin)); e <= 0; e++) {
-      const v = 10 ** e;
-      if (v >= yMin && v <= yMax) out.push(v);
+      for (const k of [1, 2, 5]) {
+        const v = k * 10 ** e;
+        if (v >= yMin && v <= yMax && v <= 1) out.push(v);
+      }
     }
     return out;
   })();
@@ -99,7 +101,7 @@ export function ThresholdChart({
         <g key={v}>
           <line x1={m.l} x2={W - m.r} y1={y(v)} y2={y(v)} className={css.grid} />
           <text x={m.l - 8} y={y(v)} className={css.yTick}>
-            {v >= 0.01 ? `${+(v * 100).toFixed(0)}%` : v.toExponential(0)}
+            {v >= 0.001 ? `${+(v * 100).toFixed(1)}%` : v.toExponential(0)}
           </text>
         </g>
       ))}

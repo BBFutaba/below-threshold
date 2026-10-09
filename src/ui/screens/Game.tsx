@@ -405,8 +405,9 @@ export function Game() {
           )}
           {phase === 'revealed' && ev && showDecoder && (
             <WhatHappened title="The decoder's turn" tone={ev.decoder.saved ? 'good' : 'bad'}>
-              Exact matching (MWPM) paired the lit checks by the shortest total path (dashed lines) and {ev.decoder.saved ? 'saved the qubit' : 'also failed'} with{' '}
+              Exact matching (MWPM) paired the lit checks by the shortest total path (dashed lines) and {ev.decoder.saved ? 'saved the qubit' : ev.saved ? 'failed where you succeeded' : 'also failed'} with{' '}
               {ev.decoder.weight} correction{ev.decoder.weight === 1 ? '' : 's'}, in {ev.decoder.ms < 1 ? `${(ev.decoder.ms * 1000).toFixed(0)} µs` : `${ev.decoder.ms.toFixed(2)} ms`}.
+              {!ev.decoder.saved && ' The shortest explanation is usually right, but not always: this puzzle has more errors than a distance-' + puzzle.code.d + ' code can always fix.'}
             </WhatHappened>
           )}
           {run.over && (

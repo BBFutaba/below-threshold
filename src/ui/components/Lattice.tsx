@@ -73,6 +73,7 @@ export function Lattice({
   const [focus, setFocus] = useState<number>(Math.floor(code.n / 2));
   const [menu, setMenu] = useState<number | null>(null);
   const [focused, setFocused] = useState(false);
+  const keyboardRef = useRef(true);
   const svgRef = useRef<SVGSVGElement>(null);
   const [scale, setScale] = useState(1);
   useEffect(() => {
@@ -114,6 +115,8 @@ export function Lattice({
 
   const onKey = (e: KeyboardEvent<SVGSVGElement>) => {
     if (!interactive) return;
+    keyboardRef.current = true;
+    setFocused(true);
     const d = code.d;
     const r = Math.floor(focus / d),
       c = focus % d;
@@ -159,8 +162,12 @@ export function Lattice({
         aria-label={`${label}, distance ${code.d}. ${litCount} lit check${litCount === 1 ? '' : 's'}.${interactive ? ' Arrow keys move between qubits; X' + (mode === 'xyz' ? ', Z or Y' : '') + ' applies a correction; Enter submits.' : ''}`}
         tabIndex={interactive ? 0 : -1}
         onKeyDown={onKey}
-        onFocus={() => setFocused(true)}
+        onFocus={() => setFocused(keyboardRef.current)}
         onBlur={() => setFocused(false)}
+        onPointerDown={() => {
+          keyboardRef.current = false;
+          setFocused(false);
+        }}
       >
         {/* Checks */}
         {code.stabilizers.map((st, i) => {

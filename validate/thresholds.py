@@ -328,7 +328,12 @@ def fmt(x: float | None) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--report-only", action="store_true", help="rewrite the report from data/thresholds.json")
     args = ap.parse_args()
+    if args.report_only:
+        with open(os.path.join(DATA, "thresholds.json"), encoding="utf8") as f:
+            write_report(json.load(f))
+        return 0
     os.makedirs(PLOTS, exist_ok=True)
     os.makedirs(DOCS, exist_ok=True)
     workers = max(2, (os.cpu_count() or 4) - 2)
@@ -445,6 +450,14 @@ def write_report(results: dict) -> None:
             name = {"pymatching": "PyMatching (independent sampling and graph)", "stim": "Stim circuit + PyMatching"}.get(key, DECODER_LABEL.get(key, key))
             pairs = "; ".join(f"d={p['d1']}/{p['d2']}: {fmt(p['crossing'])} [{fmt(p['lo'])}, {fmt(p['hi'])}]" for p in a["pairs"])
             L.append(f"- **{name}**: scaling fit (d >= 7) {fmt(a.get('scalingFit'))}, all distances {fmt(a.get('scalingFitAll'))}; pairwise crossings {pairs}")
+            if model == "phenomenological":
+                pts = val["points"]
+                ds_ = sorted({r["d"] for r in pts})
+                pr = "; ".join(
+                    f"d={d1}/{d2}: {fmt(crossing([r for r in pts if r['d'] == d1], [r for r in pts if r['d'] == d2]))}"
+                    for d1, d2 in zip(ds_, ds_[1:])
+                )
+                L.append(f"  - per-round rates instead of per-memory: crossings {pr} (n/a = no crossing below the top of the sampled range, 3.6%; per-round curves cross higher, as expected)")
         L.append("")
         for f in sorted(os.listdir(PLOTS)):
             if f.startswith(model + "_"):

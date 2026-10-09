@@ -184,7 +184,7 @@ function TimeStack({ puzzle, view, revealed }: { puzzle: StackPuzzle; view: 'raw
               show="Z"
               errors={revealed ? err : null}
               paths={segs}
-              maxWidth={190}
+              maxWidth={260}
               label={`Round ${t + 1}`}
               overlay={
                 <>
@@ -193,8 +193,8 @@ function TimeStack({ puzzle, view, revealed }: { puzzle: StackPuzzle; view: 'raw
                       const c = checkCenter(code, b.check);
                       return (
                         <g key={i}>
-                          <circle cx={c.x + 16} cy={c.y - 16} r={11} className={css.badgeSvg} />
-                          <text x={c.x + 16} y={c.y - 16} className={css.badgeText}>
+                          <circle cx={c.x + 17} cy={c.y - 17} r={14} className={css.badgeSvg} />
+                          <text x={c.x + 17} y={c.y - 17} className={css.badgeText}>
                             {b.label}
                             {revealed && b.time ? '↕' : ''}
                           </text>

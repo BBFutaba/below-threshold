@@ -11,3 +11,5 @@ validate/data/*
 !validate/data/cross_check.json
 .vite/
 *.log
+*.tsbuildinfo
+.shots/

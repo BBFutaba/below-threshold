@@ -129,4 +129,5 @@ export const HONESTY_TEXT =
   'measured browser decode times. Distances are small compared with future machines. Everything shown is computed ' +
   'live or comes from our validation runs, documented in the repo.';
 
-export const REPO_URL = 'https://github.com/below-threshold/below-threshold';
+/** Public repository URL, set at build time with VITE_REPO_URL (links are hidden when unset). */
+export const REPO_URL: string = (import.meta.env.VITE_REPO_URL as string | undefined) ?? '';

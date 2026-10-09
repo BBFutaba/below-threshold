@@ -5,6 +5,7 @@ import qrcode from 'qrcode-generator';
 import { LEVELS } from '../../core/game';
 import { useApp, type ScoreEntry } from '../../store/app';
 import { cleanName, fetchShared, postShared, sharedEnabled } from '../leaderboardApi';
+import { REPO_URL } from '../content';
 import { Button, ButtonLink, Card, Pill, Row, pct } from '../components/ui';
 import s from './screen.module.css';
 import css from './Leaderboard.module.css';
@@ -144,6 +145,18 @@ export function Leaderboard() {
               {!sharedEnabled && <p className="faint" style={{ fontSize: '0.82rem' }}>Shared scores are off (no backend configured); each phone keeps its own board.</p>}
             </Card>
           )}
+          <Card title="Share">
+            <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+              {REPO_URL ? (
+                <>
+                  Code, tests and the validation report: <a href={REPO_URL}>{REPO_URL.replace(/^https?:\/\//, '')}</a> ·{' '}
+                  <a href={`${REPO_URL}/blob/main/docs/writeup.md`}>technical write-up</a>
+                </>
+              ) : (
+                <>The source, tests, validation report and technical write-up are in the project repository.</>
+              )}
+            </p>
+          </Card>
           <Card title="Privacy">
             <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
               No emails or personal data. Names are optional (default: an anonymous animal) and filtered for profanity.
