@@ -6,6 +6,8 @@ __pycache__/
 test-results/
 playwright-report/
 media/build/
-validate/data/
+validate/data/*
+!validate/data/thresholds.json
+!validate/data/cross_check.json
 .vite/
 *.log

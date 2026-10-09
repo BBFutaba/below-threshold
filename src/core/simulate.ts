@@ -121,9 +121,13 @@ export interface PointResult {
   model: NoiseModel['kind'];
   trials: number;
   failures: number;
-  /** Logical error rate (per shot; per round for phenomenological). */
+  /** Logical error rate per round (equals per shot for code capacity). */
   pL: number;
   ci: Interval;
+  /** Failure probability of the whole shot (a d-round memory experiment for phenomenological). */
+  pShot: number;
+  ciShot: Interval;
+  rounds: number;
   meanDecodeMs: number;
 }
 
@@ -155,6 +159,9 @@ export function runPoint(spec: PointSpec, onProgress?: (r: PointResult) => void)
       failures: k,
       pL: perRound(ci.p, rounds),
       ci: { p: perRound(ci.p, rounds), lo: perRound(ci.lo, rounds), hi: perRound(ci.hi, rounds) },
+      pShot: ci.p,
+      ciShot: ci,
+      rounds,
       meanDecodeMs: n ? ms / n : 0,
     };
   };
