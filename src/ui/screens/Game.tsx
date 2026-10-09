@@ -8,6 +8,7 @@ import { LEVELS, decoderBatch, evaluate, hint as computeHint, liveSyndrome, make
 import { applyPauli, cloneFrame, emptyFrame, type Pauli, type PauliFrame } from '../../core/pauliFrame';
 import { edgeSegments, qubitPos } from '../components/latticeGeometry';
 import { Lattice } from '../components/Lattice';
+import { MediaClip } from '../components/MediaClip';
 import { Button, ButtonLink, Card, GoalLine, Kbd, Pill, Row, WhatHappened, pct } from '../components/ui';
 import { useApp } from '../../store/app';
 import { play } from '../sound';
@@ -409,6 +410,11 @@ export function Game() {
               {ev.decoder.weight} correction{ev.decoder.weight === 1 ? '' : 's'}, in {ev.decoder.ms < 1 ? `${(ev.decoder.ms * 1000).toFixed(0)} µs` : `${ev.decoder.ms.toFixed(2)} ms`}.
               {!ev.decoder.saved && ' The shortest explanation is usually right, but not always: this puzzle has more errors than a distance-' + puzzle.code.d + ' code can always fix.'}
             </WhatHappened>
+          )}
+          {phase === 'revealed' && showDecoder && (
+            <Card title="How a decoder thinks">
+              <MediaClip id="decoder" caption="Manim animation of exact matching on a real seeded d = 5 puzzle (and one it gets wrong)." />
+            </Card>
           )}
           {run.over && (
             <Card title={run.won ? 'You protected the qubit through all 7 levels' : 'Out of lives'}>

@@ -2,13 +2,14 @@
 // Every lattice, syndrome, error, matching, correction and frequency in the videos
 // comes from the project's own simulation code through this script.
 //
-// Usage:  npx tsx scripts/manim-data.ts            (all scenes)
-//         npx tsx scripts/manim-data.ts --skip-threshold   (reuse media/data/threshold.json)
+// Usage:  npx tsx scripts/manim-data.ts                    (everything; the threshold sweep takes ~1 min)
+//         npx tsx scripts/manim-data.ts --skip-threshold   (reuse the cached runPoint sweep in
+//                                                            media/data/threshold.json, re-merge validation.json)
 // Writes: media/data/{bridge,decoder,discretization,threshold,backlog}.json
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { makeRng } from '../src/core/rng';
 import { makeRotatedSurfaceCode, type SurfaceCode, type Stabilizer } from '../src/core/surfaceCode';
-import { emptyFrame, applyPauli, syndrome, logicalOutcome, multiply, type PauliFrame } from '../src/core/pauliFrame';
+import { emptyFrame, applyPauli, syndrome, logicalOutcome, multiply } from '../src/core/pauliFrame';
 import { sampleNoise, type NoiseModel } from '../src/core/noise';
 import { graphsFor, defectsFor, decodeSample, runPoint, type PointResult } from '../src/core/simulate';
 import { pathEdges, type DecodingGraph } from '../src/core/decodingGraph';
@@ -242,7 +243,16 @@ function decoderData() {
     const k = inst.sample.error.x.reduce((a, b) => a + b, 0);
     const nPairs = inst.pairs.length;
     const nBoundary = inst.pairs.filter((pp) => pp.toBoundary).length;
-    if (!good && !inst.outcome.failed && k >= 3 && k <= 5 && nPairs >= 2 && nPairs <= 3 && nBoundary >= 1 && nBoundary < nPairs) {
+    if (
+      !good &&
+      !inst.outcome.failed &&
+      k >= 3 &&
+      k <= 5 &&
+      nPairs >= 2 &&
+      nPairs <= 3 &&
+      nBoundary >= 1 &&
+      nBoundary < nPairs
+    ) {
       // Want a visible "harmless loop": residual is exactly one weight-4 X plaquette.
       const loop = decomposeIntoStabilizers(inst.code, inst.residualFrame.x, 'X');
       const longest = Math.max(...inst.pairs.map((pp) => pp.qubits.length));
@@ -264,17 +274,13 @@ function discretizationData() {
   const runs = 200;
   const seed = 6006;
   const rng = makeRng(seed);
-  // Logical state alpha|000> + beta|111> (alpha = cos 0.6, beta = sin 0.6); the outcome
-  // statistics do not depend on alpha, beta: that is the point of the parity checks.
-  const prepAngle = 1.2;
-  const prepare = () => {
-    const s = new QState(5); // qubits 0-2 data, 3-4 ancillas for Z0Z1 and Z1Z2
-    s.ry(0, prepAngle).cnot(0, 1).cnot(0, 2);
-    return s;
-  };
+  // Logical |0> = |000>. (Any alpha|000> + beta|111> gives the same outcome statistics:
+  // the parity checks never look at alpha, beta.) Qubits 0-2 are data, 3-4 are ancillas.
+  const prepare = () => new QState(5);
   const ideal = prepare();
   const idealFlipped = prepare().x(0);
-  const outcomes: { s1: number; s2: number; fidelityNoFlip: number; fidelityFlip: number }[] = [];
+  const outcomes: { s1: number; s2: number; fidelityNoFlip: number; fidelityFlip: number; blochZ: number }[] =
+    [];
   const counts: Record<string, number> = { '00': 0, '10': 0, '01': 0, '11': 0 };
   for (let i = 0; i < runs; i++) {
     const s = prepare();
@@ -288,7 +294,7 @@ function discretizationData() {
     if (s2) s.x(4);
     const fNo = s.fidelity(ideal);
     const fFlip = s.fidelity(idealFlipped);
-    outcomes.push({ s1, s2, fidelityNoFlip: fNo, fidelityFlip: fFlip });
+    outcomes.push({ s1, s2, fidelityNoFlip: fNo, fidelityFlip: fFlip, blochZ: s.bloch(0).z });
     counts[`${s1}${s2}`]++;
   }
   // The pre-measurement probabilities, read off the state vector (not the formula).
@@ -303,8 +309,13 @@ function discretizationData() {
     theta,
     runs,
     seed,
-    prep: { ry: prepAngle, alpha: Math.cos(prepAngle / 2), beta: Math.sin(prepAngle / 2) },
-    sequence: outcomes.map((o) => (o.s1 === 0 && o.s2 === 0 ? 'none' : o.s1 === 1 && o.s2 === 0 ? 'flip1' : `other${o.s1}${o.s2}`)),
+    prep: 'logical |0> = |000>',
+    // Bloch vector of qubit 1 right after the drift, and after each run's check measurement.
+    blochBefore: prepare().rx(0, theta).bloch(0),
+    blochAfterZ: outcomes.map((o) => Math.round(o.blochZ * 1e9) / 1e9),
+    sequence: outcomes.map((o) =>
+      o.s1 === 0 && o.s2 === 0 ? 'none' : o.s1 === 1 && o.s2 === 0 ? 'flip1' : `other${o.s1}${o.s2}`,
+    ),
     counts,
     measured: { none: counts['00'] / runs, flip1: counts['10'] / runs },
     stateVectorProb: { none: 1 - pFlip, flip1: pFlip },
@@ -318,44 +329,126 @@ function discretizationData() {
 
 // ---------------------------------------------------------------- 4. threshold
 
-function thresholdData() {
-  const ds = [5, 7, 9];
-  const ps = [0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16];
-  const curves: Record<string, PointResult[]> = {};
+type CurvePt = {
+  p: number;
+  pL: number;
+  lo: number;
+  hi: number;
+  trials: number;
+  failures: number;
+  seed?: number;
+  source: string;
+};
+
+/** Our own wide-range sweep (runPoint, bit-flip, MWPM). Cached in media/data/threshold.json. */
+function thresholdRuns(ds: number[], ps: number[]): Record<string, CurvePt[]> {
+  const curves: Record<string, CurvePt[]> = {};
   for (const d of ds) {
     curves[d] = [];
     for (const [j, p] of ps.entries()) {
       const t0 = Date.now();
       const seed = 7_000_000 + d * 1000 + j;
-      const r = runPoint({ d, model: { kind: 'bitflip', p }, decoder: 'mwpm', seed, maxFailures: 1500, maxTrials: 300_000 });
-      curves[d].push({ ...r, seed } as PointResult & { seed: number });
-      console.log(`  d=${d} p=${p.toFixed(2)} pL=${r.pL.toExponential(3)} (${r.failures}/${r.trials}) ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+      const r: PointResult = runPoint({
+        d,
+        model: { kind: 'bitflip', p },
+        decoder: 'mwpm',
+        seed,
+        maxFailures: 1500,
+        maxTrials: 300_000,
+      });
+      curves[d].push({
+        p: r.p,
+        pL: r.pL,
+        lo: r.ci.lo,
+        hi: r.ci.hi,
+        trials: r.trials,
+        failures: r.failures,
+        seed,
+        source: 'runPoint',
+      });
+      console.log(
+        `  d=${d} p=${p.toFixed(2)} pL=${r.pL.toExponential(3)} (${r.failures}/${r.trials}) ${((Date.now() - t0) / 1000).toFixed(1)}s`,
+      );
     }
   }
-  const cross: Record<string, number[]> = {};
-  for (let i = 0; i + 1 < ds.length; i++) {
-    cross[`${ds[i]}/${ds[i + 1]}`] = crossings(curves[ds[i]], curves[ds[i + 1]]);
+  return curves;
+}
+
+function thresholdData(rerun: boolean) {
+  const ds = [5, 7, 9];
+  const ps = [0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16];
+  const cached = existsSync(`${OUT}/threshold.json`)
+    ? JSON.parse(readFileSync(`${OUT}/threshold.json`, 'utf8'))
+    : null;
+  let own: Record<string, CurvePt[]>;
+  if (!rerun && cached?.runPointCurves) {
+    own = cached.runPointCurves;
+    console.log('threshold: reusing cached runPoint sweep');
+  } else {
+    console.log('threshold: running Monte Carlo (bitflip, mwpm) ...');
+    own = thresholdRuns(ds, ps);
   }
-  cross[`${ds[0]}/${ds[ds.length - 1]}`] = crossings(curves[ds[0]], curves[ds[ds.length - 1]]);
-  let validation: unknown = null;
+  // The validation runs (src/data/validation.json, 4000 failures per point) cover the
+  // crossing region densely; our sweep extends the range on both sides.
+  let verdict: unknown = null;
+  const valCurves: Record<string, CurvePt[]> = {};
+  let valDistances: number[] = [];
+  let valRange: [number, number] | null = null;
   if (existsSync('src/data/validation.json')) {
     const v = JSON.parse(readFileSync('src/data/validation.json', 'utf8'));
-    validation = (v.verdicts ?? []).find((x: { model: string; decoder: string }) => x.model === 'bitflip' && x.decoder === 'mwpm') ?? null;
+    verdict =
+      (v.verdicts ?? []).find(
+        (x: { model: string; decoder: string }) => x.model === 'bitflip' && x.decoder === 'mwpm',
+      ) ?? null;
+    const pts: {
+      d: number;
+      p: number;
+      pL: number;
+      ci: { lo: number; hi: number };
+      trials: number;
+      failures: number;
+    }[] = v.curves?.bitflip?.mwpm ?? [];
+    valDistances = [...new Set(pts.map((x) => x.d))].sort((a, b) => a - b);
+    for (const d of ds) {
+      valCurves[d] = pts
+        .filter((x) => x.d === d)
+        .map((x) => ({
+          p: x.p,
+          pL: x.pL,
+          lo: x.ci.lo,
+          hi: x.ci.hi,
+          trials: x.trials,
+          failures: x.failures,
+          source: 'validation.json',
+        }))
+        .sort((a, b) => a.p - b.p);
+    }
+    const allP = pts.map((x) => x.p);
+    if (allP.length) valRange = [Math.min(...allP), Math.max(...allP)];
   }
+  const useVal = valRange !== null && ds.every((d) => (valCurves[d] ?? []).length > 0);
+  const merged: Record<string, CurvePt[]> = {};
+  for (const d of ds) {
+    const outside = own[d].filter((x) => !useVal || x.p < valRange![0] - 1e-9 || x.p > valRange![1] + 1e-9);
+    merged[d] = [...outside, ...(useVal ? valCurves[d] : [])].sort((a, b) => a.p - b.p);
+  }
+  const cross: Record<string, number[]> = {};
+  for (let i = 0; i + 1 < ds.length; i++)
+    cross[`${ds[i]}/${ds[i + 1]}`] = crossings(merged[ds[i]], merged[ds[i + 1]]);
+  cross[`${ds[0]}/${ds[ds.length - 1]}`] = crossings(merged[ds[0]], merged[ds[ds.length - 1]]);
   return {
     model: 'bitflip',
     decoder: 'mwpm',
     distances: ds,
-    ps,
-    sampling: 'runPoint: until 1500 logical failures or 300,000 trials; 95% Wilson intervals',
-    curves: Object.fromEntries(
-      ds.map((d) => [
-        d,
-        curves[d].map((r) => ({ p: r.p, pL: r.pL, lo: r.ci.lo, hi: r.ci.hi, trials: r.trials, failures: r.failures, seed: (r as PointResult & { seed: number }).seed })),
-      ]),
-    ),
+    ps: merged[ds[0]].map((x) => x.p),
+    sampling:
+      'p in the validation window: src/data/validation.json (until 4000 failures or 400k trials); elsewhere runPoint until 1500 failures or 300k trials. 95% Wilson intervals.',
+    validationWindow: useVal ? valRange : null,
+    validationDistances: valDistances,
+    curves: merged,
     crossings: cross,
-    validationVerdict: validation,
+    validationVerdict: verdict,
+    runPointCurves: own,
   };
 }
 
@@ -364,7 +457,10 @@ function thresholdData() {
 function backlogData() {
   const bench = JSON.parse(readFileSync('src/data/bench.json', 'utf8'));
   const pick = (decoder: string, d: number, p: number) => {
-    const r = bench.results.find((x: { decoder: string; d: number; p: number }) => x.decoder === decoder && x.d === d && Math.abs(x.p - p) < 1e-9);
+    const r = bench.results.find(
+      (x: { decoder: string; d: number; p: number }) =>
+        x.decoder === decoder && x.d === d && Math.abs(x.p - p) < 1e-9,
+    );
     if (!r) throw new Error(`bench.json has no ${decoder} d=${d} p=${p}`);
     return { decoder, d, p, medianUs: r.medianUs, p99Us: r.p99Us, trials: r.trials };
   };
@@ -392,9 +488,8 @@ write('decoder', dec);
 console.log(`decoder: success seed ${dec.success.seed}, failure seed ${dec.failure.seed}`);
 write('discretization', discretizationData());
 write('backlog', backlogData());
-if (process.argv.includes("--no-threshold")) {
-  console.log("threshold: skipped");
-} else if (!skipThreshold || !existsSync(`${OUT}/threshold.json`)) {
-  console.log('threshold: running Monte Carlo (bitflip, mwpm) ...');
-  write('threshold', thresholdData());
+if (process.argv.includes('--no-threshold')) {
+  console.log('threshold: skipped');
+} else {
+  write('threshold', thresholdData(!skipThreshold));
 }

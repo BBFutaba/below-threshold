@@ -1,0 +1,47 @@
+[
+  {
+    "id": "bridge",
+    "title": "From a row to a grid",
+    "caption": "The 3-qubit repetition code catches only bit flips; grown into a distance-3 surface code, teal and violet checks catch bit and phase flips on a 2D grid.",
+    "mp4": "media/bridge.mp4",
+    "webm": "media/bridge.webm",
+    "poster": "media/bridge.jpg",
+    "durationSec": 20.4
+  },
+  {
+    "id": "decoder",
+    "title": "How a decoder thinks",
+    "caption": "A real d = 5 bit-flip instance: checks fire, exact matching (MWPM) pairs them, the corrections and the hidden errors close a harmless loop; a second seed shows a logical error.",
+    "mp4": "media/decoder.mp4",
+    "webm": "media/decoder.webm",
+    "poster": "media/decoder.jpg",
+    "durationSec": 28.6
+  },
+  {
+    "id": "discretization",
+    "title": "Why errors are digital",
+    "caption": "A small Rx(0.9) drift measured 200 times by the parity checks gives exactly two outcomes, no error or a full flip, at the cos²(θ/2) and sin²(θ/2) rates.",
+    "mp4": "media/discretization.mp4",
+    "webm": "media/discretization.webm",
+    "poster": "media/discretization.jpg",
+    "durationSec": 22.3
+  },
+  {
+    "id": "threshold",
+    "title": "The threshold",
+    "caption": "Logical error rate against physical error rate for d = 5, 7, 9 from real Monte Carlo runs: below the crossing bigger codes make things better, above it worse.",
+    "mp4": "media/threshold.mp4",
+    "webm": "media/threshold.webm",
+    "poster": "media/threshold.jpg",
+    "durationSec": 20.5
+  },
+  {
+    "id": "backlog",
+    "title": "The real-time bottleneck",
+    "caption": "Rounds arrive every 1 µs; with measured decode times both the MWPM and the union-find queues grow, and only the 1 µs-per-round requirement keeps the queue flat.",
+    "mp4": "media/backlog.mp4",
+    "webm": "media/backlog.webm",
+    "poster": "media/backlog.jpg",
+    "durationSec": 16.5
+  }
+]

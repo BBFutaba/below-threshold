@@ -21,7 +21,7 @@
 
 Yes. Every number in the app is computed live or comes from the validation suite in this repo.
 
-- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 106 unit tests, 34 end-to-end checks.
+- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 106 unit tests, 36 end-to-end checks (desktop and mobile).
 - **Thresholds**, reproduced with our own decoders up to d = 13:
 
 | Noise | Decoder | Ours | Stim / PyMatching reference | Published |

@@ -70,3 +70,10 @@ test('real-time mode measures decoders and runs the clock', async ({ page }) => 
   await page.getByRole('button', { name: /Start the clock/ }).click();
   await expect(page.getByText(/Round [1-9]/)).toBeVisible();
 });
+
+test('explainer clips load under cross-origin isolation', async ({ page }) => {
+  await page.goto('/bridge');
+  const video = page.locator('video').first();
+  await expect(video).toBeVisible();
+  await expect.poll(() => video.evaluate((v) => (v as unknown as { readyState: number }).readyState), { timeout: 15_000 }).toBeGreaterThan(0);
+});
