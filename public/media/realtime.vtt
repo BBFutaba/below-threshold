@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:08.001
+There is one more constraint, and it is the one this project is about:
+
+2
+00:00:08.001 --> 00:00:08.386
+time.
+
+3
+00:00:09.083 --> 00:00:14.468
+A superconducting chip produces a fresh round of syndrome data about once every microsecond.
+
+4
+00:00:14.468 --> 00:00:16.776
+The decoder has to keep up.
+
+5
+00:00:17.483 --> 00:00:19.791
+Exact matching, on an ordinary processor,
+
+6
+00:00:19.791 --> 00:00:23.637
+takes about a hundred microseconds per round at distance nine.
+
+7
+00:00:23.637 --> 00:00:26.329
+Union-find, a faster decoder, takes about four.
+
+8
+00:00:26.329 --> 00:00:29.022
+Both are too slow for the clock.
+
+9
+00:00:29.717 --> 00:00:33.178
+When the decoder falls behind, unprocessed rounds pile up.
+
+10
+00:00:33.178 --> 00:00:35.871
+Some logical operations, like the T gate,
+
+11
+00:00:35.871 --> 00:00:39.332
+must wait for the decoder before they can continue.
+
+12
+00:00:39.332 --> 00:00:42.024
+The backlog grows, and the computer stalls.
+
+13
+00:00:42.717 --> 00:00:46.563
+So error correction is not only a question of accuracy.
+
+14
+00:00:46.563 --> 00:00:51.178
+A decoder that is right, but too slow, still stops the computer.
+
+15
+00:00:51.178 --> 00:00:54.640
+That is why real machines need custom decoding hardware,
+
+16
+00:00:54.640 --> 00:00:57.717
+fast enough to keep pace with the qubits.

@@ -1,0 +1,69 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:07.232
+So here is the puzzle a quantum computer faces, over and over.
+
+2
+00:00:07.232 --> 00:00:09.540
+Noise strikes somewhere we cannot see.
+
+3
+00:00:09.540 --> 00:00:12.232
+All we get are the lit checks.
+
+4
+00:00:12.950 --> 00:00:16.796
+Each lit check is the end of some error chain.
+
+5
+00:00:16.796 --> 00:00:22.950
+To explain them, we have to pair them up, or send them off to the boundary.
+
+6
+00:00:23.650 --> 00:00:27.112
+Strip away the qubits and keep only what matters.
+
+7
+00:00:27.112 --> 00:00:33.650
+Checks become points, and the cost of joining two is the number of errors it would take.
+
+8
+00:00:34.350 --> 00:00:37.812
+Short chains are far more likely than long ones,
+
+9
+00:00:37.812 --> 00:00:42.427
+so the best guess is the pairing with the smallest total length.
+
+10
+00:00:42.427 --> 00:00:44.735
+That is minimum weight perfect matching,
+
+11
+00:00:44.735 --> 00:00:47.427
+and Edmonds' blossom algorithm finds it efficiently.
+
+12
+00:00:48.150 --> 00:00:52.381
+Fold the graph back onto the grid and apply the corrections.
+
+13
+00:00:52.381 --> 00:00:56.227
+Together with the hidden errors, they close into harmless loops.
+
+14
+00:00:56.227 --> 00:00:57.765
+The qubit is saved.
+
+15
+00:00:58.483 --> 00:00:59.637
+But not always.
+
+16
+00:00:59.637 --> 00:01:04.253
+Push the noise higher, and the most likely explanation can be wrong.
+
+17
+00:01:04.253 --> 00:01:10.791
+The fix and the errors join into a chain across the grid, and the information is lost.

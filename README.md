@@ -1,10 +1,12 @@
+<p align="right"><picture><source media="(prefers-color-scheme: dark)" srcset="public/brand/team-phase-dark.svg"><img src="public/brand/team-phase-light.svg" alt="Team PhASE" height="44"></picture></p>
+
 # Below Threshold
 
 **Keep a quantum computer alive.** An interactive game that teaches quantum error correction, ending on why real-time decoding is the bottleneck for fault-tolerant quantum computing.
 
-> Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
+> Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [The film](https://bbfutaba.github.io/below-threshold/film) ([1080p](docs/media/below-threshold-film.mp4), [subtitles](docs/media/below-threshold-film.srt)) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
 
-![The decoder solving a real seeded puzzle](docs/media/decoder.gif)
+![Decoding as matching, from the film: a real seeded d = 5 puzzle solved by MWPM](docs/media/matching.gif)
 
 ## What you can do
 
@@ -16,6 +18,7 @@
 | **Real-time** | Rounds arrive on a clock; decoder speed is **measured live in your browser**. Slow decoders build a backlog and T gates stall. |
 | **Lab** | Live Monte Carlo in Web Workers: watch curves for different distances cross at the threshold, drag the noise level, read off the suppression factor Λ. |
 | **Leaderboard** | Humans vs the decoder on identical seeded puzzles; QR event mode; optional shared board. |
+| **Film** | A ~8-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), ten chapters, every frame drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
 
 ## Is it real?
 
@@ -57,7 +60,7 @@ npm run export:instances                 # seeded instances -> validate/data/
 npm run bench                            # decoder timing -> src/data/bench.json
 ```
 
-Explainer animations are rendered with Manim from real simulation data; see [media/README.md](media/README.md).
+The explainer film is rendered with Manim from real simulation data, and its timing follows the narration script: see [media/README.md](media/README.md). To record the voiceover, follow [docs/voiceover-script.md](docs/voiceover-script.md) (one file per line into `media/voiceover/recordings/`, then `media/film_build.py --final`).
 
 ## Deploy
 
@@ -78,6 +81,10 @@ tests/core/        Vitest unit and property tests     tests/e2e/   Playwright sm
 validate/          Python: cross_check.py, thresholds.py, plots/
 media/             Manim scenes and their data export  docs/        write-up, pitch, Q&A, plan, report
 ```
+
+## Team
+
+Built by **Team PhASE** for the Quantum Unlocked track. The logo's wordmark is set in Latin Modern (the OpenType Computer Modern, GUST Font License); the mark is a phase diagram. Sources: `media/brand/`.
 
 ## Prior art and credits
 

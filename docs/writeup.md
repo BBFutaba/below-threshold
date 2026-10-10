@@ -63,14 +63,20 @@ In plain JavaScript every decoder misses the 1 µs budget at realistic sizes, wh
 
 Dark "quantum lab at night" theme with a light toggle, and one visual language everywhere: white data qubits, teal Z-checks, violet X-checks, a bright fill plus a dot for lit checks (never color alone), coral error rings with letters, blue corrections, dashed blue decoder paths. One goal line per screen, a "What just happened?" card with "Go deeper", undo/reset, hints, a glossary drawer, and full keyboard control (arrow keys, X/Z/Y, Enter). Tap targets are at least 44 px and the reduced-motion setting is respected. Explainer clips are rendered with Manim from real simulation output. Playwright smoke tests cover every route on desktop and mobile, completing level 1 by keyboard and running the lab and real-time mode.
 
-## 7. What we simplify
+## 7. The film
+
+A ~8-minute narrated explainer (`/film`, and `docs/media/below-threshold-film.mp4`) in the visual language of 3Blue1Brown and 2swap: Manim with LaTeX (Computer Modern) typesetting, continuous morphs instead of cuts, labels instead of captions, and the narration carrying the explanation. Ten chapters run from the Bloch sphere to the decoder backlog; each is also embedded next to its interactive counterpart in the app. Every object on screen is exported from `src/core` (seeded QState runs, real layouts and syndromes, MWPM matchings and distances, validation curves, measured decode times).
+
+The timing is narration-driven: `media/voiceover/script.py` holds the lines, and every beat lasts as long as its line takes to say (the recording if it exists, otherwise an estimate). Recording the voiceover and rebuilding therefore re-cuts the film to the team's voice automatically, and regenerates the captions (WebVTT/SRT) and the recording sheet (`docs/voiceover-script.md`).
+
+## 8. What we simplify
 
 The game uses code-capacity and phenomenological noise, not circuit-level noise. X and Z are decoded independently (ignoring Y correlations). Real-time mode runs on a slowed clock and assumes a labeled hardware speed-up. Distances are small. Every number shown is computed live or comes from the validation runs in this repo.
 
-## 8. Prior art
+## 9. Prior art
 
 Error-correction games exist, notably Decodoku (Wootton, around 2016). Below Threshold adds the quantum basics on an exact simulator, a decoder replay, measurement errors in a time stack, the real-time backlog, and a validated threshold lab in one experience. Full references are in [CITATIONS.md](../CITATIONS.md).
 
-## 9. Use of AI tools
+## 10. Use of AI tools
 
 This build was produced with Claude Code following `docs/PLAN.md`. Correctness rests on the test suite and the independent cross-checks above, not on trust in generated code. The team should state this, and what they personally verified, if the event rules ask.

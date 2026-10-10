@@ -17,6 +17,8 @@ All twelve phases (0 to 11) were executed in order, committing after each one. T
 | Depolarizing threshold | Not in the validation table. | Added (published ≈ 15.5% = 10.3% × 3/2 when X and Z are decoded independently); ours 14.6%. |
 | Bloch sphere | Three.js or SVG projection. | Lightweight SVG projection (draggable, keyboard-rotatable), no 3D library. |
 | Visualizations | Not specified. | Explainer clips rendered with Manim from real simulation output (see `media/README.md`). |
+| Explainer film (added after the plan) | Not in the plan. | A narrated ~7-minute film in the style of 3Blue1Brown and 2swap (Manim + LaTeX), cut to a voiceover script the team records; each chapter is embedded next to its interactive version. See `media/README.md`. |
+| Team branding (added after the plan) | Not in the plan. | Team PhASE logo: Latin Modern wordmark (matching the film's LaTeX) and a phase-diagram mark, in the app footer, landing page, README and film. |
 | Routing | Direct chapter URLs. | `BrowserRouter` with `/learn/<slug>`; `vercel.json` rewrites and a `404.html` copy make deep links work on Vercel and GitHub Pages. |
 
 ## Original plan (text extracted from the PDF; tables are flattened)
