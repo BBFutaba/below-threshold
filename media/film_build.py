@@ -46,8 +46,9 @@ from script import SCRIPT, words  # noqa: E402
 # id, file, class, poster beat (frame taken near the end of that beat)
 SCENES = [
     ("intro", "intro.py", "IntroScene", "title"),
-    # Part I and II: qubits, then Shor's algorithm and the QFT.
+    # Part I and II: quantum basics, then Shor's algorithm and the QFT.
     ("qubit", "qubit.py", "QubitScene", "interference"),
+    ("entangle", "entangle.py", "EntangleScene", "bell"),
     ("period", "period.py", "PeriodScene", "recipe"),
     ("qft", "qft.py", "QftScene", "comb"),
     ("shor", "shor.py", "ShorScene", "factors"),
@@ -89,9 +90,13 @@ def render_scene(sid: str, file: str, cls: str, final: bool) -> Path:
     qargs, qdir = quality_args(final)
     log = BUILD / f"render-{sid}.log"
     BUILD.mkdir(parents=True, exist_ok=True)
+    # A private LaTeX folder per scene: scenes rendering in parallel typeset many of the same
+    # strings, and a shared folder lets one process clean up another's files mid-compile.
+    cfg = BUILD / f"manim-{sid}.cfg"
+    cfg.write_text(f"[CLI]\ntex_dir = {(BUILD / 'Tex' / sid).as_posix()}\n", encoding="utf-8")
     with open(log, "w", encoding="utf-8") as f:
         subprocess.run(
-            [PY, "-m", "manim", "render", *qargs, "--media_dir", str(BUILD), "--disable_caching", file, cls],
+            [PY, "-m", "manim", "render", *qargs, "-c", str(cfg), "--media_dir", str(BUILD), "--disable_caching", file, cls],
             cwd=SCENES_DIR,
             stdout=f,
             stderr=subprocess.STDOUT,

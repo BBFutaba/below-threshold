@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| **Learn** | Eleven short chapters on an exact state-vector simulator, in three parts. **Part I, Qubits:** superposition, and phase as a hidden clock. **Part II, Shor's algorithm:** factoring as a hunt for a period, the quantum Fourier transform, Shor's algorithm end to end, and what noise does to it. **Part III, Keeping it alive:** no-cloning, entanglement, syndrome extraction, phase errors, error discretization. Open any chapter in any order; each has its own URL (`/learn/qft`). |
+| **Learn** | Twelve short chapters on an exact state-vector simulator, in three parts. **Part I, Quantum basics:** what a qubit is (superposition, measurement, interference), many qubits at once (2ⁿ amplitudes, product states), and entanglement. **Part II, Shor's algorithm:** factoring as a hunt for a period, phase as a hidden clock, the quantum Fourier transform, Shor's algorithm end to end, and what noise does to it. **Part III, Keeping it alive:** no-cloning, syndrome extraction, phase errors, error discretization. Open any chapter in any order; each has its own URL (`/learn/qft`). |
 | **QFT** | The featured chapter: pick a single number or a repeating pattern, step through the real gate circuit (Hadamards, controlled phase turns, swaps) one gate at a time, and watch amplitudes as clocks, each qubit's Bloch arrow and the output peaks. Ends with a "frequency detective" challenge. |
 | **Shor's** | Factor 15, 21, 33 or 35 in seven steps: superpose, compute aˣ mod N, measure (the comb), QFT (the peaks), measure, continued fractions, gcd. Run it 50 times to see how often one run succeeds. A noise chapter runs the gate-level circuit on 10 qubits and watches the peaks dissolve. |
 | **Play** | Keep a Shor's algorithm run alive by protecting its logical qubit on a rotated surface code (d = 3, 5, 7). Errors are hidden and only lit checks ("alarms") are visible, like real hardware. A guided first level, a plain-language guide for each level, live coaching after every move and alarms that show which qubits they watch make it playable with no background. Clear the alarms, submit, see what really happened, then watch the decoder play the same seeded puzzle. |
@@ -20,7 +20,7 @@
 | **Real-time** | Rounds arrive on a clock; decoder speed is **measured live in your browser**. Slow decoders build a backlog and T gates stall. |
 | **Lab** | Live Monte Carlo in Web Workers: watch curves for different distances cross at the threshold, drag the noise level, read off the suppression factor Λ. |
 | **Leaderboard** | Humans vs the decoder on identical seeded puzzles; QR event mode; optional shared board. |
-| **Film** | A ~14-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), thirteen chapters in the same three parts: qubits, Shor's algorithm and the QFT, then error correction as the wrap-up. Every frame is drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
+| **Film** | A ~15-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), fourteen chapters in the same three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the QFT, then error correction as the wrap-up. Every frame is drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
 
 ## Is it real?
 
@@ -40,7 +40,7 @@ Yes. Every number in the app is computed live or comes from the validation suite
 
 ![Threshold crossing, bit-flip noise](validate/plots/bitflip_mwpm.png)
 
-- **What we simplify** (also shown in the app): Shor's algorithm on small numbers (15 to 35, at most 10 simulated qubits), with each controlled modular multiplication as one exact gate; code-capacity and phenomenological noise, not circuit-level; X and Z decoded separately; a slowed clock and a labeled hardware speed-up in real-time mode; small distances. See [the honesty page](src/ui/screens/Honesty.tsx) and the [write-up](docs/writeup.md).
+- **What we simplify** (also shown in the app): Shor's algorithm on small numbers (15 to 35), with exact registers in the walkthrough and a 10-qubit gate-level noise simulation that treats each controlled modular multiplication as one exact gate; code-capacity and phenomenological noise, not circuit-level; X and Z decoded separately; a slowed clock and a labeled hardware speed-up in real-time mode; small distances. See [the honesty page](src/ui/screens/Honesty.tsx) and the [write-up](docs/writeup.md).
 
 ## Quick start
 

@@ -8,19 +8,23 @@
 .axis {
   stroke: var(--border-strong);
   stroke-width: 1;
+  pointer-events: none;
 }
 .axisText {
+  pointer-events: none;
   fill: var(--text-faint);
   font-family: var(--font-mono);
   font-size: 10px;
 }
 .oneLine {
+  pointer-events: none;
   stroke: var(--green);
   stroke-width: 1;
   stroke-dasharray: 4 4;
   opacity: 0.7;
 }
 .periodBand {
+  pointer-events: none;
   fill: var(--violet-tint);
   opacity: 0.55;
 }
@@ -28,6 +32,7 @@
   fill: var(--teal-tint);
 }
 .seqLine {
+  pointer-events: none;
   fill: none;
   stroke: var(--border-strong);
   stroke-width: 1.2;
@@ -292,4 +297,35 @@
   gap: 10px;
   border-bottom: 1px dashed var(--border);
   padding-bottom: 4px;
+}
+
+.baseTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+.baseTable th {
+  text-align: left;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 4px 6px;
+}
+.baseTable td {
+  padding: 4px 6px;
+  border-top: 1px solid var(--border);
+}
+.baseTable tbody tr {
+  cursor: pointer;
+}
+.baseTable tbody tr:hover {
+  background: var(--surface-2);
+}
+.baseTable tr[data-current='1'] {
+  background: var(--blue-tint);
+}
+.baseTable td[data-ok='1'] {
+  color: var(--green);
+}
+.baseTable td[data-ok='0'] {
+  color: var(--amber);
 }

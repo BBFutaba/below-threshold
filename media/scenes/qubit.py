@@ -1,12 +1,12 @@
-"""Chapter 1: arrows, amplitudes and phase.
+"""Chapter 1: what is a qubit? Arrows, amplitudes and phase.
 
 Every state is read from media/data/film/qubit.json (scripts/film/qubit.ts, QState):
 - the superposition Ry(1.1)|0> and its two amplitudes;
 - the same state with the |1> amplitude turned through a full circle by P(phi), whose
   probabilities the export checks are unchanged;
 - the interference sweep H P(phi) H |0>: the two amplitudes that meet at the second H, and
-  P(1) = sin^2(phi/2) read off the state vector;
-- three qubits, H on each and qubit q turned by f * 2^q / 8: eight clocks winding f times.
+  P(1) = sin^2(phi/2) read off the state vector.
+(The eight-clock waves of three qubits moved to Chapter 2, entangle.py.)
 """
 
 from __future__ import annotations
@@ -204,38 +204,7 @@ class QubitScene(Cued, NarratedScene):
             bars.clear_updaters()
             arrows.clear_updaters()
             phi_lab.clear_updaters()
-            self.inter_group = VGroup(wire, boxes, k_in, cA, cB, lA, lB, arrows, sum_lab, bars, b0, b1, phi_lab, word)
 
-        # ------------------------------------------------------------ waves
-        with self.cued("waves") as T:
-            self.play(FadeOut(self.inter_group), run_time=0.7)
-            w1, w2 = D["waves"]
-            ref = 1 / math.sqrt(8)
-            row = VGroup(*[Clock(a["re"], a["im"], R=0.56, ref=ref) for a in w1["amps"]]).arrange(RIGHT, buff=0.3).move_to([0, 0.4, 0])
-            labs = VGroup(*[MX(str(y), size=32, color=MUTED).next_to(c, DOWN, buff=0.2) for y, c in enumerate(row)])
-            flab = MX(r"f = 1", size=44).move_to([0, 2.3, 0])
-            self.play(LaggedStart(*[FadeIn(c, scale=0.8) for c in row], lag_ratio=0.08), FadeIn(labs), Write(flab), run_time=1.6)
-            # Wind from one turn to two: clock y turns by f * y / 8 of a turn as f goes 1 -> 2.
-            ft = ValueTracker(1.0)
-
-            def wind(m):
-                for y, c in enumerate(m):
-                    ang = 2 * PI * ft.get_value() * y / 8
-                    c.set_amp(ref * math.cos(ang), ref * math.sin(ang))
-
-            row.add_updater(wind)
-            self.wait_to(self.cue("like a wave"))
-            self.play(ft.animate.set_value(2.0), run_time=2.0, rate_func=smooth)
-            row.clear_updaters()
-            for c, a in zip(row, w2["amps"]):
-                c.set_amp(a["re"], a["im"])  # land exactly on the exported f = 2 state
-            self.play(ReplacementTransform(flab, MX(r"f = 2", size=44).move_to(flab)), run_time=0.5)
-            self.wait_to(self.cue("the language of the quantum Fourier transform"))
-            qft_t = TX(r"the language of the \textbf{quantum Fourier transform}", size=40).move_to([0, -2.1, 0])
-            self.play(Write(qft_t), run_time=1.3)
-            self.wait_to(self.cue("the engine of Shor"))
-            sub = TX(r"\textit{the engine of Shor's algorithm}", size=32, color=MUTED).next_to(qft_t, DOWN, buff=0.25)
-            self.play(FadeIn(sub, shift=0.1 * UP), run_time=0.8)
             self.wait(max(0.1, T - self.now() - 0.7))
             self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 

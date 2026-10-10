@@ -31,8 +31,12 @@ import css from './Game.module.css';
 type Phase = 'playing' | 'revealed';
 
 interface RunState {
+  /** The level this run started at (the level chips can start a run part-way). */
+  start: number;
   level: number;
   pos: number; // puzzle position within the level (0..puzzles-1)
+  /** Puzzles that ended in a logical flip the decoder could not prevent either (no life lost). */
+  flips: number;
   score: number;
   lives: number;
   over: boolean;
@@ -40,8 +44,9 @@ interface RunState {
 }
 
 const START_LIVES = 3;
-const TOTAL_ROUNDS = LEVELS.reduce((a, l) => a + l.puzzles, 0);
-const roundsBefore = (level: number) => LEVELS.slice(0, level - 1).reduce((a, l) => a + l.puzzles, 0);
+/** Puzzles in levels from..to-1. */
+const roundsBetween = (from: number, to: number) => LEVELS.slice(from - 1, to - 1).reduce((a, l) => a + l.puzzles, 0);
+const freshRun = (level: number): RunState => ({ start: level, level, pos: 0, flips: 0, score: 0, lives: START_LIVES, over: false, won: false });
 
 /** What each level adds, in plain words, and one tip. */
 const GUIDE: Record<number, { what: string; tip: string }> = {
@@ -136,14 +141,7 @@ export function Game() {
   const records = useApp((st) => st.puzzles);
   const levelsCleared = useApp((st) => st.levelsCleared);
 
-  const [run, setRun] = useState<RunState>({
-    level: startLevel,
-    pos: 0,
-    score: 0,
-    lives: START_LIVES,
-    over: false,
-    won: false,
-  });
+  const [run, setRun] = useState<RunState>(() => freshRun(startLevel));
   const seedK = useRef<Record<number, number>>({});
   const nextK = (level: number) => {
     const k = seedK.current[level] ?? 0;
@@ -187,13 +185,14 @@ export function Game() {
     setHints(0);
     setSubmitNote(null);
     setMove(null);
+    setTouched(false);
     setTimeLeft(LEVELS[level - 1].timerSec ?? null);
   }, []);
 
   // Jumping to /play/:level starts a fresh run at that level.
   useEffect(() => {
     if (Number(params.level) && Number(params.level) !== run.level) {
-      setRun({ level: startLevel, pos: 0, score: 0, lives: START_LIVES, over: false, won: false });
+      setRun(freshRun(startLevel));
       loadPuzzle(startLevel);
     }
   }, [params.level]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -202,16 +201,21 @@ export function Game() {
     if (cfg.timerSec && timeLeft === null && phase === 'playing') setTimeLeft(cfg.timerSec);
   }, [cfg.timerSec, timeLeft, phase]);
 
-  // Boss timer.
+  // Boss timer: one tick per second of actual play. Explicit deps, so unrelated re-renders
+  // (hovering alarms, coaching) do not restart the pending tick; paused while a dialog or the
+  // walkthrough is open.
+  const submitRef = useRef(submit);
+  submitRef.current = submit;
+  const timerPaused = intro !== null || twist !== null;
   useEffect(() => {
-    if (phase !== 'playing' || timeLeft === null || run.over) return;
+    if (phase !== 'playing' || timeLeft === null || run.over || timerPaused) return;
     if (timeLeft <= 0) {
-      submit(true);
+      submitRef.current(true);
       return;
     }
     const id = window.setTimeout(() => setTimeLeft((t) => (t === null ? t : t - 1)), 1000);
     return () => window.clearTimeout(id);
-  });
+  }, [phase, timeLeft, run.over, timerPaused]);
 
   const finishIntro = () => {
     setIntro(null);
@@ -279,7 +283,8 @@ export function Game() {
     setRun((r) => {
       let lives = r.lives;
       if (!saved && !result.unavoidable) lives -= 1;
-      return { ...r, score: r.score + result.points, lives, over: lives <= 0 };
+      const flips = r.flips + (!saved && result.unavoidable ? 1 : 0);
+      return { ...r, score: r.score + result.points, lives, flips, over: lives <= 0 };
     });
     if (!saved && !seenTwist) triggerTwist();
   }
@@ -316,8 +321,16 @@ export function Game() {
     navigate(`/play/${nl}`, { replace: true });
   };
 
+  const [pendingLevel, setPendingLevel] = useState<number | null>(null);
+  const inProgress = !run.over && (run.score > 0 || run.pos > 0 || run.level !== run.start || touched || phase === 'revealed');
+  const pickLevel = (level: number) => {
+    if (inProgress) setPendingLevel(level);
+    else restart(level);
+  };
+
   const restart = (level = 1) => {
-    setRun({ level, pos: 0, score: 0, lives: START_LIVES, over: false, won: false });
+    setPendingLevel(null);
+    setRun(freshRun(level));
     loadPuzzle(level);
     navigate(level === 1 ? '/play' : `/play/${level}`, { replace: true });
   };
@@ -347,12 +360,10 @@ export function Game() {
     return { n: l3.length, rate: l3.length ? l3.filter((r) => r.humanSaved).length / l3.length : 0 };
   }, [records]);
 
-  // Shor's-run progress: one round of error correction survived per saved puzzle.
-  const roundsDone = run.won
-    ? TOTAL_ROUNDS
-    : roundsBefore(run.level) +
-      run.pos +
-      (phase === 'revealed' && ev && (ev.saved || ev.unavoidable) ? 1 : 0);
+  // Shor's-run progress: rounds of error correction this run has got through, counted from the
+  // level it started at (a lost life sends the level back to its first puzzle).
+  const totalRounds = roundsBetween(run.start, LEVELS.length + 1);
+  const roundsDone = run.won ? totalRounds : roundsBetween(run.start, run.level) + run.pos + (phase === 'revealed' && ev?.saved ? 1 : 0);
 
   // Walkthrough highlights.
   const introQubits =
@@ -532,13 +543,13 @@ export function Game() {
             role="progressbar"
             aria-label="Shor's algorithm run progress"
             aria-valuemin={0}
-            aria-valuemax={TOTAL_ROUNDS}
+            aria-valuemax={totalRounds}
             aria-valuenow={roundsDone}
           >
-            <span className={css.shorFill} style={{ width: `${(100 * roundsDone) / TOTAL_ROUNDS}%` }} />
+            <span className={css.shorFill} style={{ width: `${(100 * roundsDone) / totalRounds}%` }} />
           </span>
           <span className="mono faint">
-            {roundsDone}/{TOTAL_ROUNDS}
+            {roundsDone}/{totalRounds}
           </span>
         </div>
         <Row gap={6}>
@@ -556,7 +567,7 @@ export function Game() {
           <button
             key={l.level}
             aria-pressed={l.level === run.level}
-            onClick={() => restart(l.level)}
+            onClick={() => pickLevel(l.level)}
             title={`Level ${l.level}: ${l.title}. ${l.idea}`}
             data-cleared={levelsCleared.includes(l.level) ? 1 : 0}
           >
@@ -565,6 +576,21 @@ export function Game() {
           </button>
         ))}
       </nav>
+      {pendingLevel !== null && (
+        <div className={css.confirm} role="alertdialog" aria-label="Start a new run?">
+          <span>
+            Start a new run at level {pendingLevel}? Your score, lives and Shor-run progress reset.
+          </span>
+          <Row gap={6}>
+            <Button small variant="primary" onClick={() => restart(pendingLevel)}>
+              Start level {pendingLevel}
+            </Button>
+            <Button small variant="ghost" onClick={() => setPendingLevel(null)}>
+              Keep playing
+            </Button>
+          </Row>
+        </div>
+      )}
 
       {introCard && <div className={css.introMobile}>{introCard}</div>}
 
@@ -762,13 +788,19 @@ export function Game() {
           {run.over && (
             <Card
               title={
-                run.won ? 'You kept the Shor run alive: 15 = 3 × 5' : 'Out of lives: the computation crashed'
+                run.won
+                  ? run.flips
+                    ? 'The Shor run reached the end'
+                    : 'You kept the Shor run alive: 15 = 3 × 5'
+                  : 'Out of lives: the computation crashed'
               }
             >
               <p>
                 {run.won
-                  ? `All ${TOTAL_ROUNDS} rounds of error correction survived, so the factoring finished. `
-                  : `The run survived ${roundsDone} of ${TOTAL_ROUNDS} rounds. `}
+                  ? run.flips
+                    ? `It got through all ${totalRounds} rounds, but ${run.flips} ended in a logical flip that even the decoder could not prevent, so a real machine would run the factoring again. `
+                    : `All ${totalRounds} rounds of error correction${run.start > 1 ? ` from level ${run.start}` : ''} survived, so the factoring finished. `
+                  : `The run got through ${roundsDone} of ${totalRounds} rounds. `}
                 Final score <b className="mono">{run.score}</b>. Levels cleared: {levelsCleared.length}.
               </p>
               <Row>

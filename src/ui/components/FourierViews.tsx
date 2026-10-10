@@ -208,10 +208,18 @@ export function QftCircuitDiagram({ n, gates, step, onJump }: { n: number; gates
           const st = state(i);
           const click = onJump ? () => onJump(i + 1) : undefined;
           const cls = [css.gateG, onJump && css.clickable].filter(Boolean).join(' ');
+          const keys = onJump
+            ? {
+                role: 'button',
+                tabIndex: 0,
+                'aria-label': `Jump to just after gate ${i + 1}`,
+                onKeyDown: (e: React.KeyboardEvent) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onJump(i + 1)),
+              }
+            : {};
           const title = onJump ? <title>{`Jump to just after this gate (step ${i + 1})`}</title> : null;
           if (g.g === 'H') {
             return (
-              <g key={i} className={cls} data-state={st} onClick={click}>
+              <g key={i} className={cls} data-state={st} onClick={click} {...keys}>
                 {title}
                 <rect className={css.box} x={x(i) - 15} y={y(g.q) - 14} width={30} height={28} rx={6} />
                 <text className={css.boxText} x={x(i)} y={y(g.q) + 1}>
@@ -222,7 +230,7 @@ export function QftCircuitDiagram({ n, gates, step, onJump }: { n: number; gates
           }
           if (g.g === 'CP') {
             return (
-              <g key={i} className={cls} data-state={st} onClick={click}>
+              <g key={i} className={cls} data-state={st} onClick={click} {...keys}>
                 {title}
                 <line className={css.link} x1={x(i)} x2={x(i)} y1={y(g.c)} y2={y(g.t)} />
                 <circle className={css.ctrl} cx={x(i)} cy={y(g.c)} r={5} />
@@ -234,7 +242,7 @@ export function QftCircuitDiagram({ n, gates, step, onJump }: { n: number; gates
             );
           }
           return (
-            <g key={i} className={cls} data-state={st} onClick={click}>
+            <g key={i} className={cls} data-state={st} onClick={click} {...keys}>
               {title}
               <line className={css.link} x1={x(i)} x2={x(i)} y1={y(g.a)} y2={y(g.b)} />
               {[g.a, g.b].map((q) => (

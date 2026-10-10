@@ -1,4 +1,4 @@
-// Chapter 6: Noise ruins the answer. The full gate-level circuit for N = 15, a = 7 on
+// Chapter 8: Noise ruins the answer. The full gate-level circuit for N = 15, a = 7 on
 // 10 qubits (6 input, 4 output; 36 steps) runs with a random X, Y or Z error hitting each
 // qubit after each step with probability p. The peaks blur into noise. Then the scale
 // argument: (1 - p)^G for computations with billions of steps leads into error correction.
@@ -81,8 +81,8 @@ export function ChapterNoise() {
       };
     else if (last.peak > 0.7)
       msg = { tone: 'info', text: `At ${pct(last.p, 1)} per qubit per step, ${pct(last.peak, 0)} of runs still land on a peak. The signal is fading but readable.` };
-    else if (last.peak > 0.3)
-      msg = { tone: 'warn', text: `At ${pct(last.p, 1)}, only ${pct(last.peak, 0)} of runs land on a peak. Errors have pushed the rest to random values.` };
+    else if (last.peak > 0.12)
+      msg = { tone: 'warn', text: `At ${pct(last.p, 1)}, only ${pct(last.peak, 0)} of runs land on a peak (pure chance: ${pct(4 / Q, 0)}). Errors have pushed the rest to random values.` };
     else
       msg = {
         tone: 'bad',

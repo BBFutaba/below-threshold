@@ -51,15 +51,3 @@ hands pointing the same way reinforce, opposite hands cancel.
 13
 00:00:45.442 --> 00:00:51.212
 That is interference, and it turns a hidden phase into an answer you can measure.
-
-14
-00:00:51.883 --> 00:00:57.653
-Line up a few qubits, and their clocks can wind around together, like a wave.
-
-15
-00:00:57.653 --> 00:01:01.883
-Waves of phase are the language of the quantum Fourier transform,
-
-16
-00:01:01.883 --> 00:01:03.806
-the engine of Shor's algorithm.

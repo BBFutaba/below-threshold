@@ -1,4 +1,4 @@
-// Chapter 1: Superposition.
+// Chapter 1: What is a qubit? (superposition, measurement, interference).
 
 import { useState } from 'react';
 import { chapterBySlug } from '../../content';

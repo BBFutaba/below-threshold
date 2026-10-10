@@ -1,4 +1,4 @@
-// Chapter 2: No-cloning. A CNOT "copy machine" copies |0> and |1> perfectly but turns
+// No-cloning (Part III). A CNOT "copy machine" copies |0> and |1> perfectly but turns
 // |+> into an entangled pair with 50% fidelity. "Measure then rebuild" scores 25%.
 
 import { useMemo, useState } from 'react';

@@ -1,4 +1,4 @@
-// Chapter 4: The quantum Fourier transform. Pick an input (a single number, or a pattern
+// Chapter 6: The quantum Fourier transform. Pick an input (a single number, or a pattern
 // that repeats every r), then step through the real gate circuit (Hadamards, controlled
 // phase turns, swaps) and watch the register's clocks and each qubit's Bloch arrow.
 // Ends with the frequency detective: name a hidden period from QFT measurement samples.
@@ -47,6 +47,13 @@ export function ChapterQft() {
   const finished = step === gates.length;
   const probs = state.probabilities();
   const labels = Array.from({ length: N }, (_, i) => String(i));
+  const teeth = Array.from({ length: N }, (_, x) => x).filter((x) => x % r === off % r);
+  const inputCaption =
+    kind === 'basis'
+      ? `The input: all of the amplitude on ${Math.min(x, N - 1)}.`
+      : teeth.length > 1
+        ? `The input: equal amplitude on ${teeth.slice(0, 5).join(', ')}${teeth.length > 5 ? ', …' : ''} (every ${r}th value).`
+        : `The input: only ${teeth[0]} fits in ${N} values, so there is no rhythm to hear. Try a smaller r or 4 qubits.`;
 
   const resetRun = () => {
     setStep(0);
@@ -221,7 +228,7 @@ export function ChapterQft() {
                 </div>
               )}
             </div>
-            <PhaseClocks re={input.re} im={input.im} labels={labels} size={50} caption={kind === 'basis' ? `The input: all of the amplitude on ${Math.min(x, N - 1)}.` : `The input: equal amplitude on ${off}, ${off + r}, ${off + 2 * r}, …`} />
+            <PhaseClocks re={input.re} im={input.im} labels={labels} size={50} caption={inputCaption} />
           </Card>
 
           <Card title="2 · Run the circuit">

@@ -1,4 +1,4 @@
-// Chapter 5: Phase errors and interference.
+// Phase errors and interference (Part III).
 // Part A: a Z error is invisible to the bit-flip checks, yet the fidelity drops.
 // Part B: re-encode in the phase-flip code (|+++>, |--->) and use the H sandwich: H turns
 // the phase flip into a bit flip the same checks can see.
@@ -108,8 +108,8 @@ export function Chapter5() {
         text: `Syndrome (0,0): "all clear". Yet the fidelity dropped to ${(100 * fid).toFixed(0)}%. A phase flip changed the sign of |111⟩; the bit-flip checks cannot see it.`,
         deeper: 'Z on any qubit maps α|000⟩ + β|111⟩ to α|000⟩ − β|111⟩. Both terms have the same parities, so every bit-flip check passes. The fidelity is (|α|² − |β|²)² = (0.7 − 0.3)² = 16%. Watch the color of the |111⟩ bar.',
       };
-    else if (phase === 'checked') msg = { text: 'The same Chapter 4 checks. Now measure the ancillas.' };
-    else if (phase === 'noise') msg = { text: 'Noise struck with a hidden phase flip (Z). Run the Chapter 4 checks.' };
+    else if (phase === 'checked') msg = { text: 'The same bit-flip checks as in “Measurement and syndromes”. Now measure the ancillas.' };
+    else if (phase === 'noise') msg = { text: 'Noise struck with a hidden phase flip (Z). Run the bit-flip checks.' };
     else msg = { text: 'The data holds a 70/30 state α|000⟩ + β|111⟩. Let a hidden phase error strike.' };
   } else {
     if (phase === 'idle')
@@ -135,7 +135,7 @@ export function Chapter5() {
       clip={{ id: 'surface', caption: 'From the film: the invisible phase flip, and the grid that catches both kinds of error.' }}
       goal="Discover a second kind of error that the bit-flip code cannot see."
       tasks={[
-        { label: <>Part A: let a hidden <b>Z</b> error strike and run the Chapter 4 checks.</>, done: doneA },
+        { label: <>Part A: let a hidden <b>Z</b> error strike and run the bit-flip checks.</>, done: doneA },
         { label: <>Part B: use the <b>H sandwich</b> to catch and fix phase errors ({Math.min(correct, ROUNDS_NEEDED)}/{ROUNDS_NEEDED}).</>, done: correct >= ROUNDS_NEEDED },
       ]}
       complete={doneA && correct >= ROUNDS_NEEDED}
@@ -178,7 +178,7 @@ export function Chapter5() {
               )}
               {phase === 'noise' && (
                 <Button variant="primary" onClick={runChecks}>
-                  {part === 'A' ? 'Run the Chapter 4 checks' : 'Run checks with the H sandwich'}
+                  {part === 'A' ? 'Run the bit-flip checks' : 'Run checks with the H sandwich'}
                 </Button>
               )}
               {phase === 'checked' && (

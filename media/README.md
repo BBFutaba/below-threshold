@@ -1,6 +1,6 @@
 # The Below Threshold film
 
-A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Community](https://www.manim.community/) 0.22 and LaTeX. It runs about 14 minutes in fifteen scenes, in three parts: qubits, Shor's algorithm and the quantum Fourier transform, then quantum error correction as the wrap-up. Each scene is also a standalone clip embedded in the app, and the whole film plays on the site's `/film` page.
+A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Community](https://www.manim.community/) 0.22 and LaTeX. It runs about 15 minutes in sixteen scenes, in three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the quantum Fourier transform, then quantum error correction as the wrap-up. Each scene is also a standalone clip embedded in the app, and the whole film plays on the site's `/film` page.
 
 **Never faked.** Every lattice, syndrome, error, matching, curve and decoder timing comes from the project's own simulation code (`src/core`). It is exported by `scripts/film/<scene>.ts` to `media/data/film/<scene>.json`, or comes from the validation and benchmark data in `media/data/` and `src/data/`.
 
@@ -9,23 +9,24 @@ A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Co
 | # | Scene (`media/scenes/`) | Chapter | Real data |
 |---|---|---|---|
 | 0 | `intro.py` | Logo sting and title | d = 7 code, seeded depolarizing syndromes |
-| | | **Part I · Qubits** | |
-| 1 | `qubit.py` | Arrows, amplitudes and phase | QState: Ry(1.1)\|0⟩, a P(φ) sweep (odds unchanged), H P(φ) H interference, eight-clock waves |
+| | | **Part I · Quantum basics** | |
+| 1 | `qubit.py` | What is a qubit? | QState: Ry(1.1)\|0⟩, a P(φ) sweep (odds unchanged), H P(φ) H interference |
+| 2 | `entangle.py` | Many qubits, and entanglement | QState: four amplitudes of two qubits through H and CNOT, 100 seeded Bell-pair shots, Bloch lengths 1 → 0, eight-clock waves |
 | | | **Part II · Shor's algorithm** | |
-| 2 | `period.py` | Factoring is a hunt for rhythm | Two seeded 50-digit primes (Miller-Rabin), 7ˣ mod 15 and its recipe, 2ˣ mod 3127 (period 1508) |
-| 3 | `qft.py` | The quantum Fourier transform | Exact DFT of a comb, QFT\|1⟩ and \|3⟩, the 3-qubit circuit gate by gate on \|5⟩ (Bloch vectors), phasor sums, period-4 and period-3 combs |
-| 4 | `shor.py` | Shor's algorithm, end to end | N = 21, a = 2, t = 7: exact registers, seeded measurements 8 and 21, continued fraction, gcd |
-| 5 | `noise.py` | Noise ruins the answer | Gate-level N = 15 circuit on 10 qubits, 200 seeded runs at p = 0, 0.1%, 1%, 5% |
+| 3 | `period.py` | Factoring is a hunt for rhythm | Two seeded 50-digit primes (Miller-Rabin), 7ˣ mod 15 and its recipe, 2ˣ mod 3127 (period 1508) |
+| 4 | `qft.py` | The quantum Fourier transform | Exact DFT of a comb, QFT\|1⟩ and \|3⟩, the 3-qubit circuit gate by gate on \|5⟩ (Bloch vectors), phasor sums, period-4 and period-3 combs |
+| 5 | `shor.py` | Shor's algorithm, end to end | N = 21, a = 2, t = 7: exact registers, seeded measurements 8 and 21, continued fraction, gcd |
+| 6 | `noise.py` | Noise ruins the answer | Gate-level N = 15 circuit on 10 qubits, 200 seeded runs at p = 0, 0.1%, 1%, 5% |
 | | | **Part III · Keeping it alive** | |
-| 6 | `fragile.py` | A fragile kind of information | QState drift (seed 1001), CNOT copy of \|+⟩: fidelity 1/2, Bloch length 0 |
-| 7 | `parity.py` | Ask a different question | 3-qubit code with ancillas: syndromes, fidelity |
-| 8 | `digital.py` | Why errors become digital | 200 seeded QState runs of an Rx(0.9) error |
-| 9 | `surface.py` | Two kinds of error, one grid | d = 5 layout, real syndromes, logical operator |
-| 10 | `matching.py` | Decoding is a matching problem | d = 5 bit-flip instances (seeds 111 and 59), MWPM matching and distances |
-| 11 | `spacetime.py` | When the checks lie | Phenomenological instance and its space-time matching |
-| 12 | `threshold.py` | Below threshold | Validation curves (d = 5, 7, 9) and our Λ |
-| 13 | `realtime.py` | A race against the clock | Measured decode times (`src/data/bench.json`), FIFO backlog model |
-| 14 | `outro.py` | Keep it below threshold | Callbacks, Team PhASE logo |
+| 7 | `fragile.py` | A fragile kind of information | QState drift (seed 1001), CNOT copy of \|+⟩: fidelity 1/2, Bloch length 0 |
+| 8 | `parity.py` | Ask a different question | 3-qubit code with ancillas: syndromes, fidelity |
+| 9 | `digital.py` | Why errors become digital | 200 seeded QState runs of an Rx(0.9) error |
+| 10 | `surface.py` | Two kinds of error, one grid | d = 5 layout, real syndromes, logical operator |
+| 11 | `matching.py` | Decoding is a matching problem | d = 5 bit-flip instances (seeds 111 and 59), MWPM matching and distances |
+| 12 | `spacetime.py` | When the checks lie | Phenomenological instance and its space-time matching |
+| 13 | `threshold.py` | Below threshold | Validation curves (d = 5, 7, 9) and our Λ |
+| 14 | `realtime.py` | A race against the clock | Measured decode times (`src/data/bench.json`), FIFO backlog model |
+| 15 | `outro.py` | Keep it below threshold | Callbacks, Team PhASE logo |
 
 Shared code: `scenes/film.py` holds the narration timing, LaTeX helpers, the chapter cards (part, chapter number, title) and the animated Team PhASE mark. `scenes/common.py` holds the palette and the real-layout `Lattice`. `scenes/shorkit.py` holds the amplitude `Clock` (drawn like the app's phase clocks) and a morphing bar chart for the Part II scenes.
 

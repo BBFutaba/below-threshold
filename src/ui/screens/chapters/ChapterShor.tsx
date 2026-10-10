@@ -1,4 +1,4 @@
-// Chapter 5: Shor's algorithm, end to end. Seven steps on real register-level state vectors:
+// Chapter 7: Shor's algorithm, end to end. Seven steps on real register-level state vectors:
 // choose N and a, superpose every x, compute a^x mod N into a second register, measure it
 // (the input collapses to a comb), apply the QFT (peaks), measure, then continued fractions
 // and gcd. Runs are seeded; "Run 50 times" shows how often one run succeeds.
@@ -71,6 +71,7 @@ export function ChapterShor() {
   const post: PostResult | null = useMemo(() => (k === null ? null : postprocess(k, R.Q, N, a)), [k, R.Q, N, a]);
 
   const choose = (n: number, base: number, tt: number) => {
+    rngRef.current = makeRng(7000 + run); // same setup and run number, same draws
     setN(n);
     setA(base);
     setT(tt);
@@ -158,7 +159,10 @@ export function ChapterShor() {
     const xs = comb(R, v);
     for (const x of xs) values[x] = 1 / xs.length;
     colors = Array.from({ length: Q }, () => colorOf.get(v));
-    chartCaption = `Only the x with aˣ mod N = ${v} survive: ${xs.slice(0, 4).join(', ')}, … spaced r apart.`;
+    chartCaption =
+      xs.length > 1
+        ? `Only the x with aˣ mod N = ${v} survive: ${xs.slice(0, 4).join(', ')}${xs.length > 4 ? ', …' : ''}, spaced ${xs[1] - xs[0]} apart.`
+        : `Only x = ${xs[0]} gives ${v}: the register is too small to hold a repeating pattern. Use more input qubits.`;
   } else if (after) {
     values = after.p;
     chartCaption = stage === 4 ? 'After the QFT: sharp peaks. Their spacing hides r.' : `Measured k = ${k}.`;
@@ -247,10 +251,15 @@ export function ChapterShor() {
                     <b>{post.convergents.map((c) => `${c.p}/${c.q}`).join(', ') || 'none'}</b>
                   </div>
                 )}
-                {post.r !== null && post.guess !== null && post.guess !== post.r && (
+                {post.r !== null && post.guess !== null && post.guess !== post.r && modPow(a, post.guess, N) !== 1 && (
                   <div>
                     Denominator {post.guess} fails the check ({a}
                     <sup>{post.guess}</sup> mod {N} = {modPow(a, post.guess, N)}, not 1). The fraction may have reduced, so we also try small multiples of the denominators.
+                  </div>
+                )}
+                {post.r !== null && post.guess !== null && post.guess !== post.r && modPow(a, post.guess, N) === 1 && (
+                  <div>
+                    Denominator {post.guess} passes the check, but so does the smaller {post.r}, which divides it: the period is the smallest one.
                   </div>
                 )}
                 {post.r !== null && (

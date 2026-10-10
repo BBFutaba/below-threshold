@@ -1,4 +1,4 @@
-// Chapter 2: Phase, a qubit's hidden clock. H, a phase dial, H again: measurement cannot see
+// Chapter 5: Phase, a qubit's hidden clock. H, a phase dial, H again: measurement cannot see
 // the phase, interference can. Then three qubits: eight clocks winding at frequency f, where
 // each qubit only needs its own phase turn (the structure the QFT builds on).
 
@@ -60,7 +60,7 @@ export function ChapterPhase() {
       setMsg({
         text:
           q1 > 0.999
-            ? 'With a half turn between the paths, the second H sends everything to |1⟩. The two paths to |0⟩ point in opposite directions and cancel.'
+            ? 'With a half turn between the paths, the second H sends everything to |1⟩. The two paths to |0⟩ point in opposite directions and cancel. Run 100 shots to check.'
             : q1 < 0.001
               ? 'No turn between the paths, so the second H brings the qubit straight back to |0⟩. Now turn the dial and watch the odds change.'
               : `The second H made the paths interfere: P(1) = sin²(φ/2) = ${(100 * q1).toFixed(0)}%. The hidden phase is now visible as a probability.`,

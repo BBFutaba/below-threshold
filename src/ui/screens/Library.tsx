@@ -24,9 +24,9 @@ export function Library() {
         <p className={s.eyebrow}>Concept Library</p>
         <h1>Choose what to learn</h1>
         <p className={s.lede}>
-          Eleven short, hands-on chapters on an exact quantum simulator, in three parts: what a qubit holds, how Shor&apos;s
-          algorithm factors numbers with the quantum Fourier transform, and how error correction keeps the machine alive long
-          enough to run it. No background needed; play them in any order.
+          Twelve short, hands-on chapters on an exact quantum simulator, in three parts: the quantum basics (a qubit, many
+          qubits, entanglement), how Shor&apos;s algorithm factors numbers with the quantum Fourier transform, and how error
+          correction keeps the machine alive long enough to run it. No background needed; play them in any order.
         </p>
       </header>
 

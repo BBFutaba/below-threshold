@@ -53,7 +53,7 @@ SCRIPT: list[SceneScript] = [
     SceneScript(
         "qubit",
         "Chapter 1",
-        "Arrows, amplitudes and phase",
+        "What is a qubit?",
         [
             Beat(
                 "arrow",
@@ -75,17 +75,45 @@ SCRIPT: list[SceneScript] = [
                 "Phase matters when amplitudes meet. A Hadamard gate adds them up: hands pointing the same way reinforce, opposite hands cancel. That is interference, and it turns a hidden phase into an answer you can measure.",
                 "H P(phi) H: as phi sweeps 0 to pi the hands add as arrows tip to tail; P(1) = sin^2(phi/2) bar rises to 1 (QState sweep).",
             ),
+        ],
+        part="Part I · Quantum basics",
+    ),
+    SceneScript(
+        "entangle",
+        "Chapter 2",
+        "Many qubits, and entanglement",
+        [
+            Beat(
+                "two",
+                "One qubit holds two amplitudes. Two qubits are not just two separate arrows: the pair has four possibilities, zero zero, zero one, one zero and one one, and an amplitude for each.",
+                "Two Bloch glyphs, then four amplitude clocks for |00>, |10>, |01>, |11> (qubit 0 first) with all the amplitude on |00>.",
+            ),
+            Beat(
+                "grow",
+                "Every qubit you add doubles that list. Ten qubits hold over a thousand amplitudes. Three hundred hold more than there are atoms in the universe. A register of qubits can hold every number at once.",
+                "A grid of squares doubles from 2 to 1024 as qubits are added; '300 qubits: about 10^90 amplitudes' written.",
+            ),
+            Beat(
+                "bell",
+                "Now the strange part. A Hadamard, then a CNOT, leaves amplitude only on zero zero and one one. Measure the pair a hundred times: each qubit alone is a coin flip, but the two always agree.",
+                "Circuit H then CNOT; the four clocks update (QState); 100 seeded shots fill only 00 and 11.",
+            ),
+            Beat(
+                "shared",
+                "This pair cannot be split into two separate arrows. Each qubit's own arrow shrinks to nothing, because the information lives only in the correlation. That is entanglement, and both Shor's algorithm and error correction depend on it.",
+                "Both Bloch arrows shrink to the real reduced-state length 0; 'entanglement' written.",
+            ),
             Beat(
                 "waves",
                 "Line up a few qubits, and their clocks can wind around together, like a wave. Waves of phase are the language of the quantum Fourier transform, the engine of Shor's algorithm.",
                 "Eight clocks (3 qubits) wind once, then twice: real states H^3 then per-qubit phase turns.",
             ),
         ],
-        part="Part I · Qubits",
+        part="Part I · Quantum basics",
     ),
     SceneScript(
         "period",
-        "Chapter 2",
+        "Chapter 3",
         "Factoring is a hunt for rhythm",
         [
             Beat(
@@ -118,7 +146,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "qft",
-        "Chapter 3",
+        "Chapter 4",
         "The quantum Fourier transform",
         [
             Beat(
@@ -151,7 +179,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "shor",
-        "Chapter 4",
+        "Chapter 5",
         "Shor's algorithm, end to end",
         [
             Beat(
@@ -194,7 +222,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "noise",
-        "Chapter 5",
+        "Chapter 6",
         "Noise ruins the answer",
         [
             Beat(
@@ -223,7 +251,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "fragile",
-        "Chapter 6",
+        "Chapter 7",
         "A fragile kind of information",
         [
             Beat(
@@ -256,7 +284,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "parity",
-        "Chapter 7",
+        "Chapter 8",
         "Ask a different question",
         [
             Beat(
@@ -289,7 +317,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "digital",
-        "Chapter 8",
+        "Chapter 9",
         "Why errors become digital",
         [
             Beat(
@@ -317,7 +345,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "surface",
-        "Chapter 9",
+        "Chapter 10",
         "Two kinds of error, one grid",
         [
             Beat(
@@ -350,7 +378,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "matching",
-        "Chapter 10",
+        "Chapter 11",
         "Decoding is a matching problem",
         [
             Beat(
@@ -388,7 +416,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "spacetime",
-        "Chapter 11",
+        "Chapter 12",
         "When the checks lie",
         [
             Beat(
@@ -416,7 +444,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "threshold",
-        "Chapter 12",
+        "Chapter 13",
         "Below threshold",
         [
             Beat(
@@ -450,7 +478,7 @@ SCRIPT: list[SceneScript] = [
     ),
     SceneScript(
         "realtime",
-        "Chapter 13",
+        "Chapter 14",
         "A race against the clock",
         [
             Beat(

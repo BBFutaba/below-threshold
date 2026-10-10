@@ -22,7 +22,8 @@ interface Manifest {
 
 /** Where to try each chapter's idea in the app. */
 const LEARN: Record<string, string> = {
-  qubit: '/learn/phase',
+  qubit: '/learn/superposition',
+  entangle: '/learn/entanglement',
   period: '/learn/period',
   qft: '/learn/qft',
   shor: '/learn/shor',

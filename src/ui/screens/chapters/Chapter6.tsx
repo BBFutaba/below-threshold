@@ -1,4 +1,4 @@
-// Chapter 6: Error discretization. A small rotation Rx(theta) on one data qubit; running
+// Error discretization (Part III). A small rotation Rx(theta) on one data qubit; running
 // the checks 200 times gives only two outcomes, "no error" (cos^2(theta/2)) and "full flip
 // on that qubit" (sin^2(theta/2)), and after correction the fidelity is 100% every time.
 

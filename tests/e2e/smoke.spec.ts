@@ -6,7 +6,8 @@ import { makePuzzle } from '../../src/core/game';
 const ROUTES = [
   ['/', 'Below Threshold'],
   ['/learn', 'Choose what to learn'],
-  ['/learn/superposition', 'Superposition'],
+  ['/learn/superposition', 'What is a qubit?'],
+  ['/learn/multi-qubit', 'Many qubits at once'],
   ['/learn/phase', "Phase: a qubit's hidden clock"],
   ['/learn/period', 'Factoring is a hunt for rhythm'],
   ['/learn/qft', 'The quantum Fourier transform'],
@@ -87,6 +88,31 @@ test('noise washes out the peaks', async ({ page }) => {
   await page.goto('/learn/noise');
   await page.getByRole('button', { name: 'Run 200 shots' }).click();
   await expect(page.getByText(/every run lands on one of the four peaks/)).toBeVisible({ timeout: 20_000 });
+});
+
+test('measuring one qubit of a product state leaves the other alone', async ({ page }) => {
+  await page.goto('/learn/multi-qubit');
+  await page.getByRole('button', { name: 'Hadamard on qubit 0' }).click();
+  await page.getByRole('button', { name: 'Hadamard on qubit 1' }).click();
+  await expect(page.getByText(/Four equal amplitudes/)).toBeVisible();
+  await page.getByRole('button', { name: 'Measure qubit 0 only' }).click();
+  await expect(page.getByText(/qubit 1 is still exactly 50\/50/)).toBeVisible();
+});
+
+test('the period chapter shows both ways the recipe fails', async ({ page }) => {
+  await page.goto('/learn/period');
+  await page.getByRole('button', { name: 'x = 4: 1' }).click();
+  await page.getByRole('button', { name: 'Apply the recipe' }).click();
+  await page.getByRole('button', { name: 'N = 21' }).click();
+  for (const [a, text] of [
+    ['4', /Failure 1, an odd period/],
+    ['5', /Failure 2, an unlucky square root/],
+  ] as const) {
+    await page.getByRole('group', { name: 'Base a' }).getByRole('button', { name: a, exact: true }).click();
+    await page.getByRole('button', { name: 'Find r for me' }).click();
+    await page.getByRole('button', { name: 'Apply the recipe' }).click();
+    await expect(page.getByText(text)).toBeVisible();
+  }
 });
 
 test('the lab runs a point without errors', async ({ page }) => {

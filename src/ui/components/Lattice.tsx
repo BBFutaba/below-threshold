@@ -196,16 +196,22 @@ export function Lattice({
             .filter(Boolean)
             .join(' ');
           const c = checkCenter(code, i);
-          const tip = `${st.type === 'Z' ? 'Bit-flip' : 'Phase-flip'} alarm (${st.type}-check)${fired ? ', lit' : ''}: watches ${st.support.length} qubits and lights up when an odd number of them ${st.type === 'Z' ? 'flipped' : 'had a phase flip'}.`;
+          // Faded (muted) checks are not part of this level: no tooltip about them.
+          const tip = muteType === st.type ? '' : `${st.type === 'Z' ? 'Bit-flip' : 'Phase-flip'} alarm (${st.type}-check)${fired ? ', lit' : ''}: watches ${st.support.length} qubits and lights up when an odd number of them ${st.type === 'Z' ? 'flipped' : 'had a phase flip'}.`;
           return (
-            <g key={`s${i}-${fired ? 1 : 0}`} onMouseEnter={() => hover(i)} onMouseLeave={() => hover(null)}>
+            <g
+              key={`s${i}-${fired ? 1 : 0}`}
+              // Mouse only: on touch screens a tap would leave the hover rings stuck on.
+              onPointerEnter={(e) => e.pointerType === 'mouse' && muteType !== st.type && hover(i)}
+              onPointerLeave={(e) => e.pointerType === 'mouse' && hover(null)}
+            >
               {sh.kind === 'square' ? (
                 <rect className={cls} x={sh.x + 1} y={sh.y + 1} width={sh.size - 2} height={sh.size - 2} rx={5}>
-                  <title>{tip}</title>
+                  {tip && <title>{tip}</title>}
                 </rect>
               ) : (
                 <path className={cls} d={halfDiscPath(sh)}>
-                  <title>{tip}</title>
+                  {tip && <title>{tip}</title>}
                 </path>
               )}
               {fired && <circle className={css.dot} cx={c.x} cy={c.y} r={5.5} />}
