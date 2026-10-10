@@ -13,3 +13,5 @@ validate/data/*
 *.log
 *.tsbuildinfo
 .shots/
+media/voiceover/draft/
+.scratch/

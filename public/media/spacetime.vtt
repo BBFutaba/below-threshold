@@ -1,0 +1,45 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.924
+Real hardware adds one more wrinkle.
+
+2
+00:00:04.924 --> 00:00:06.847
+The checks themselves are noisy.
+
+3
+00:00:06.847 --> 00:00:09.924
+Sometimes a check simply reports the wrong answer.
+
+4
+00:00:10.617 --> 00:00:13.694
+So we measure every check again and again,
+
+5
+00:00:13.694 --> 00:00:17.924
+and stack the rounds into a block of space and time.
+
+6
+00:00:17.924 --> 00:00:20.232
+What we look for is change:
+
+7
+00:00:20.232 --> 00:00:23.694
+a check whose answer differs from the round before.
+
+8
+00:00:24.383 --> 00:00:29.383
+A real qubit error shows up as a pair in the same round.
+
+9
+00:00:29.383 --> 00:00:34.768
+A check that lied shows up as the same check, in two consecutive rounds.
+
+10
+00:00:35.450 --> 00:00:39.681
+Decoding becomes matching in three dimensions, through space and through time.
+
+11
+00:00:39.681 --> 00:00:41.219
+Same algorithm, bigger graph.

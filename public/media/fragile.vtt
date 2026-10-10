@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.540
+This arrow is a qubit.
+
+2
+00:00:04.540 --> 00:00:06.847
+Pointing straight up, it means zero.
+
+3
+00:00:06.847 --> 00:00:08.001
+Straight down, one.
+
+4
+00:00:08.001 --> 00:00:10.694
+But it can point anywhere in between,
+
+5
+00:00:10.694 --> 00:00:14.540
+and that in-between is where quantum computers get their power.
+
+6
+00:00:15.250 --> 00:00:18.712
+The trouble is that the arrow never holds still.
+
+7
+00:00:18.712 --> 00:00:22.558
+Stray fields, heat, a control pulse meant for a neighbor:
+
+8
+00:00:22.558 --> 00:00:26.788
+each one nudges it a little, and the nudges add up.
+
+9
+00:00:27.517 --> 00:00:31.363
+On an ordinary computer we would fight this with backups.
+
+10
+00:00:31.363 --> 00:00:34.824
+Copy the bit three times and take a vote.
+
+11
+00:00:34.824 --> 00:00:37.132
+For qubits, that move is forbidden.
+
+12
+00:00:37.817 --> 00:00:44.355
+Try to copy an unknown state with the obvious circuit, and you do not get two copies.
+
+13
+00:00:44.355 --> 00:00:46.663
+You get two qubits tangled together,
+
+14
+00:00:46.663 --> 00:00:51.278
+and their overlap with the copies you wanted is exactly one half.
+
+15
+00:00:51.950 --> 00:00:53.873
+This is the no-cloning theorem.
+
+16
+00:00:53.873 --> 00:00:57.335
+Whatever protects a qubit, it cannot be a backup.

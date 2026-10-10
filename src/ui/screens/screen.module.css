@@ -260,3 +260,10 @@
   background: #0e1220;
   display: block;
 }
+
+.filmClip {
+  margin-top: 28px;
+  max-width: 960px;
+  display: grid;
+  gap: 10px;
+}

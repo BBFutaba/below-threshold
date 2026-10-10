@@ -25,6 +25,7 @@ const routes: [string, string, ((p: import('@playwright/test').Page) => Promise<
   ['lab', '/lab', async (p) => { await p.getByRole('button', { name: 'Run experiment' }).click(); await p.getByText(/(Below|Above) threshold:/).waitFor({ timeout: 60000 }); await p.waitForTimeout(15000); }],
   ['leaderboard', '/leaderboard'],
   ['honesty', '/honesty'],
+  ['film', '/film', async (p) => { await p.locator('video').first().waitFor(); await p.waitForTimeout(800); }],
 ];
 const only = process.env.ONLY?.split(',');
 const browser = await chromium.launch();

@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.155
+Here is the trick.
+
+2
+00:00:04.155 --> 00:00:07.617
+Instead of copying the state, we spread it out.
+
+3
+00:00:07.617 --> 00:00:13.001
+Two CNOT gates turn alpha zero plus beta one into alpha zero zero zero,
+
+4
+00:00:13.001 --> 00:00:14.924
+plus beta one one one.
+
+5
+00:00:15.617 --> 00:00:22.540
+Look at any one of these qubits on its own, and its arrow has shrunk toward the center.
+
+6
+00:00:22.540 --> 00:00:26.001
+The information is not in any single qubit anymore.
+
+7
+00:00:26.001 --> 00:00:28.309
+It lives in how they relate.
+
+8
+00:00:28.983 --> 00:00:31.676
+Now suppose noise flips one of them.
+
+9
+00:00:31.676 --> 00:00:35.906
+We cannot simply look, because measuring would destroy alpha and beta.
+
+10
+00:00:35.906 --> 00:00:38.214
+So we ask a gentler question:
+
+11
+00:00:38.214 --> 00:00:39.753
+do these two agree?
+
+12
+00:00:40.450 --> 00:00:43.912
+A helper qubit collects the parity of each pair.
+
+13
+00:00:43.912 --> 00:00:49.681
+Two checks give two bits, the syndrome, and the syndrome points straight at the culprit.
+
+14
+00:00:50.350 --> 00:00:53.812
+Flip it back, and the state is restored perfectly,
+
+15
+00:00:53.812 --> 00:00:56.504
+without our ever learning alpha or beta.
+
+16
+00:00:56.504 --> 00:01:01.504
+That is a stabilizer measurement, the heart of every quantum error correcting code.

@@ -18,6 +18,7 @@ const ROUTES = [
   ['/lab', 'Watch the threshold appear'],
   ['/leaderboard', 'Humans vs the decoder'],
   ['/honesty', 'What we simplify'],
+  ['/film', 'The film'],
 ] as const;
 
 test.beforeEach(async ({ page }) => {

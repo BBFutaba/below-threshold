@@ -1,0 +1,509 @@
+WEBVTT
+
+1
+00:00:03.850 --> 00:00:05.388
+Quantum computers are fragile.
+
+2
+00:00:05.388 --> 00:00:09.235
+This is the story of how we keep them alive,
+
+3
+00:00:09.235 --> 00:00:13.465
+and the race against the clock that decides whether we can.
+
+4
+00:00:16.614 --> 00:00:18.537
+This arrow is a qubit.
+
+5
+00:00:18.537 --> 00:00:20.845
+Pointing straight up, it means zero.
+
+6
+00:00:20.845 --> 00:00:21.999
+Straight down, one.
+
+7
+00:00:21.999 --> 00:00:24.691
+But it can point anywhere in between,
+
+8
+00:00:24.691 --> 00:00:28.537
+and that in-between is where quantum computers get their power.
+
+9
+00:00:29.248 --> 00:00:32.709
+The trouble is that the arrow never holds still.
+
+10
+00:00:32.709 --> 00:00:36.555
+Stray fields, heat, a control pulse meant for a neighbor:
+
+11
+00:00:36.555 --> 00:00:40.786
+each one nudges it a little, and the nudges add up.
+
+12
+00:00:41.514 --> 00:00:45.361
+On an ordinary computer we would fight this with backups.
+
+13
+00:00:45.361 --> 00:00:48.822
+Copy the bit three times and take a vote.
+
+14
+00:00:48.822 --> 00:00:51.130
+For qubits, that move is forbidden.
+
+15
+00:00:51.814 --> 00:00:58.353
+Try to copy an unknown state with the obvious circuit, and you do not get two copies.
+
+16
+00:00:58.353 --> 00:01:00.661
+You get two qubits tangled together,
+
+17
+00:01:00.661 --> 00:01:05.276
+and their overlap with the copies you wanted is exactly one half.
+
+18
+00:01:05.948 --> 00:01:07.871
+This is the no-cloning theorem.
+
+19
+00:01:07.871 --> 00:01:11.332
+Whatever protects a qubit, it cannot be a backup.
+
+20
+00:01:14.380 --> 00:01:15.919
+Here is the trick.
+
+21
+00:01:15.919 --> 00:01:19.380
+Instead of copying the state, we spread it out.
+
+22
+00:01:19.380 --> 00:01:24.765
+Two CNOT gates turn alpha zero plus beta one into alpha zero zero zero,
+
+23
+00:01:24.765 --> 00:01:26.688
+plus beta one one one.
+
+24
+00:01:27.380 --> 00:01:34.303
+Look at any one of these qubits on its own, and its arrow has shrunk toward the center.
+
+25
+00:01:34.303 --> 00:01:37.765
+The information is not in any single qubit anymore.
+
+26
+00:01:37.765 --> 00:01:40.073
+It lives in how they relate.
+
+27
+00:01:40.747 --> 00:01:43.439
+Now suppose noise flips one of them.
+
+28
+00:01:43.439 --> 00:01:47.670
+We cannot simply look, because measuring would destroy alpha and beta.
+
+29
+00:01:47.670 --> 00:01:49.978
+So we ask a gentler question:
+
+30
+00:01:49.978 --> 00:01:51.516
+do these two agree?
+
+31
+00:01:52.214 --> 00:01:55.675
+A helper qubit collects the parity of each pair.
+
+32
+00:01:55.675 --> 00:02:01.445
+Two checks give two bits, the syndrome, and the syndrome points straight at the culprit.
+
+33
+00:02:02.114 --> 00:02:05.575
+Flip it back, and the state is restored perfectly,
+
+34
+00:02:05.575 --> 00:02:08.268
+without our ever learning alpha or beta.
+
+35
+00:02:08.268 --> 00:02:13.268
+That is a stabilizer measurement, the heart of every quantum error correcting code.
+
+36
+00:02:16.313 --> 00:02:19.006
+But real errors are not clean flips.
+
+37
+00:02:19.006 --> 00:02:23.621
+They are tiny rotations, a sliver of a turn at a time.
+
+38
+00:02:23.621 --> 00:02:27.467
+How can a code built for flips fix a drift?
+
+39
+00:02:28.147 --> 00:02:34.301
+Let us rotate one qubit by a small angle, run the checks, and see what happens.
+
+40
+00:02:34.301 --> 00:02:35.839
+Then do it again.
+
+41
+00:02:35.839 --> 00:02:36.993
+Two hundred times.
+
+42
+00:02:37.680 --> 00:02:39.603
+Only two things ever happen.
+
+43
+00:02:39.603 --> 00:02:44.988
+Most of the time the checks report nothing, and the drift is simply gone.
+
+44
+00:02:44.988 --> 00:02:50.372
+Now and then they report a full flip, which we know how to undo.
+
+45
+00:02:51.047 --> 00:02:57.201
+The odds are cosine squared and sine squared of theta over two, right on the formula.
+
+46
+00:02:57.201 --> 00:03:01.431
+Measuring the checks forces the error to make up its mind.
+
+47
+00:03:01.431 --> 00:03:04.124
+A continuous problem becomes a discrete one,
+
+48
+00:03:04.124 --> 00:03:08.354
+and that is why quantum error correction can work at all.
+
+49
+00:03:11.413 --> 00:03:14.490
+There is a second kind of error, though.
+
+50
+00:03:14.490 --> 00:03:20.644
+A phase flip leaves every bit where it was, and only changes the sign between them.
+
+51
+00:03:20.644 --> 00:03:23.721
+Our parity checks cannot see it at all.
+
+52
+00:03:24.413 --> 00:03:30.952
+The fix is to also check in a rotated basis, where phase flips look like bit flips.
+
+53
+00:03:30.952 --> 00:03:36.336
+Do both, everywhere, on a two dimensional grid, and you get the surface code.
+
+54
+00:03:37.013 --> 00:03:38.936
+White circles are data qubits.
+
+55
+00:03:38.936 --> 00:03:41.244
+Teal squares check for bit flips.
+
+56
+00:03:41.244 --> 00:03:43.552
+Violet squares check for phase flips.
+
+57
+00:03:43.552 --> 00:03:47.398
+Each check touches four neighbors, or two along the edge.
+
+58
+00:03:48.080 --> 00:03:51.926
+Flip one qubit and the checks beside it light up.
+
+59
+00:03:51.926 --> 00:03:56.157
+Flip a whole chain, and only its two ends light up.
+
+60
+00:03:56.157 --> 00:03:58.465
+Everything in between cancels in pairs.
+
+61
+00:03:59.147 --> 00:04:01.070
+And that is the catch.
+
+62
+00:04:01.070 --> 00:04:06.070
+A chain from one edge to the other lights up nothing at all,
+
+63
+00:04:06.070 --> 00:04:08.378
+yet it flips the stored information.
+
+64
+00:04:08.378 --> 00:04:12.993
+The shortest such chain has length d, the distance of the code.
+
+65
+00:04:16.046 --> 00:04:20.662
+So here is the puzzle a quantum computer faces, over and over.
+
+66
+00:04:20.662 --> 00:04:22.969
+Noise strikes somewhere we cannot see.
+
+67
+00:04:22.969 --> 00:04:25.662
+All we get are the lit checks.
+
+68
+00:04:26.380 --> 00:04:30.226
+Each lit check is the end of some error chain.
+
+69
+00:04:30.226 --> 00:04:36.380
+To explain them, we have to pair them up, or send them off to the boundary.
+
+70
+00:04:37.080 --> 00:04:40.541
+Strip away the qubits and keep only what matters.
+
+71
+00:04:40.541 --> 00:04:47.080
+Checks become points, and the cost of joining two is the number of errors it would take.
+
+72
+00:04:47.780 --> 00:04:51.241
+Short chains are far more likely than long ones,
+
+73
+00:04:51.241 --> 00:04:55.857
+so the best guess is the pairing with the smallest total length.
+
+74
+00:04:55.857 --> 00:04:58.164
+That is minimum weight perfect matching,
+
+75
+00:04:58.164 --> 00:05:00.857
+and Edmonds' blossom algorithm finds it efficiently.
+
+76
+00:05:01.580 --> 00:05:05.811
+Fold the graph back onto the grid and apply the corrections.
+
+77
+00:05:05.811 --> 00:05:09.657
+Together with the hidden errors, they close into harmless loops.
+
+78
+00:05:09.657 --> 00:05:11.195
+The qubit is saved.
+
+79
+00:05:11.913 --> 00:05:13.067
+But not always.
+
+80
+00:05:13.067 --> 00:05:17.682
+Push the noise higher, and the most likely explanation can be wrong.
+
+81
+00:05:17.682 --> 00:05:24.221
+The fix and the errors join into a chain across the grid, and the information is lost.
+
+82
+00:05:27.312 --> 00:05:29.619
+Real hardware adds one more wrinkle.
+
+83
+00:05:29.619 --> 00:05:31.543
+The checks themselves are noisy.
+
+84
+00:05:31.543 --> 00:05:34.619
+Sometimes a check simply reports the wrong answer.
+
+85
+00:05:35.312 --> 00:05:38.389
+So we measure every check again and again,
+
+86
+00:05:38.389 --> 00:05:42.619
+and stack the rounds into a block of space and time.
+
+87
+00:05:42.619 --> 00:05:44.927
+What we look for is change:
+
+88
+00:05:44.927 --> 00:05:48.389
+a check whose answer differs from the round before.
+
+89
+00:05:49.078 --> 00:05:54.078
+A real qubit error shows up as a pair in the same round.
+
+90
+00:05:54.078 --> 00:05:59.463
+A check that lied shows up as the same check, in two consecutive rounds.
+
+91
+00:06:00.145 --> 00:06:04.376
+Decoding becomes matching in three dimensions, through space and through time.
+
+92
+00:06:04.376 --> 00:06:05.914
+Same algorithm, bigger graph.
+
+93
+00:06:09.012 --> 00:06:11.704
+Here is the question that decides everything.
+
+94
+00:06:11.704 --> 00:06:16.704
+If we build a bigger code, do we get fewer errors, or more?
+
+95
+00:06:17.378 --> 00:06:20.840
+More qubits means more places for noise to strike.
+
+96
+00:06:20.840 --> 00:06:25.071
+But a bigger code also needs a longer chain to fail.
+
+97
+00:06:25.071 --> 00:06:28.917
+Which effect wins depends on how noisy each qubit is.
+
+98
+00:06:29.612 --> 00:06:34.612
+Each point on these curves is thousands of simulated memories, every one decoded.
+
+99
+00:06:34.612 --> 00:06:38.458
+Above a critical noise level, the bigger codes do worse.
+
+100
+00:06:38.458 --> 00:06:42.304
+Below it, every step up in size suppresses errors further.
+
+101
+00:06:42.978 --> 00:06:44.902
+That crossing is the threshold.
+
+102
+00:06:44.902 --> 00:06:48.363
+For this simple noise it sits near ten percent.
+
+103
+00:06:48.363 --> 00:06:50.671
+With checks that lie, near three.
+
+104
+00:06:50.671 --> 00:06:54.132
+For full circuits with faulty gates, closer to one.
+
+105
+00:06:54.812 --> 00:06:55.581
+Below it,
+
+106
+00:06:55.581 --> 00:07:01.735
+each increase of the distance by two divides the error rate by a factor called lambda.
+
+107
+00:07:01.735 --> 00:07:05.581
+In 2024, Google's Willow chip measured lambda of about two:
+
+108
+00:07:05.581 --> 00:07:08.273
+the first convincing quantum memory below threshold.
+
+109
+00:07:11.310 --> 00:07:16.694
+There is one more constraint, and it is the one this project is about:
+
+110
+00:07:16.694 --> 00:07:17.079
+time.
+
+111
+00:07:17.776 --> 00:07:23.161
+A superconducting chip produces a fresh round of syndrome data about once every microsecond.
+
+112
+00:07:23.161 --> 00:07:25.469
+The decoder has to keep up.
+
+113
+00:07:26.176 --> 00:07:28.484
+Exact matching, on an ordinary processor,
+
+114
+00:07:28.484 --> 00:07:32.330
+takes about a hundred microseconds per round at distance nine.
+
+115
+00:07:32.330 --> 00:07:35.023
+Union-find, a faster decoder, takes about four.
+
+116
+00:07:35.023 --> 00:07:37.715
+Both are too slow for the clock.
+
+117
+00:07:38.410 --> 00:07:41.871
+When the decoder falls behind, unprocessed rounds pile up.
+
+118
+00:07:41.871 --> 00:07:44.564
+Some logical operations, like the T gate,
+
+119
+00:07:44.564 --> 00:07:48.025
+must wait for the decoder before they can continue.
+
+120
+00:07:48.025 --> 00:07:50.717
+The backlog grows, and the computer stalls.
+
+121
+00:07:51.410 --> 00:07:55.256
+So error correction is not only a question of accuracy.
+
+122
+00:07:55.256 --> 00:07:59.871
+A decoder that is right, but too slow, still stops the computer.
+
+123
+00:07:59.871 --> 00:08:03.333
+That is why real machines need custom decoding hardware,
+
+124
+00:08:03.333 --> 00:08:06.410
+fast enough to keep pace with the qubits.
+
+125
+00:08:07.108 --> 00:08:10.954
+Error correction works, but only if the decoder keeps up.
+
+126
+00:08:10.954 --> 00:08:12.108
+Try it yourself:
+
+127
+00:08:12.108 --> 00:08:16.339
+play the game, race the decoder, and watch the threshold appear.

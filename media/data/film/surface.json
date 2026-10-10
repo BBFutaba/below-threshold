@@ -1,0 +1,621 @@
+{
+ "theta": 1.15,
+ "phase": {
+  "qubit": 1,
+  "before": [
+   {
+    "data": "000",
+    "re": 0.8391923024206541,
+    "im": 0
+   },
+   {
+    "data": "111",
+    "re": 0.5438347906836426,
+    "im": 0
+   }
+  ],
+  "after": [
+   {
+    "data": "000",
+    "re": 0.8391923024206541,
+    "im": 0
+   },
+   {
+    "data": "111",
+    "re": -0.5438347906836426,
+    "im": 0
+   }
+  ],
+  "checks": {
+   "syndrome": [
+    0,
+    0
+   ],
+   "p1": [
+    0,
+    0
+   ]
+  },
+  "bitFlipChecks": {
+   "syndrome": [
+    1,
+    1
+   ],
+   "p1": [
+    1,
+    1
+   ]
+  },
+  "overlap": 0.16686198936008784
+ },
+ "hzhEqualsX": 1,
+ "layout": {
+  "d": 5,
+  "n": 25,
+  "dataQubits": [
+   {
+    "r": 0,
+    "c": 0
+   },
+   {
+    "r": 0,
+    "c": 1
+   },
+   {
+    "r": 0,
+    "c": 2
+   },
+   {
+    "r": 0,
+    "c": 3
+   },
+   {
+    "r": 0,
+    "c": 4
+   },
+   {
+    "r": 1,
+    "c": 0
+   },
+   {
+    "r": 1,
+    "c": 1
+   },
+   {
+    "r": 1,
+    "c": 2
+   },
+   {
+    "r": 1,
+    "c": 3
+   },
+   {
+    "r": 1,
+    "c": 4
+   },
+   {
+    "r": 2,
+    "c": 0
+   },
+   {
+    "r": 2,
+    "c": 1
+   },
+   {
+    "r": 2,
+    "c": 2
+   },
+   {
+    "r": 2,
+    "c": 3
+   },
+   {
+    "r": 2,
+    "c": 4
+   },
+   {
+    "r": 3,
+    "c": 0
+   },
+   {
+    "r": 3,
+    "c": 1
+   },
+   {
+    "r": 3,
+    "c": 2
+   },
+   {
+    "r": 3,
+    "c": 3
+   },
+   {
+    "r": 3,
+    "c": 4
+   },
+   {
+    "r": 4,
+    "c": 0
+   },
+   {
+    "r": 4,
+    "c": 1
+   },
+   {
+    "r": 4,
+    "c": 2
+   },
+   {
+    "r": 4,
+    "c": 3
+   },
+   {
+    "r": 4,
+    "c": 4
+   }
+  ],
+  "logicalX": [
+   2,
+   7,
+   12,
+   17,
+   22
+  ],
+  "logicalZ": [
+   10,
+   11,
+   12,
+   13,
+   14
+  ],
+  "stabilizers": [
+   {
+    "type": "X",
+    "support": [
+     1,
+     2
+    ],
+    "pos": {
+     "r": 0,
+     "c": 2
+    },
+    "weight": 2,
+    "edge": "top"
+   },
+   {
+    "type": "X",
+    "support": [
+     3,
+     4
+    ],
+    "pos": {
+     "r": 0,
+     "c": 4
+    },
+    "weight": 2,
+    "edge": "top"
+   },
+   {
+    "type": "Z",
+    "support": [
+     0,
+     5
+    ],
+    "pos": {
+     "r": 1,
+     "c": 0
+    },
+    "weight": 2,
+    "edge": "left"
+   },
+   {
+    "type": "X",
+    "support": [
+     0,
+     1,
+     5,
+     6
+    ],
+    "pos": {
+     "r": 1,
+     "c": 1
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     1,
+     2,
+     6,
+     7
+    ],
+    "pos": {
+     "r": 1,
+     "c": 2
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     2,
+     3,
+     7,
+     8
+    ],
+    "pos": {
+     "r": 1,
+     "c": 3
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     3,
+     4,
+     8,
+     9
+    ],
+    "pos": {
+     "r": 1,
+     "c": 4
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     5,
+     6,
+     10,
+     11
+    ],
+    "pos": {
+     "r": 2,
+     "c": 1
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     6,
+     7,
+     11,
+     12
+    ],
+    "pos": {
+     "r": 2,
+     "c": 2
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     7,
+     8,
+     12,
+     13
+    ],
+    "pos": {
+     "r": 2,
+     "c": 3
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     8,
+     9,
+     13,
+     14
+    ],
+    "pos": {
+     "r": 2,
+     "c": 4
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     9,
+     14
+    ],
+    "pos": {
+     "r": 2,
+     "c": 5
+    },
+    "weight": 2,
+    "edge": "right"
+   },
+   {
+    "type": "Z",
+    "support": [
+     10,
+     15
+    ],
+    "pos": {
+     "r": 3,
+     "c": 0
+    },
+    "weight": 2,
+    "edge": "left"
+   },
+   {
+    "type": "X",
+    "support": [
+     10,
+     11,
+     15,
+     16
+    ],
+    "pos": {
+     "r": 3,
+     "c": 1
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     11,
+     12,
+     16,
+     17
+    ],
+    "pos": {
+     "r": 3,
+     "c": 2
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     12,
+     13,
+     17,
+     18
+    ],
+    "pos": {
+     "r": 3,
+     "c": 3
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     13,
+     14,
+     18,
+     19
+    ],
+    "pos": {
+     "r": 3,
+     "c": 4
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     15,
+     16,
+     20,
+     21
+    ],
+    "pos": {
+     "r": 4,
+     "c": 1
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     16,
+     17,
+     21,
+     22
+    ],
+    "pos": {
+     "r": 4,
+     "c": 2
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     17,
+     18,
+     22,
+     23
+    ],
+    "pos": {
+     "r": 4,
+     "c": 3
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "X",
+    "support": [
+     18,
+     19,
+     23,
+     24
+    ],
+    "pos": {
+     "r": 4,
+     "c": 4
+    },
+    "weight": 4,
+    "edge": null
+   },
+   {
+    "type": "Z",
+    "support": [
+     19,
+     24
+    ],
+    "pos": {
+     "r": 4,
+     "c": 5
+    },
+    "weight": 2,
+    "edge": "right"
+   },
+   {
+    "type": "X",
+    "support": [
+     20,
+     21
+    ],
+    "pos": {
+     "r": 5,
+     "c": 1
+    },
+    "weight": 2,
+    "edge": "bottom"
+   },
+   {
+    "type": "X",
+    "support": [
+     22,
+     23
+    ],
+    "pos": {
+     "r": 5,
+     "c": 3
+    },
+    "weight": 2,
+    "edge": "bottom"
+   }
+  ]
+ },
+ "embedRow": [
+  11,
+  12,
+  13
+ ],
+ "repToSurface": [
+  14,
+  9
+ ],
+ "repToSurfaceX": [
+  8,
+  15
+ ],
+ "zError": {
+  "qubit": 12,
+  "fired": [
+   8,
+   15
+  ]
+ },
+ "legend": {
+  "qubit": 6,
+  "zTile": 7,
+  "xTile": 10,
+  "boundary": 23
+ },
+ "chain": [
+  {
+   "errors": [
+    12
+   ],
+   "fired": [
+    9,
+    14
+   ],
+   "zeroSyndrome": false,
+   "logicalXFlip": null
+  },
+  {
+   "errors": [
+    12,
+    17
+   ],
+   "fired": [
+    9,
+    19
+   ],
+   "zeroSyndrome": false,
+   "logicalXFlip": null
+  },
+  {
+   "errors": [
+    12,
+    17,
+    7
+   ],
+   "fired": [
+    4,
+    19
+   ],
+   "zeroSyndrome": false,
+   "logicalXFlip": null
+  },
+  {
+   "errors": [
+    12,
+    17,
+    7,
+    2
+   ],
+   "fired": [
+    19
+   ],
+   "zeroSyndrome": false,
+   "logicalXFlip": null
+  },
+  {
+   "errors": [
+    12,
+    17,
+    7,
+    2,
+    22
+   ],
+   "fired": [],
+   "zeroSyndrome": true,
+   "logicalXFlip": true
+  }
+ ],
+ "logicalX": [
+  2,
+  7,
+  12,
+  17,
+  22
+ ],
+ "logicalZ": [
+  10,
+  11,
+  12,
+  13,
+  14
+ ]
+}

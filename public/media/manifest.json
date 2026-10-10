@@ -1,47 +1,131 @@
-[
-  {
-    "id": "bridge",
-    "title": "From a row to a grid",
-    "caption": "The 3-qubit repetition code catches only bit flips; grown into a distance-3 surface code, teal and violet checks catch bit and phase flips on a 2D grid.",
-    "mp4": "media/bridge.mp4",
-    "webm": "media/bridge.webm",
-    "poster": "media/bridge.jpg",
-    "durationSec": 20.4
-  },
-  {
-    "id": "decoder",
-    "title": "How a decoder thinks",
-    "caption": "A real d = 5 bit-flip instance: checks fire, exact matching (MWPM) pairs them, the corrections and the hidden errors close a harmless loop; a second seed shows a logical error.",
-    "mp4": "media/decoder.mp4",
-    "webm": "media/decoder.webm",
-    "poster": "media/decoder.jpg",
-    "durationSec": 28.6
-  },
-  {
-    "id": "discretization",
-    "title": "Why errors are digital",
-    "caption": "A small Rx(0.9) drift measured 200 times by the parity checks gives exactly two outcomes, no error or a full flip, at the cos²(θ/2) and sin²(θ/2) rates.",
-    "mp4": "media/discretization.mp4",
-    "webm": "media/discretization.webm",
-    "poster": "media/discretization.jpg",
-    "durationSec": 22.3
-  },
-  {
-    "id": "threshold",
-    "title": "The threshold",
-    "caption": "Logical error rate against physical error rate for d = 5, 7, 9 from real Monte Carlo runs: below the crossing bigger codes make things better, above it worse.",
-    "mp4": "media/threshold.mp4",
-    "webm": "media/threshold.webm",
-    "poster": "media/threshold.jpg",
-    "durationSec": 20.5
-  },
-  {
-    "id": "backlog",
-    "title": "The real-time bottleneck",
-    "caption": "Rounds arrive every 1 µs; with measured decode times both the MWPM and the union-find queues grow, and only the 1 µs-per-round requirement keeps the queue flat.",
-    "mp4": "media/backlog.mp4",
-    "webm": "media/backlog.webm",
-    "poster": "media/backlog.jpg",
-    "durationSec": 16.5
+{
+  "scenes": [
+    {
+      "id": "intro",
+      "chapter": "",
+      "title": "Below Threshold",
+      "durationSec": 14.0,
+      "filmStartSec": 0.0,
+      "mp4": "media/intro.mp4",
+      "webm": "media/intro.webm",
+      "poster": "media/intro.jpg",
+      "captions": "media/intro.vtt",
+      "narrated": false
+    },
+    {
+      "id": "fragile",
+      "chapter": "Chapter 1",
+      "title": "A fragile kind of information",
+      "durationSec": 57.77,
+      "filmStartSec": 14.0,
+      "mp4": "media/fragile.mp4",
+      "webm": "media/fragile.webm",
+      "poster": "media/fragile.jpg",
+      "captions": "media/fragile.vtt",
+      "narrated": false
+    },
+    {
+      "id": "parity",
+      "chapter": "Chapter 2",
+      "title": "Ask a different question",
+      "durationSec": 61.93,
+      "filmStartSec": 71.76,
+      "mp4": "media/parity.mp4",
+      "webm": "media/parity.webm",
+      "poster": "media/parity.jpg",
+      "captions": "media/parity.vtt",
+      "narrated": false
+    },
+    {
+      "id": "digital",
+      "chapter": "Chapter 3",
+      "title": "Why errors become digital",
+      "durationSec": 55.1,
+      "filmStartSec": 133.7,
+      "mp4": "media/digital.mp4",
+      "webm": "media/digital.webm",
+      "poster": "media/digital.jpg",
+      "captions": "media/digital.vtt",
+      "narrated": false
+    },
+    {
+      "id": "surface",
+      "chapter": "Chapter 4",
+      "title": "Two kinds of error, one grid",
+      "durationSec": 64.63,
+      "filmStartSec": 188.8,
+      "mp4": "media/surface.mp4",
+      "webm": "media/surface.webm",
+      "poster": "media/surface.jpg",
+      "captions": "media/surface.vtt",
+      "narrated": false
+    },
+    {
+      "id": "matching",
+      "chapter": "Chapter 5",
+      "title": "Decoding is a matching problem",
+      "durationSec": 71.27,
+      "filmStartSec": 253.43,
+      "mp4": "media/matching.mp4",
+      "webm": "media/matching.webm",
+      "poster": "media/matching.jpg",
+      "captions": "media/matching.vtt",
+      "narrated": false
+    },
+    {
+      "id": "spacetime",
+      "chapter": "Chapter 6",
+      "title": "When the checks lie",
+      "durationSec": 41.7,
+      "filmStartSec": 324.7,
+      "mp4": "media/spacetime.mp4",
+      "webm": "media/spacetime.webm",
+      "poster": "media/spacetime.jpg",
+      "captions": "media/spacetime.vtt",
+      "narrated": false
+    },
+    {
+      "id": "threshold",
+      "chapter": "Chapter 7",
+      "title": "Below threshold",
+      "durationSec": 62.3,
+      "filmStartSec": 366.4,
+      "mp4": "media/threshold.mp4",
+      "webm": "media/threshold.webm",
+      "poster": "media/threshold.jpg",
+      "captions": "media/threshold.vtt",
+      "narrated": false
+    },
+    {
+      "id": "realtime",
+      "chapter": "Chapter 8",
+      "title": "A race against the clock",
+      "durationSec": 58.16,
+      "filmStartSec": 428.69,
+      "mp4": "media/realtime.mp4",
+      "webm": "media/realtime.webm",
+      "poster": "media/realtime.jpg",
+      "captions": "media/realtime.vtt",
+      "narrated": false
+    },
+    {
+      "id": "outro",
+      "chapter": "",
+      "title": "Keep it below threshold",
+      "durationSec": 14.4,
+      "filmStartSec": 486.86,
+      "mp4": "media/outro.mp4",
+      "webm": "media/outro.webm",
+      "poster": "media/outro.jpg",
+      "captions": "media/outro.vtt",
+      "narrated": false
+    }
+  ],
+  "film": {
+    "mp4": "media/film.mp4",
+    "poster": "media/film.jpg",
+    "captions": "media/film.vtt",
+    "durationSec": 501.26,
+    "narrated": false
   }
-]
+}

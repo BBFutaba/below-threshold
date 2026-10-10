@@ -8,7 +8,6 @@ import { makeRng } from '../../../core/rng';
 import { chapterBySlug } from '../../content';
 import { BlochSphere, Histogram } from '../../components/QuantumViews';
 import { Button, Card, Row, Slider, WhatHappened } from '../../components/ui';
-import { MediaClip } from '../../components/MediaClip';
 import { ChapterFrame } from './ChapterFrame';
 import { encodedData } from './repetition';
 import s from '../screen.module.css';
@@ -80,6 +79,7 @@ export function Chapter6() {
   return (
     <ChapterFrame
       meta={meta}
+      clip={{ id: 'digital', caption: 'Film chapter 3: 200 real simulator runs, and why errors become digital.' }}
       goal="Understand why error correction works at all when real errors are small, continuous drifts."
       tasks={tasks}
       complete={tasks.every((t) => t.done)}
@@ -145,11 +145,7 @@ export function Chapter6() {
               Only two bars appeared: “no error” and “full flip on q1”. Nothing in between. After correction the fidelity was exactly 100% in {res.perfect} of {RUNS} runs.
             </WhatHappened>
           )}
-          {res && (
-            <Card title="Watch it in motion">
-              <MediaClip id="discretization" caption="Manim animation of 200 real simulator runs (qubits numbered 1 to 3 in the clip)." />
-            </Card>
-          )}
+
         </>
       }
     />

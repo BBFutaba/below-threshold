@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:05.309
+Here is the question that decides everything.
+
+2
+00:00:05.309 --> 00:00:10.309
+If we build a bigger code, do we get fewer errors, or more?
+
+3
+00:00:10.983 --> 00:00:14.445
+More qubits means more places for noise to strike.
+
+4
+00:00:14.445 --> 00:00:18.676
+But a bigger code also needs a longer chain to fail.
+
+5
+00:00:18.676 --> 00:00:22.522
+Which effect wins depends on how noisy each qubit is.
+
+6
+00:00:23.217 --> 00:00:28.217
+Each point on these curves is thousands of simulated memories, every one decoded.
+
+7
+00:00:28.217 --> 00:00:32.063
+Above a critical noise level, the bigger codes do worse.
+
+8
+00:00:32.063 --> 00:00:35.909
+Below it, every step up in size suppresses errors further.
+
+9
+00:00:36.583 --> 00:00:38.506
+That crossing is the threshold.
+
+10
+00:00:38.506 --> 00:00:41.968
+For this simple noise it sits near ten percent.
+
+11
+00:00:41.968 --> 00:00:44.276
+With checks that lie, near three.
+
+12
+00:00:44.276 --> 00:00:47.737
+For full circuits with faulty gates, closer to one.
+
+13
+00:00:48.417 --> 00:00:49.186
+Below it,
+
+14
+00:00:49.186 --> 00:00:55.340
+each increase of the distance by two divides the error rate by a factor called lambda.
+
+15
+00:00:55.340 --> 00:00:59.186
+In 2024, Google's Willow chip measured lambda of about two:
+
+16
+00:00:59.186 --> 00:01:01.878
+the first convincing quantum memory below threshold.
