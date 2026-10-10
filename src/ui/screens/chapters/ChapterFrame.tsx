@@ -7,6 +7,7 @@ import { CHAPTERS, chapterBySlug, type ChapterMeta } from '../../content';
 import { useApp } from '../../../store/app';
 import { ButtonLink, Button, GoalLine } from '../../components/ui';
 import { play } from '../../sound';
+import { MediaClip } from '../../components/MediaClip';
 import s from '../screen.module.css';
 
 export interface TaskItem {
@@ -22,6 +23,7 @@ export function ChapterFrame({
   panel,
   complete,
   primerFigure,
+  clip,
 }: {
   meta: ChapterMeta;
   goal: ReactNode;
@@ -30,6 +32,8 @@ export function ChapterFrame({
   panel: ReactNode;
   complete: boolean;
   primerFigure?: ReactNode;
+  /** A chapter of the narrated film that covers the same idea. */
+  clip?: { id: string; caption: string };
 }) {
   const done = useApp((st) => st.completedChapters);
   const seen = useApp((st) => st.seenPrimers);
@@ -119,6 +123,12 @@ export function ChapterFrame({
           )}
         </div>
       </div>
+      {clip && (
+        <section className={s.filmClip} aria-label="From the film">
+          <h2 className={s.eyebrow}>Watch the idea · from the film</h2>
+          <MediaClip id={clip.id} caption={clip.caption} />
+        </section>
+      )}
     </div>
   );
 }

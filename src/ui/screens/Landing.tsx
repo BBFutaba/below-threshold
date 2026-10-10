@@ -7,6 +7,7 @@ import { sampleNoise } from '../../core/noise';
 import { Lattice } from '../components/Lattice';
 import { ButtonLink, Card } from '../components/ui';
 import { useApp } from '../../store/app';
+import { TeamLogo } from '../components/TeamLogo';
 import css from './Landing.module.css';
 
 export function Landing() {
@@ -34,6 +35,9 @@ export function Landing() {
         <Lattice code={code} syndrome={syn} maxWidth={760} label="Animated background lattice" />
       </div>
       <div className={css.hero}>
+        <div className={css.byline}>
+          <TeamLogo height={40} />
+        </div>
         <p className={css.kicker}>An interactive guide to quantum error correction</p>
         <h1 className={css.title}>Below Threshold</h1>
         <p className={css.sentence}>Keep a quantum computer alive.</p>
@@ -42,6 +46,7 @@ export function Landing() {
             {completed ? 'Continue the story' : 'Start the story'}
           </ButtonLink>
           <ButtonLink to="/play">Jump to the game</ButtonLink>
+          <ButtonLink to="/film">▶ Watch the film</ButtonLink>
           <ButtonLink to="/learn" variant="ghost">
             Pick a concept
           </ButtonLink>

@@ -98,6 +98,7 @@ export function Chapter2() {
   return (
     <ChapterFrame
       meta={meta}
+      clip={{ id: 'fragile', caption: 'Film chapter 1: the copy machine and the no-cloning theorem, with real simulator output.' }}
       goal="See why we cannot protect a qubit by backing it up."
       tasks={tasks}
       complete={complete}

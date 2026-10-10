@@ -5,6 +5,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useApp } from '../store/app';
 import { GLOSSARY } from './content';
 import { Button } from './components/ui';
+import { TeamLogo } from './components/TeamLogo';
 import css from './Shell.module.css';
 
 const NAV = [
@@ -13,6 +14,7 @@ const NAV = [
   { to: '/realtime', label: 'Real-time' },
   { to: '/lab', label: 'Lab' },
   { to: '/leaderboard', label: 'Leaderboard' },
+  { to: '/film', label: 'Film' },
 ];
 
 export function Shell() {
@@ -75,6 +77,16 @@ export function Shell() {
       <main id="main" className={css.main}>
         <Outlet />
       </main>
+      <footer className={css.footer}>
+        <span className={css.footerBrand}>
+          <span className="faint">Made by</span>
+          <TeamLogo height={30} />
+        </span>
+        <span className="faint">Every number on this site is computed live or comes from our validation suite.</span>
+        <NavLink to="/honesty" className={css.footerLink}>
+          What we simplify
+        </NavLink>
+      </footer>
       {drawer && (
         <Drawer title={drawer === 'glossary' ? 'Glossary' : 'Settings'} onClose={() => setDrawer(null)}>
           {drawer === 'glossary' ? <GlossaryList /> : <Settings />}

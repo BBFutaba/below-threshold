@@ -132,6 +132,7 @@ export function Chapter5() {
   return (
     <ChapterFrame
       meta={meta}
+      clip={{ id: 'surface', caption: 'Film chapter 4: the invisible phase flip, and the grid that catches both kinds of error.' }}
       goal="Discover a second kind of error that the bit-flip code cannot see."
       tasks={[
         { label: <>Part A: let a hidden <b>Z</b> error strike and run the Chapter 4 checks.</>, done: doneA },

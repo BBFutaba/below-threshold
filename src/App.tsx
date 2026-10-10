@@ -15,6 +15,7 @@ const Game = lazy(() => import('./ui/screens/Game').then((m) => ({ default: m.Ga
 const RealTime = lazy(() => import('./ui/screens/RealTime').then((m) => ({ default: m.RealTime })));
 const Lab = lazy(() => import('./ui/screens/Lab').then((m) => ({ default: m.Lab })));
 const Leaderboard = lazy(() => import('./ui/screens/Leaderboard').then((m) => ({ default: m.Leaderboard })));
+const Film = lazy(() => import('./ui/screens/Film').then((m) => ({ default: m.Film })));
 const Honesty = lazy(() => import('./ui/screens/Honesty').then((m) => ({ default: m.Honesty })));
 
 const CHAPTER_ROUTES: Record<string, React.ComponentType> = {
@@ -56,6 +57,7 @@ export function App() {
             <Route path="realtime" element={<RealTime />} />
             <Route path="lab" element={<Lab />} />
             <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="film" element={<Film />} />
             <Route path="honesty" element={<Honesty />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>

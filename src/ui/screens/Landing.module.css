@@ -79,3 +79,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.byline {
+  margin-bottom: 26px;
+}

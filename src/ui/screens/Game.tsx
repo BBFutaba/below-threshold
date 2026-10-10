@@ -413,7 +413,7 @@ export function Game() {
           )}
           {phase === 'revealed' && showDecoder && (
             <Card title="How a decoder thinks">
-              <MediaClip id="decoder" caption="Manim animation of exact matching on a real seeded d = 5 puzzle (and one it gets wrong)." />
+              <MediaClip id="matching" caption="Chapter 5 of the film: decoding as a matching problem, on a real seeded d = 5 puzzle (and one it gets wrong)." />
             </Card>
           )}
           {run.over && (

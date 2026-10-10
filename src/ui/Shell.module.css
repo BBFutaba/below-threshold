@@ -190,3 +190,22 @@
   height: 22px;
   accent-color: var(--blue);
 }
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding: 18px clamp(16px, 3vw, 32px) 26px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.footerBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.footerLink {
+  color: var(--text-muted);
+}

@@ -145,6 +145,7 @@ function ChecksThatLie() {
             its checks lit in every later round.
           </WhatHappened>
         )}
+        <MediaClip id="spacetime" caption="Film chapter 6: the checks lie, so decoding moves into space and time." />
       </div>
     </div>
   );
@@ -612,7 +613,7 @@ function TuneMachine() {
             This machine keeps up and protects the qubit.
           </div>
         )}
-        <MediaClip id="backlog" caption="Manim animation: the backlog problem, using measured decode times." />
+        <MediaClip id="realtime" caption="Chapter 8 of the film: the backlog problem, using measured decode times." />
       </div>
       <div className={s.panel}>
         <Card>

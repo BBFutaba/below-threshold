@@ -283,7 +283,7 @@ export function Lab() {
           <WhatHappened deeper="Each point runs until 100 logical failures or 20,000 trials, whichever comes first, in a Web Worker so the page never freezes. Bands are 95% Wilson intervals. The suppression factor Λ is how much the logical error rate drops each time the distance grows by 2.">
             Below the threshold, adding qubits suppresses errors exponentially. Above it, bigger codes just add more ways to fail.
           </WhatHappened>
-          <MediaClip id="threshold" caption="Manim animation of the threshold, drawn from our validation data." />
+          <MediaClip id="threshold" caption="Chapter 7 of the film: the threshold, drawn from our validation data." />
         </div>
       </div>
     </div>
