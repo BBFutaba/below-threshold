@@ -79,7 +79,7 @@ export function Chapter6() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'digital', caption: 'Film chapter 3: 200 real simulator runs, and why errors become digital.' }}
+      clip={{ id: 'digital', caption: 'From the film: 200 real simulator runs, and why errors become digital.' }}
       goal="Understand why error correction works at all when real errors are small, continuous drifts."
       tasks={tasks}
       complete={tasks.every((t) => t.done)}

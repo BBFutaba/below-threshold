@@ -66,6 +66,26 @@ TILE_FIRE = 0.85
 FONT_DISPLAY = "Segoe UI Variable Display"
 FONT_TEXT = "Segoe UI Variable Text"
 
+
+def _pick_fonts() -> None:
+    """Segoe UI Variable ships with Windows only. Elsewhere use Inter (the app's own UI font),
+    registered from media/fonts/ (see media/README.md), so the film matches the site."""
+    global FONT_DISPLAY, FONT_TEXT
+    try:
+        import manimpango
+    except ImportError:
+        return
+    if FONT_DISPLAY in manimpango.list_fonts():
+        return
+    for f in sorted((ROOT / "media" / "fonts").glob("*.ttf")):
+        manimpango.register_font(str(f))
+    have = set(manimpango.list_fonts())
+    if "Inter Display" in have and "Inter" in have:
+        FONT_DISPLAY, FONT_TEXT = "Inter Display", "Inter"
+
+
+_pick_fonts()
+
 # Text is rendered at 2x and scaled down: Pango kerning is cleaner at larger sizes.
 _OVERSAMPLE = 2.0
 

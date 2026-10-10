@@ -1,65 +1,57 @@
 WEBVTT
 
 1
-00:00:02.617 --> 00:00:04.540
-This arrow is a qubit.
+00:00:02.617 --> 00:00:04.155
+Back to our arrow.
 
 2
-00:00:04.540 --> 00:00:06.847
-Pointing straight up, it means zero.
+00:00:04.155 --> 00:00:08.771
+Up is zero, down is one, and Shor's algorithm lives in between,
 
 3
-00:00:06.847 --> 00:00:08.001
-Straight down, one.
+00:00:08.771 --> 00:00:13.771
+in the amplitudes and their phases, on every qubit, for the whole computation.
 
 4
-00:00:08.001 --> 00:00:10.694
-But it can point anywhere in between,
-
-5
-00:00:10.694 --> 00:00:14.540
-and that in-between is where quantum computers get their power.
-
-6
-00:00:15.250 --> 00:00:18.712
+00:00:14.483 --> 00:00:17.945
 The trouble is that the arrow never holds still.
 
-7
-00:00:18.712 --> 00:00:22.558
+5
+00:00:17.945 --> 00:00:21.791
 Stray fields, heat, a control pulse meant for a neighbor:
 
-8
-00:00:22.558 --> 00:00:26.788
+6
+00:00:21.791 --> 00:00:26.022
 each one nudges it a little, and the nudges add up.
 
-9
-00:00:27.517 --> 00:00:31.363
+7
+00:00:26.750 --> 00:00:30.596
 On an ordinary computer we would fight this with backups.
 
-10
-00:00:31.363 --> 00:00:34.824
+8
+00:00:30.596 --> 00:00:34.058
 Copy the bit three times and take a vote.
 
-11
-00:00:34.824 --> 00:00:37.132
+9
+00:00:34.058 --> 00:00:36.365
 For qubits, that move is forbidden.
 
-12
-00:00:37.817 --> 00:00:44.355
+10
+00:00:37.050 --> 00:00:43.588
 Try to copy an unknown state with the obvious circuit, and you do not get two copies.
 
-13
-00:00:44.355 --> 00:00:46.663
+11
+00:00:43.588 --> 00:00:45.896
 You get two qubits tangled together,
 
-14
-00:00:46.663 --> 00:00:51.278
+12
+00:00:45.896 --> 00:00:50.512
 and their overlap with the copies you wanted is exactly one half.
 
-15
-00:00:51.950 --> 00:00:53.873
+13
+00:00:51.183 --> 00:00:53.106
 This is the no-cloning theorem.
 
-16
-00:00:53.873 --> 00:00:57.335
+14
+00:00:53.106 --> 00:00:56.568
 Whatever protects a qubit, it cannot be a backup.

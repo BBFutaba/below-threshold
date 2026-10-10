@@ -71,7 +71,7 @@ class IntroScene(NarratedScene):
             # A translucent veil keeps the lattice in the background even when checks fire.
             veil = Rectangle(width=16, height=10).set_fill(BG, opacity=1).set_stroke(width=0).set_z_index(10)
             title = TX(r"Below Threshold", size=96)
-            sub = TX(r"\textit{keeping a quantum computer alive}", size=36, color=MUTED).next_to(title, DOWN, buff=0.35)
+            sub = TX(r"\textit{factoring with a quantum computer, and keeping it alive}", size=36, color=MUTED).next_to(title, DOWN, buff=0.35)
             self.add(lat, veil)
             title.set_z_index(20)
             sub.set_z_index(20)

@@ -86,7 +86,7 @@ export function Chapter3() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'parity', caption: 'Film chapter 2: spreading one qubit across three, and asking “do these agree?”.' }}
+      clip={{ id: 'parity', caption: 'From the film: spreading one qubit across three, and asking “do these agree?”.' }}
       goal="Spread one qubit's information across three qubits so no single qubit holds it."
       tasks={[
         { label: <>Build a Bell pair with <b>H</b> then <b>CNOT</b>, and run 100 shots.</>, done: done[0] },

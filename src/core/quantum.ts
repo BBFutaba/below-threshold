@@ -1,4 +1,5 @@
-// Exact state-vector simulator for small systems (the six chapters use at most 5 qubits).
+// Exact state-vector simulator for small systems (the error-correction chapters use at most
+// 5 qubits; the Shor's algorithm chapters up to 10).
 // Convention: qubit q is bit q of the basis index.
 // Labels print qubit 0 first, e.g. "|100>" means qubit 0 is 1.
 
@@ -24,6 +25,8 @@ export const Gates = {
       s = Math.sin(t / 2);
     return [c, 0, -s, 0, s, 0, c, 0];
   },
+  /** Phase gate P(phi) = diag(1, e^{i phi}); P(pi) = Z, P(pi/2) = S. */
+  P: (phi: number): Matrix2 => [1, 0, 0, 0, 0, 0, Math.cos(phi), Math.sin(phi)],
 };
 
 export const MAX_QUBITS = 10;
@@ -112,6 +115,47 @@ export class QState {
   }
   ry(q: number, t: number): this {
     return this.apply(q, Gates.Ry(t));
+  }
+  phase(q: number, phi: number): this {
+    return this.apply(q, Gates.P(phi));
+  }
+
+  /** Controlled phase: multiply every amplitude where qubits a and b are both 1 by e^{i phi}. */
+  cphase(a: number, b: number, phi: number): this {
+    this.checkQubit(a);
+    this.checkQubit(b);
+    if (a === b) throw new Error('controlled phase needs two different qubits');
+    const mask = (1 << a) | (1 << b),
+      c = Math.cos(phi),
+      s = Math.sin(phi);
+    for (let i = 0; i < this.N; i++) {
+      if ((i & mask) !== mask) continue;
+      const r = this.re[i],
+        m = this.im[i];
+      this.re[i] = c * r - s * m;
+      this.im[i] = s * r + c * m;
+    }
+    return this;
+  }
+
+  swap(a: number, b: number): this {
+    this.checkQubit(a);
+    this.checkQubit(b);
+    if (a === b) return this;
+    const ab = 1 << a,
+      bb = 1 << b;
+    for (let i = 0; i < this.N; i++) {
+      if (i & ab && !(i & bb)) {
+        const j = (i & ~ab) | bb;
+        let t = this.re[i];
+        this.re[i] = this.re[j];
+        this.re[j] = t;
+        t = this.im[i];
+        this.im[i] = this.im[j];
+        this.im[j] = t;
+      }
+    }
+    return this;
   }
 
   cnot(c: number, t: number): this {

@@ -1,8 +1,11 @@
 // Static content: chapter metadata for the Concept Library, glossary, honesty text.
 
+export type PartId = 'basics' | 'shor' | 'qec';
+
 export interface ChapterMeta {
   n: number;
   slug: string;
+  part: PartId;
   title: string;
   question: string;
   minutes: string;
@@ -14,10 +17,29 @@ export interface ChapterMeta {
   aha: string;
 }
 
+export const PARTS: { id: PartId; label: string; name: string; blurb: string }[] = [
+  { id: 'basics', label: 'Part I', name: 'Qubits', blurb: 'What a qubit holds: amplitudes, and the phase hidden inside them.' },
+  {
+    id: 'shor',
+    label: 'Part II',
+    name: "Shor's algorithm",
+    blurb: 'Factor a number with a quantum computer: turn factoring into finding a rhythm, then hear it with the quantum Fourier transform.',
+  },
+  {
+    id: 'qec',
+    label: 'Part III',
+    name: 'Keeping it alive',
+    blurb: 'Real qubits make mistakes. Quantum error correction protects them long enough to run Shor, and leads into the game.',
+  },
+];
+
+export const partById = (id: PartId) => PARTS.find((p) => p.id === id)!;
+
 export const CHAPTERS: ChapterMeta[] = [
   {
     n: 1,
     slug: 'superposition',
+    part: 'basics',
     title: 'Superposition',
     question: 'Is a qubit secretly 0 or 1?',
     minutes: '2 min',
@@ -27,7 +49,73 @@ export const CHAPTERS: ChapterMeta[] = [
   },
   {
     n: 2,
+    slug: 'phase',
+    part: 'basics',
+    title: "Phase: a qubit's hidden clock",
+    question: 'What does a phase do if you can never measure it?',
+    minutes: '2 min',
+    difficulty: 'Beginner',
+    tags: ['Basics', 'Fourier'],
+    helpfulFirst: ['superposition'],
+    primer: 'A qubit holds two amplitudes, one for |0⟩ and one for |1⟩. Measuring gives 0 or 1 with probability equal to the amplitude squared.',
+    aha: 'A phase is a direction, like a clock hand. Measuring cannot see it, but interference turns it into probabilities. The quantum Fourier transform is built entirely from these turns.',
+  },
+  {
+    n: 3,
+    slug: 'period',
+    part: 'shor',
+    title: 'Factoring is a hunt for rhythm',
+    question: 'How can a repeating pattern break encryption?',
+    minutes: '2 min',
+    difficulty: 'Beginner',
+    tags: ['Shor'],
+    aha: 'Factoring N turns into finding the period r of aˣ mod N. Once you know r, two gcd calculations give the factors. For big numbers the period is astronomically long, and that is the step a quantum computer speeds up.',
+  },
+  {
+    n: 4,
+    slug: 'qft',
+    part: 'shor',
+    title: 'The quantum Fourier transform',
+    question: 'How does a quantum computer hear a rhythm?',
+    minutes: '4 min',
+    difficulty: 'Intermediate',
+    tags: ['Shor', 'Fourier'],
+    helpfulFirst: ['phase'],
+    primer:
+      'A phase is the direction of an amplitude, like a clock hand. A phase gate turns the |1⟩ hand; interference (a Hadamard) turns those directions into measurable probabilities.',
+    aha: 'The QFT gives every qubit a clock that turns at its own speed. A pattern that repeats every r steps makes those clocks agree only near multiples of N/r, so the answer lands on sharp peaks that reveal r.',
+  },
+  {
+    n: 5,
+    slug: 'shor',
+    part: 'shor',
+    title: "Shor's algorithm, end to end",
+    question: 'How do you factor 15 with a quantum computer?',
+    minutes: '4 min',
+    difficulty: 'Intermediate',
+    tags: ['Shor', 'Fourier', 'Entanglement'],
+    helpfulFirst: ['period', 'qft'],
+    primer:
+      'Factoring N reduces to finding the period r of aˣ mod N. The quantum Fourier transform turns a pattern that repeats every r steps into peaks near multiples of Q/r.',
+    aha: 'Superpose every x, compute aˣ mod N for all of them at once, measure, then let the QFT turn the hidden rhythm into peaks. A little classical arithmetic does the rest. The quantum part only has to find r.',
+  },
+  {
+    n: 6,
+    slug: 'noise',
+    part: 'shor',
+    title: 'Noise ruins the answer',
+    question: 'What happens when the qubits make mistakes?',
+    minutes: '2 min',
+    difficulty: 'Beginner',
+    tags: ['Shor', 'Errors'],
+    helpfulFirst: ['shor'],
+    primer: "Shor's algorithm ends with sharp peaks in the measurement results; the peak positions reveal the period, and the period gives the factors.",
+    aha: 'Errors blur the peaks into noise. Breaking real encryption needs billions of operations, far more than any physical qubit survives. That is why we need quantum error correction, the rest of this story.',
+  },
+  {
+    n: 7,
     slug: 'no-cloning',
+    part: 'qec',
     title: 'No-cloning',
     question: "Why can't we back up a qubit?",
     minutes: '1–2 min',
@@ -38,8 +126,9 @@ export const CHAPTERS: ChapterMeta[] = [
     aha: "No machine can copy an unknown quantum state. That's a law of physics, called the no-cloning theorem. Classical backups won't work.",
   },
   {
-    n: 3,
+    n: 8,
     slug: 'entanglement',
+    part: 'qec',
     title: 'Entanglement',
     question: 'How can three qubits share one?',
     minutes: '2 min',
@@ -50,8 +139,9 @@ export const CHAPTERS: ChapterMeta[] = [
     aha: 'Entanglement lets us store one qubit in the relationships between many, which is how we protect it without copying.',
   },
   {
-    n: 4,
+    n: 9,
     slug: 'syndrome',
+    part: 'qec',
     title: 'Measurement and syndromes',
     question: 'How do you find an error without looking?',
     minutes: '2 min',
@@ -63,8 +153,9 @@ export const CHAPTERS: ChapterMeta[] = [
     aha: "We asked 'do these qubits agree?' instead of 'what are they?'. That's a stabilizer measurement, the core of all quantum error correction.",
   },
   {
-    n: 5,
+    n: 10,
     slug: 'phase-errors',
+    part: 'qec',
     title: 'Phase errors and interference',
     question: 'What error can the bit-flip code not see?',
     minutes: '2 min',
@@ -76,8 +167,9 @@ export const CHAPTERS: ChapterMeta[] = [
     aha: 'Quantum errors come in two kinds, bit flips and phase flips. Real codes need checks for both, which is why the surface code has two types of checks.',
   },
   {
-    n: 6,
+    n: 11,
     slug: 'discretization',
+    part: 'qec',
     title: 'Error discretization',
     question: 'How can we fix errors that are tiny drifts?',
     minutes: '1–2 min',
@@ -93,18 +185,27 @@ export const CHAPTERS: ChapterMeta[] = [
 export const chapterBySlug = (slug: string) => CHAPTERS.find((c) => c.slug === slug);
 
 export const PATHS: { name: string; chapters: number[]; then?: string }[] = [
-  { name: 'Full story', chapters: [1, 2, 3, 4, 5, 6], then: 'the game' },
-  { name: 'Fast track (5 minutes)', chapters: [1, 4, 6], then: 'the game' },
-  { name: 'Why QEC is hard', chapters: [2, 5, 6] },
-  { name: 'How checks work', chapters: [3, 4, 5] },
+  { name: 'Full story', chapters: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], then: 'the game' },
+  { name: "Shor's algorithm", chapters: [1, 2, 3, 4, 5, 6] },
+  { name: 'QFT deep dive', chapters: [2, 4, 5] },
+  { name: 'Error correction', chapters: [7, 8, 9, 10, 11], then: 'the game' },
+  { name: 'Fast track to the game', chapters: [1, 9, 11], then: 'the game' },
 ];
 
-export const LIBRARY_TAGS = ['Basics', 'Entanglement', 'Measurement', 'Errors'];
+export const LIBRARY_TAGS = ['Basics', 'Shor', 'Fourier', 'Entanglement', 'Measurement', 'Errors'];
 
 export const GLOSSARY: [string, string][] = [
   ['Qubit', 'The basic unit of quantum information; can be in a superposition of 0 and 1.'],
   ['Superposition', 'A state holding amplitudes for 0 and 1 at once; measurement picks one.'],
   ['Interference', 'Amplitudes adding up or canceling, changing outcome probabilities.'],
+  ['Phase', 'The direction of an amplitude, like a clock hand. Invisible to a single measurement, but it decides how amplitudes interfere.'],
+  ["Shor's algorithm", 'A quantum algorithm (Peter Shor, 1994) that factors large numbers exponentially faster than any known classical method, by finding a period.'],
+  ['RSA', 'A widely used encryption scheme whose security rests on how hard it is to factor a product of two large primes.'],
+  ['Period', 'The number of steps r after which a repeating pattern starts over; for aˣ mod N, the smallest r with aʳ ≡ 1 (mod N).'],
+  ['Modular arithmetic', 'Arithmetic that wraps around: x mod N is the remainder after dividing by N, like hours on a clock.'],
+  ['Register', 'A group of qubits that together hold a number, like the input register x and the output register aˣ mod N.'],
+  ['Quantum Fourier transform (QFT)', 'A circuit of Hadamards and controlled phase turns that maps a repeating pattern to sharp peaks at its frequencies.'],
+  ['Continued fraction', 'A way to find the simple fraction j/r closest to a measured value k/Q; it recovers the period in Shor’s algorithm.'],
   ['Entanglement', 'Correlations between qubits that no description of the individual qubits can capture.'],
   ['No-cloning theorem', 'No process can copy an unknown quantum state.'],
   ['Pauli X, Z, Y', 'Bit flip, phase flip, and both together; the basic error types.'],
@@ -124,7 +225,9 @@ export const GLOSSARY: [string, string][] = [
 ];
 
 export const HONESTY_TEXT =
-  'What we simplify: the main game uses code-capacity and phenomenological noise, not full circuit-level noise. ' +
+  "What we simplify: the Shor's algorithm chapters factor small numbers (15 to 35) on at most 10 simulated qubits, and treat each " +
+  'controlled modular multiplication as one exact gate rather than compiling it into elementary gates. ' +
+  'The main game uses code-capacity and phenomenological noise, not full circuit-level noise. ' +
   'Bit-flip and phase-flip errors are decoded separately. Real-time mode runs on a slowed-down clock, scaled from our ' +
   'measured browser decode times. Distances are small compared with future machines. Everything shown is computed ' +
   'live or comes from our validation runs, documented in the repo.';

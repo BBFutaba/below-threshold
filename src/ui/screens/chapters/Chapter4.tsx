@@ -118,7 +118,7 @@ export function Chapter4() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'parity', caption: 'Film chapter 2: parity checks, the syndrome table, and a perfect fix.' }}
+      clip={{ id: 'parity', caption: 'From the film: parity checks, the syndrome table, and a perfect fix.' }}
       goal="Detect an error without destroying the stored information."
       tasks={[
         { label: <>Part A, the wrong way: <b>measure data qubit 0</b> directly.</>, done: measuredA },

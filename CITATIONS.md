@@ -30,3 +30,11 @@ Every number quoted in the app, pitch or write-up that does not come from our ow
 ## Prior art
 
 14. J. R. Wootton, *Decodoku* (citizen-science QEC games, around 2016); J. R. Wootton, "Getting the public involved in quantum error correction", arXiv:1712.09649. We cite it in the README and explain what we add.
+
+## Shor's algorithm and the quantum Fourier transform
+
+15. P. W. Shor, "Algorithms for quantum computation: discrete logarithms and factoring", *Proc. 35th FOCS*, 124 (1994); expanded in *SIAM J. Comput.* 26, 1484 (1997), arXiv:quant-ph/9508027. The algorithm the Part II chapters and film follow.
+16. D. Coppersmith, "An approximate Fourier transform useful in quantum factoring", IBM Research Report RC 19642 (1994), arXiv:quant-ph/0201067. The QFT circuit of Hadamards and controlled phase rotations.
+17. M. A. Nielsen, I. L. Chuang, *Quantum Computation and Quantum Information* (Cambridge, 2000), Chapter 5. Order finding, continued fractions (including trying small multiples of the denominators) and the success probability of a run.
+18. C. Gidney, "How to factor 2048 bit RSA integers with less than a million noisy qubits", arXiv:2505.15917 (2025); earlier C. Gidney, M. Ekerå, "How to factor 2048 bit RSA integers in 8 hours using 20 million noisy qubits", *Quantum* 5, 433 (2021). Source for "around a million qubits running for days" (assumes about 0.1% gate error). **verify** the qubit count and run time before quoting them in the pitch.
+19. R. L. Rivest, A. Shamir, L. Adleman, "A method for obtaining digital signatures and public-key cryptosystems", *Commun. ACM* 21, 120 (1978). RSA.

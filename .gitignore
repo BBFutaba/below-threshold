@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .venv/
+.venv
 __pycache__/
 *.pyc
 test-results/
@@ -15,3 +16,5 @@ validate/data/*
 .shots/
 media/voiceover/draft/
 .scratch/
+
+media/fonts/

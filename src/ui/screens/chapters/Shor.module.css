@@ -1,0 +1,295 @@
+/* Shared styles for the Shor's algorithm chapters (period, QFT, Shor, noise). */
+
+.plot {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.axis {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+.axisText {
+  fill: var(--text-faint);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+.oneLine {
+  stroke: var(--green);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.7;
+}
+.periodBand {
+  fill: var(--violet-tint);
+  opacity: 0.55;
+}
+.periodBand[data-odd='1'] {
+  fill: var(--teal-tint);
+}
+.seqLine {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1.2;
+}
+.dotG {
+  cursor: pointer;
+}
+.dotG:focus-visible {
+  outline: none;
+}
+.dotG:focus-visible .dot {
+  stroke: var(--focus);
+  stroke-width: 2.5;
+}
+.hit {
+  fill: transparent;
+}
+.dot {
+  fill: var(--blue);
+  stroke: var(--bg);
+  stroke-width: 1.2;
+  transition: r var(--t-fast);
+}
+.dot[data-one='1'] {
+  fill: var(--green);
+}
+.dot[data-picked='1'] {
+  stroke: var(--amber);
+  stroke-width: 3;
+}
+.dotG:hover .dot {
+  r: 7;
+}
+.seqRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.seqRow span {
+  min-width: 26px;
+  text-align: center;
+  padding: 2px 4px;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+.seqRow span[data-one='1'] {
+  color: var(--green);
+}
+.seqRow span[data-first='1'] {
+  background: var(--violet-tint);
+  color: var(--text);
+}
+.recipe {
+  margin: 0 0 12px;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+.recipe li[data-ok='1'] b {
+  color: var(--green);
+}
+.bases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+.bases button {
+  min-width: 40px;
+  min-height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+.bases button[aria-pressed='true'] {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* Step-by-step walkthroughs (QFT and Shor). */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.explain {
+  border-left: 3px solid var(--amber);
+  background: var(--amber-tint);
+  padding: 10px 12px;
+  border-radius: 0 10px 10px 0;
+  font-size: 0.95rem;
+  margin: 10px 0 0;
+  min-height: 3.2em;
+}
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+@media (max-width: 700px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+}
+.stages {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stages li button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+.stages li button[data-state='done'] {
+  border-color: color-mix(in srgb, var(--green) 55%, transparent);
+  color: var(--text);
+}
+.stages li button[data-state='current'] {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+.stages li button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.stageNum {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.registers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.register {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  background: var(--surface-2);
+  font-size: 0.85rem;
+}
+.register b {
+  display: block;
+  font-size: 0.92rem;
+}
+.register .mono {
+  color: var(--text-muted);
+}
+.table {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.cell {
+  display: grid;
+  justify-items: center;
+  min-width: 34px;
+  padding: 3px 4px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.cell[data-dim='1'] {
+  opacity: 0.25;
+}
+.cell span:first-child {
+  color: var(--text-faint);
+  font-size: 0.7rem;
+}
+.cf {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  display: grid;
+  gap: 6px;
+}
+.cf ol {
+  margin: 0;
+  padding-left: 22px;
+}
+.big {
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+.stat {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  display: grid;
+  gap: 2px;
+}
+.stat span:last-child {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.detective {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.detective button {
+  min-width: 44px;
+  min-height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  cursor: pointer;
+}
+.detective button[data-state='wrong'] {
+  border-color: var(--coral);
+  color: var(--coral);
+}
+.detective button[data-state='right'] {
+  border-color: var(--green);
+  background: var(--green-tint);
+  color: var(--green);
+}
+.scale {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  display: grid;
+  gap: 6px;
+}
+.scale div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 4px;
+}

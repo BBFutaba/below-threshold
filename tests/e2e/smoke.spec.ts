@@ -7,13 +7,18 @@ const ROUTES = [
   ['/', 'Below Threshold'],
   ['/learn', 'Choose what to learn'],
   ['/learn/superposition', 'Superposition'],
+  ['/learn/phase', "Phase: a qubit's hidden clock"],
+  ['/learn/period', 'Factoring is a hunt for rhythm'],
+  ['/learn/qft', 'The quantum Fourier transform'],
+  ['/learn/shor', "Shor's algorithm, end to end"],
+  ['/learn/noise', 'Noise ruins the answer'],
   ['/learn/no-cloning', 'No-cloning'],
   ['/learn/entanglement', 'Entanglement'],
   ['/learn/syndrome', 'Measurement and syndromes'],
   ['/learn/phase-errors', 'Phase errors and interference'],
   ['/learn/discretization', 'Error discretization'],
   ['/bridge', 'From 3 qubits to the surface code'],
-  ['/play', 'Clear every glowing check'],
+  ['/play', 'How to play'],
   ['/realtime', 'Can a decoder keep up?'],
   ['/lab', 'Watch the threshold appear'],
   ['/leaderboard', 'Humans vs the decoder'],
@@ -49,13 +54,39 @@ test('level 1 can be completed with the keyboard', async ({ page }) => {
     for (let k = 0; k < r; k++) await page.keyboard.press('ArrowDown');
     for (let k = 0; k < c; k++) await page.keyboard.press('ArrowRight');
     await page.keyboard.press('x');
-    await expect(page.getByText('All checks dark')).toBeVisible();
+    await expect(page.getByText('All alarms off')).toBeVisible();
     await page.keyboard.press('Enter');
     await expect(page.getByText(/Qubit saved/)).toBeVisible();
     await page.getByRole('button', { name: i < 2 ? 'Next puzzle' : /Level 2/ }).click();
   }
   await expect(page.getByText('Level').first()).toBeVisible();
   await expect(page.getByText('2/7')).toBeVisible();
+});
+
+test('the QFT turns a period-4 pattern into four peaks', async ({ page }) => {
+  await page.goto('/learn/qft');
+  await page.getByRole('button', { name: 'A repeating pattern' }).click();
+  await page.getByRole('button', { name: '4 qubits (16 values)' }).click();
+  await page.getByRole('button', { name: 'Run all gates' }).click();
+  await expect(page.getByText(/became 4 sharp peaks at multiples of 16\/4 = 4/)).toBeVisible({ timeout: 15_000 });
+});
+
+test("Shor's algorithm factors 15 end to end", async ({ page }) => {
+  await page.goto('/learn/shor');
+  // Runs are seeded; keep starting new runs until one lands on a useful peak.
+  await page.getByRole('button', { name: 'Run to the end' }).click();
+  for (let i = 0; i < 8; i++) {
+    if (await page.getByText('15 = 3 × 5').first().isVisible()) break;
+    await page.getByRole('button', { name: 'New run ↻' }).click();
+    await page.getByRole('button', { name: 'Run to the end' }).click();
+  }
+  await expect(page.getByText('15 = 3 × 5').first()).toBeVisible();
+});
+
+test('noise washes out the peaks', async ({ page }) => {
+  await page.goto('/learn/noise');
+  await page.getByRole('button', { name: 'Run 200 shots' }).click();
+  await expect(page.getByText(/every run lands on one of the four peaks/)).toBeVisible({ timeout: 20_000 });
 });
 
 test('the lab runs a point without errors', async ({ page }) => {

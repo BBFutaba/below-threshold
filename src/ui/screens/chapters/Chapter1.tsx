@@ -94,7 +94,7 @@ export function Chapter1() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'fragile', caption: 'Film chapter 1: a qubit on the Bloch sphere, real noisy drift, and why it cannot be copied.' }}
+      clip={{ id: 'qubit', caption: 'From the film: a qubit as an arrow on the Bloch sphere, superposition and interference.' }}
       goal="Find out what a qubit really holds, and what measuring it does."
       tasks={tasks}
       complete={allDone}

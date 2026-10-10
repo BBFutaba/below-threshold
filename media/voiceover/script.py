@@ -33,6 +33,7 @@ class SceneScript:
     chapter: str
     title: str
     beats: list[Beat] = field(default_factory=list)
+    part: str = ""  # "Part II · Shor's algorithm"; shown on the chapter card and in the /film menu
 
 
 SCRIPT: list[SceneScript] = [
@@ -44,19 +45,190 @@ SCRIPT: list[SceneScript] = [
             Beat("logo", "", "Team PhASE mark draws itself: circle, axis, the phase vector sweeps to its angle, wordmark writes in.", min_seconds=3.6),
             Beat(
                 "title",
-                "Quantum computers are fragile. This is the story of how we keep them alive, and the race against the clock that decides whether we can.",
+                "A quantum computer could crack the codes that keep the internet's secrets. This is the story of how: Shor's algorithm, the quantum Fourier transform at its heart, and the race to keep fragile qubits alive long enough to run it.",
                 "Title 'Below Threshold' in Computer Modern; a faint d=7 lattice breathes behind it with real syndromes.",
             ),
         ],
     ),
     SceneScript(
-        "fragile",
+        "qubit",
         "Chapter 1",
+        "Arrows, amplitudes and phase",
+        [
+            Beat(
+                "arrow",
+                "This arrow is a qubit. Straight up means zero, straight down means one, and anywhere in between is a superposition: a blend of both at once.",
+                "2D Bloch glyph: the arrow at |0>, flips to |1>, then settles at a real superposition angle; kets labelled.",
+            ),
+            Beat(
+                "amplitudes",
+                "The blend is described by two amplitudes, one for zero and one for one. Square them, and you get the odds of measuring each.",
+                "Two amplitude clocks (disk size = amplitude) beside two probability bars; numbers from QState.",
+            ),
+            Beat(
+                "phase",
+                "But an amplitude is more than a size. It also points in a direction, its phase, like the hand of a clock. Turn that hand, and the odds of a measurement do not change at all.",
+                "The |1> clock hand turns a full circle (real P(phi) states); the probability bars stay exactly level.",
+            ),
+            Beat(
+                "interference",
+                "Phase matters when amplitudes meet. A Hadamard gate adds them up: hands pointing the same way reinforce, opposite hands cancel. That is interference, and it turns a hidden phase into an answer you can measure.",
+                "H P(phi) H: as phi sweeps 0 to pi the hands add as arrows tip to tail; P(1) = sin^2(phi/2) bar rises to 1 (QState sweep).",
+            ),
+            Beat(
+                "waves",
+                "Line up a few qubits, and their clocks can wind around together, like a wave. Waves of phase are the language of the quantum Fourier transform, the engine of Shor's algorithm.",
+                "Eight clocks (3 qubits) wind once, then twice: real states H^3 then per-qubit phase turns.",
+            ),
+        ],
+        part="Part I · Qubits",
+    ),
+    SceneScript(
+        "period",
+        "Chapter 2",
+        "Factoring is a hunt for rhythm",
+        [
+            Beat(
+                "rsa",
+                "Multiplying two primes is easy. Undoing the multiplication is not. RSA, the encryption that protects much of the internet, is built on that gap.",
+                "Two real 50-digit primes multiply instantly into a 100-digit product (seeded Miller-Rabin, BigInt); the reverse arrow gets a question mark.",
+            ),
+            Beat(
+                "powers",
+                "Shor's idea starts with something simple. Pick a number a, and take its powers, keeping only the remainder after dividing by N. For N equals fifteen and a equals seven: one, seven, four, thirteen, and then one again.",
+                "Dots of 7^x mod 15 appear one by one on a plot; the values are written along the bottom.",
+            ),
+            Beat(
+                "period",
+                "The pattern repeats, forever, every four steps. Call that the period, r.",
+                "Alternating bands every 4 steps; r = 4 written.",
+            ),
+            Beat(
+                "recipe",
+                "Once you know r, the factors fall out. Seven to the power two is forty nine, which leaves four. Four minus one is three, four plus one is five, and fifteen is three times five.",
+                "7^2 = 49 = 4 (mod 15); gcd(3, 15) = 3, gcd(5, 15) = 5; 15 = 3 x 5.",
+            ),
+            Beat(
+                "hard",
+                "For a number hundreds of digits long, the period can be hundreds of digits long too. No computer could ever walk that far. A quantum computer does not walk. It listens for the rhythm.",
+                "The plot's x axis zooms out until the dots blur into a band; the period label grows to a long digit string.",
+            ),
+        ],
+        part="Part II · Shor's algorithm",
+    ),
+    SceneScript(
+        "qft",
+        "Chapter 3",
+        "The quantum Fourier transform",
+        [
+            Beat(
+                "listen",
+                "Listening for a rhythm is what the Fourier transform does. Feed it a signal that repeats, and it answers with a sharp spike at the repetition rate.",
+                "A comb signal (every 4th of 16) becomes four spikes; computed with the project's exact DFT.",
+            ),
+            Beat(
+                "clocks",
+                "The quantum version works on amplitudes. Give it a single number x, and it returns every value at once, with value y's clock turned x times y over N. The clocks wind around x times, a wave whose speed encodes x.",
+                "QFT|1> then QFT|3> on 3 qubits: eight clocks wind once, then three times (QState after the real circuit).",
+            ),
+            Beat(
+                "circuit",
+                "And it is astonishingly cheap. A Hadamard on each qubit, then smaller and smaller controlled turns: a half, a quarter, an eighth. Each qubit becomes one clock hand, spinning at its own speed.",
+                "The 3-qubit QFT circuit; a playhead steps gate by gate on |5>; three per-qubit clock hands land at 5/8, 2·5/8, 4·5/8 of a turn (real Bloch vectors).",
+            ),
+            Beat(
+                "comb",
+                "Now feed it a rhythm: equal amplitude on every fourth value. Each output adds up one clock hand from every tooth of the comb. Where the hands agree, they add up. Everywhere else they cancel.",
+                "16-value comb with r = 4; for output 4 the four hands align and add tip to tail; for output 1 they form a closed square and cancel.",
+            ),
+            Beat(
+                "peaks",
+                "Four sharp peaks, at multiples of sixteen over four. Their spacing gives away the period. When the period does not divide evenly, the peaks blur, but they still point the way.",
+                "The comb morphs into four peaks; then a period-3 comb on 64 values gives blurred peaks near multiples of 64/3.",
+            ),
+        ],
+        part="Part II · Shor's algorithm",
+    ),
+    SceneScript(
+        "shor",
+        "Chapter 4",
+        "Shor's algorithm, end to end",
+        [
+            Beat(
+                "registers",
+                "Here is the whole algorithm, simulated exactly, factoring twenty one. Two registers: one counts x, the other will hold two to the x, mod twenty one.",
+                "Two labelled registers: 7 input qubits (x = 0..127), 5 output qubits.",
+            ),
+            Beat(
+                "superpose",
+                "Hadamards put every x, from zero to one hundred twenty seven, into superposition at once.",
+                "128 equal bars rise together.",
+            ),
+            Beat(
+                "compute",
+                "One big circuit computes two to the x, mod twenty one, for all of them in parallel. Each x is now entangled with its value.",
+                "Bars take the colour of their value 2^x mod 21; the six colours repeat every 6.",
+            ),
+            Beat(
+                "measure",
+                "We measure the output register and see eight. Every x that does not give eight vanishes. What survives is a comb, with teeth exactly six apart.",
+                "Seeded measurement gives 8 (data asserts it); other bars fall away; teeth at 3, 9, 15, ...",
+            ),
+            Beat(
+                "transform",
+                "The quantum Fourier transform turns that comb into peaks near multiples of one hundred twenty eight over six.",
+                "Comb morphs into the exact QFT distribution; dashed lines at multiples of 128/6.",
+            ),
+            Beat(
+                "read",
+                "Measure, and we get twenty one. Twenty one over one hundred twenty eight is very close to one sixth. A continued fraction finds that fraction, and its six is the period.",
+                "Seeded measurement gives k = 21; 21/128 = 0.164; convergents 0, 1/6, ...; 1/6 highlighted.",
+            ),
+            Beat(
+                "factors",
+                "Two to the three is eight. Seven and nine each share a factor with twenty one: seven, and three. Twenty one is three times seven.",
+                "2^3 = 8; gcd(7, 21) = 7, gcd(9, 21) = 3; 21 = 3 x 7.",
+            ),
+        ],
+        part="Part II · Shor's algorithm",
+    ),
+    SceneScript(
+        "noise",
+        "Chapter 5",
+        "Noise ruins the answer",
+        [
+            Beat(
+                "perfect",
+                "That was a perfect machine. Real qubits make mistakes. So let every qubit, after every step, have a small chance of a random error, and run the circuit for fifteen two hundred times.",
+                "Gate-level N = 15 circuit on 10 qubits: 200 seeded runs with no noise land only on the four peaks.",
+            ),
+            Beat(
+                "blur",
+                "At one error in a thousand, most runs still land on a peak. At one in a hundred, most of them miss. At five in a hundred, the peaks are gone, and the quantum computer has become a random number generator.",
+                "Histograms at p = 0.1%, 1%, 5% (real runs); an 'on a peak' counter falls toward the pure-chance line.",
+            ),
+            Beat(
+                "scale",
+                "And this circuit was tiny. Breaking real encryption takes around a million qubits running for days. To finish without a single error, each operation could fail only about once in a trillion. The best qubits today fail about once in a thousand.",
+                "A log scale from 10^-1 to 10^-13: today's ~10^-3 marker, the ~10^-12 requirement, the gap highlighted.",
+                verify="Gidney 2025 (arXiv:2505.15917): RSA-2048 with under a million noisy qubits in under a week, assuming 0.1% gate error",
+            ),
+            Beat(
+                "bridge",
+                "No physical qubit is that good. So we build better ones out of many imperfect ones. That is quantum error correction, and it is the rest of this story.",
+                "One qubit glyph splits into a real d = 5 surface-code layout.",
+            ),
+        ],
+        part="Part II · Shor's algorithm",
+    ),
+    SceneScript(
+        "fragile",
+        "Chapter 6",
         "A fragile kind of information",
         [
             Beat(
                 "arrow",
-                "This arrow is a qubit. Pointing straight up, it means zero. Straight down, one. But it can point anywhere in between, and that in-between is where quantum computers get their power.",
+                "Back to our arrow. Up is zero, down is one, and Shor's algorithm lives in between, in the amplitudes and their phases, on every qubit, for the whole computation.",
                 "Bloch sphere in 3D, slowly rotating camera. Arrow at |0>, then |1>, then sweeps to an equator superposition; ket labels in LaTeX.",
             ),
             Beat(
@@ -80,10 +252,11 @@ SCRIPT: list[SceneScript] = [
                 "The phrase 'no-cloning theorem' is written; everything else dims.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "parity",
-        "Chapter 2",
+        "Chapter 7",
         "Ask a different question",
         [
             Beat(
@@ -112,10 +285,11 @@ SCRIPT: list[SceneScript] = [
                 "Correction applied; fidelity meter snaps to 1; 'stabilizer measurement' written in LaTeX.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "digital",
-        "Chapter 3",
+        "Chapter 8",
         "Why errors become digital",
         [
             Beat(
@@ -139,10 +313,11 @@ SCRIPT: list[SceneScript] = [
                 "cos^2(theta/2) and sin^2(theta/2) written beside the bars; dashed formula lines meet the measured bars.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "surface",
-        "Chapter 4",
+        "Chapter 9",
         "Two kinds of error, one grid",
         [
             Beat(
@@ -171,10 +346,11 @@ SCRIPT: list[SceneScript] = [
                 "Chain grows to a full column (real logical X); every check dark; the column glows coral; 'd = 5' written.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "matching",
-        "Chapter 5",
+        "Chapter 10",
         "Decoding is a matching problem",
         [
             Beat(
@@ -208,10 +384,11 @@ SCRIPT: list[SceneScript] = [
                 "Second real seed (logical failure): residual chain spans top to bottom in coral.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "spacetime",
-        "Chapter 6",
+        "Chapter 11",
         "When the checks lie",
         [
             Beat(
@@ -235,10 +412,11 @@ SCRIPT: list[SceneScript] = [
                 "Camera orbits; the real MWPM space-time matching draws through the block.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "threshold",
-        "Chapter 7",
+        "Chapter 12",
         "Below threshold",
         [
             Beat(
@@ -268,10 +446,11 @@ SCRIPT: list[SceneScript] = [
                 verify="Lambda = 2.14 +/- 0.02 in Google Quantum AI, Nature 638 (2025), arXiv:2408.13687",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "realtime",
-        "Chapter 8",
+        "Chapter 13",
         "A race against the clock",
         [
             Beat(
@@ -301,6 +480,7 @@ SCRIPT: list[SceneScript] = [
                 "Third lane labelled 'the requirement: under 1 us per round' stays flat; the moral is written in LaTeX.",
             ),
         ],
+        part="Part III · Keeping it alive",
     ),
     SceneScript(
         "outro",
@@ -309,7 +489,7 @@ SCRIPT: list[SceneScript] = [
         [
             Beat(
                 "takeaway",
-                "Error correction works, but only if the decoder keeps up. Try it yourself: play the game, race the decoder, and watch the threshold appear.",
+                "Shor's algorithm can break today's encryption, but only on qubits kept below threshold, with decoders that keep up. Try it yourself: factor fifteen, play the game, race the decoder, and watch the threshold appear.",
                 "The film's objects return in miniature: Bloch arrow, lattice, curves, backlog; then fade.",
             ),
             Beat("logo", "", "Team PhASE logo, 'Below Threshold', and the site URL.", min_seconds=4.5),

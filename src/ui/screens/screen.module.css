@@ -31,6 +31,9 @@
   gap: clamp(16px, 2.5vw, 28px);
   align-items: start;
 }
+.split > * {
+  min-width: 0; /* let wide children (circuits) scroll instead of stretching the column */
+}
 .canvas {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -184,6 +187,9 @@
   display: grid;
   gap: 18px;
 }
+.stateGrid > * {
+  min-width: 0;
+}
 .blochRow {
   display: flex;
   flex-wrap: wrap;
@@ -197,6 +203,64 @@
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 14px;
+}
+.question {
+  color: var(--text-muted);
+  font-size: 1.08rem;
+  margin: 0;
+}
+.stepper {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.stepperPart {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stepperPart > ol {
+  list-style: none;
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+.stepperLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.stepperDot {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  background: var(--surface);
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.stepperDot:hover {
+  border-color: var(--blue);
+}
+.stepperDot[data-done='1'] {
+  border-color: color-mix(in srgb, var(--green) 70%, transparent);
+  color: var(--green);
+}
+.stepperDot[data-current='1'] {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
 }
 .primer {
   border: 1px dashed var(--border-strong);
