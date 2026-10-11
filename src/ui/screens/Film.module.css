@@ -72,3 +72,20 @@
   color: var(--violet);
   margin-top: 6px;
 }
+
+.pitch {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: center;
+  padding: 18px;
+  margin-bottom: 26px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+@media (max-width: 900px) {
+  .pitch {
+    grid-template-columns: 1fr;
+  }
+}

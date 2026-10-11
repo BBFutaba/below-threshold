@@ -68,3 +68,14 @@ To hear pacing before the real recording, `.venv/Scripts/python media/voiceover/
 - Where a scene shows *one* random draw meant to illustrate an average (the "noise sparks" on growing lattices in Chapter 7), the seed is chosen by a recorded typicality rule (counts within 35% of n·p and increasing with d) so a single draw does not suggest the opposite of the average; the rule and seeds are in `media/data/film/threshold.json`. Every other instance is a fixed seed decoded as-is, including the failure in Chapter 5.
 - Decode times in Chapter 8 are the benchmark medians (no per-round jitter); queues follow the exact FIFO rule of `src/core/realtime.ts`.
 - Willow's Λ ≈ 2.14 is quoted as a citation only (circuit-level noise on hardware); the on-screen Λ values (1.96, 1.75 at p = 4%) are ours, for bit-flip noise.
+
+## The 3-minute pitch video
+
+`docs/media/below-threshold-pitch.mp4` (also on the site's Film page) is the hackathon demo: a 3b1b-style Manim scene (`scenes/pitch.py`, script in `voiceover/pitch_script.py`) with real screen recordings of the live app composited into its windows.
+
+```bash
+.venv/Scripts/python media/pitch_build.py --final            # render, composite, mix narration, captions
+.venv/Scripts/python media/pitch_build.py --final --record   # also re-record the app (scripts/record-pitch.ts)
+```
+
+The scene marks where footage goes with `screen_window()` / `screen_on(id)` / `screen_off(id)` (`scenes/film.py`). `scripts/record-pitch.ts` records each clip from a production build at 1920x1080 by capturing device-scale screenshots. The build fits each clip to its window, speeding it up by at most 1.6x or holding the last frame, and fades it in and out. It fails if the video runs over 3:00. The recording sheet and the full script are in [`docs/pitch-video-script.md`](../docs/pitch-video-script.md).

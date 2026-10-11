@@ -18,6 +18,8 @@ interface SceneEntry {
 interface Manifest {
   scenes: SceneEntry[];
   film: { mp4: string; poster: string; captions: string; durationSec: number; narrated: boolean } | null;
+  /** The 3-minute pitch video (media/pitch_build.py). */
+  pitch?: { mp4: string; poster: string; captions: string; durationSec: number; narrated: boolean };
 }
 
 /** Where to try each chapter's idea in the app. */
@@ -81,6 +83,21 @@ export function Film() {
         <p className="muted">
           The film has not been built yet. Run <code>media/film_build.py</code>.
         </p>
+      )}
+      {m?.pitch && (
+        <section className={css.pitch} aria-label="Three-minute overview">
+          <div>
+            <p className={s.eyebrow}>In a hurry?</p>
+            <h2 style={{ margin: '0 0 6px' }}>The project in {mmss(m.pitch.durationSec)}</h2>
+            <p className="muted" style={{ margin: 0 }}>
+              The 3-minute overview: the problem, a tour of the playground recorded from the live site, and how we checked the physics.
+            </p>
+          </div>
+          <video className={s.video} controls playsInline crossOrigin="anonymous" preload="metadata" poster={`${base}${m.pitch.poster}`} aria-label="Below Threshold in three minutes">
+            <source src={`${base}${m.pitch.mp4}`} type="video/mp4" />
+            <track kind="captions" src={`${base}${m.pitch.captions}`} srcLang="en" label="English" default />
+          </video>
+        </section>
       )}
       {m?.film && (
         <div className={css.layout}>

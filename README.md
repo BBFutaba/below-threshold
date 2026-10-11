@@ -4,7 +4,7 @@
 
 **Factor a number with a quantum computer, then keep it alive.** An interactive guide to Shor's algorithm and the quantum Fourier transform, and to the quantum error correction needed to run them, ending on why real-time decoding is the bottleneck for fault-tolerant quantum computing.
 
-> Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [The film](https://bbfutaba.github.io/below-threshold/film) ([1080p](docs/media/below-threshold-film.mp4), [subtitles](docs/media/below-threshold-film.srt)) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
+> Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [3-minute pitch video](docs/media/below-threshold-pitch.mp4) ([script](docs/pitch-video-script.md)) · [The film](https://bbfutaba.github.io/below-threshold/film) ([1080p](docs/media/below-threshold-film.mp4), [subtitles](docs/media/below-threshold-film.srt)) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
 
 ![Decoding as matching, from the film: a real seeded d = 5 puzzle solved by MWPM](docs/media/matching.gif)
 
@@ -27,7 +27,7 @@
 Yes. Every number in the app is computed live or comes from the validation suite in this repo.
 
 - **Shor and the QFT.** The QFT gate circuit equals the exact discrete Fourier transform on random states (1 to 7 qubits); without noise, the gate-level Shor circuit (Hadamards, controlled modular multiplications, QFT) reproduces the register-level distribution exactly.
-- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 125 unit tests, 54 end-to-end checks (desktop and mobile).
+- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 125 unit tests, 64 end-to-end checks (desktop and mobile).
 - **Thresholds**, reproduced with our own decoders up to d = 13:
 
 | Noise | Decoder | Ours | Stim / PyMatching reference | Published |

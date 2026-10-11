@@ -215,5 +215,12 @@
     "captions": "media/film.vtt",
     "durationSec": 897.03,
     "narrated": false
+  },
+  "pitch": {
+    "mp4": "media/pitch.mp4",
+    "poster": "media/pitch.jpg",
+    "captions": "media/pitch.vtt",
+    "durationSec": 159.93,
+    "narrated": false
   }
 }
