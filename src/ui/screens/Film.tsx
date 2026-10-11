@@ -151,7 +151,7 @@ export function Film() {
               <track kind="captions" src={`${base}${m.film.captions}`} srcLang="en" label="English" default />
             </video>
             <figcaption className="faint" style={{ fontSize: '0.85rem', marginTop: 8 }}>
-              {m.film.narrated ? 'Narrated by Team PhASE.' : 'Narration is being recorded; the captions carry the script for now.'}
+              {m.film.narrated ? 'Narrated by Team PhASE.' : 'This build has no narration track; the captions carry the script.'}
             </figcaption>
           </figure>
           <Card title="Chapters">

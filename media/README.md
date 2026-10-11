@@ -1,6 +1,6 @@
 # The Below Threshold film
 
-A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Community](https://www.manim.community/) 0.22 and LaTeX. It runs about 15 minutes in sixteen scenes, in three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the quantum Fourier transform, then quantum error correction as the wrap-up. Each scene is also a standalone clip embedded in the app, and the whole film plays on the site's `/film` page.
+A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Community](https://www.manim.community/) 0.22 and LaTeX. It runs about 15 minutes (14:52) in sixteen scenes (an intro, fourteen chapters and an outro), in three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the quantum Fourier transform, then quantum error correction as the wrap-up. Each chapter is also a standalone clip embedded in the app next to its interactive version, and the whole film plays on the site's `/film` page, below the 3-minute pitch video.
 
 **Never faked.** Every lattice, syndrome, error, matching, curve and decoder timing comes from the project's own simulation code (`src/core`). It is exported by `scripts/film/<scene>.ts` to `media/data/film/<scene>.json`, or comes from the validation and benchmark data in `media/data/` and `src/data/`.
 
@@ -22,7 +22,7 @@ A narrated explainer in the style of 3Blue1Brown and 2swap, built with [Manim Co
 | 8 | `parity.py` | Ask a different question | 3-qubit code with ancillas: syndromes, fidelity |
 | 9 | `digital.py` | Why errors become digital | 200 seeded QState runs of an Rx(0.9) error |
 | 10 | `surface.py` | Two kinds of error, one grid | d = 5 layout, real syndromes, logical operator |
-| 11 | `matching.py` | Decoding is a matching problem | d = 5 bit-flip instances (seeds 111 and 59), MWPM matching and distances |
+| 11 | `matching.py` | Decoding is a matching problem | d = 5 bit-flip instances (seed 10060 at p = 8%, seed 153 at p = 12%), MWPM matching and distances |
 | 12 | `spacetime.py` | When the checks lie | Phenomenological instance and its space-time matching |
 | 13 | `threshold.py` | Below threshold | Validation curves (d = 5, 7, 9) and our Λ |
 | 14 | `realtime.py` | A race against the clock | Measured decode times (`src/data/bench.json`), FIFO backlog model |
@@ -42,7 +42,7 @@ Or record every line in order into one folder and import it:
 .venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/explanation
 ```
 
-`voiceover/import_takes.py` pairs the takes (ordered by the number at the end of the file name; retakes may skip numbers) with the lines in sheet order, and refuses if the counts differ. It cleans each take up for the mix: a 70 Hz high-pass, light noise reduction at the take's measured room tone, a trim to the speech, gentle compression, and normalization to -16 LUFS. On Windows it then runs the built-in offline speech recognizer (`voiceover/asr.ps1`). If any take matches another line better than its own, the import stops and nothing is replaced. The recognizer also aligns each line's words to the audio (`<beat>.words.json`, tied to that exact file and its length). Scenes place visuals on phrases with `film.word_time`, which uses those real word times instead of assuming an even reading pace. If a line is edited after it was recorded, or its take is replaced by hand (say a new `<beat>.wav`), its alignment is ignored and that line falls back to the even pace. `recordings/takes.json` records which raw take became which line, with its trim, gain and recognition score. The raw takes folder is gitignored.
+`voiceover/import_takes.py` pairs the takes (ordered by the numbers in the file name, compared in turn, so `Track 1_017_1` sorts by 1, then 17, then 1; retakes may skip numbers) with the lines in sheet order, and refuses if the counts differ or two takes share a number. It cleans each take up for the mix: a 70 Hz high-pass, light noise reduction at the take's measured room tone, a trim to the speech, gentle compression, and normalization to -16 LUFS. On Windows it then runs the built-in offline speech recognizer (`voiceover/asr.ps1`). If any take matches another line better than its own, the import stops and nothing is replaced. The recognizer also aligns each line's words to the audio (`<beat>.words.json`, tied to that exact file and its length). Scenes place visuals on phrases with `film.word_time`, which uses those real word times instead of assuming an even reading pace. If a line is edited after it was recorded, or its take is replaced by hand (say a new `<beat>.wav`), its alignment is ignored and that line falls back to the even pace. `recordings/takes.json` records which raw take became which line, with its trim, gain and recognition score. The raw takes folder is gitignored.
 
 ## Build
 
@@ -62,10 +62,10 @@ Outputs:
 - `public/media/<scene>.{mp4,webm,jpg,vtt}`: 720p clips with captions, used in the app.
 - `public/media/film.{mp4,jpg,vtt}`: the full film in 720p, for `/film`.
 - `docs/media/below-threshold-film.{mp4,vtt,srt}`: the full film in 1080p, with subtitles.
-- `docs/media/{matching,threshold}.gif`: excerpts for the README.
+- `docs/media/{matching,threshold,qft}.gif`: short excerpts from the film (the README shows `matching.gif`).
 - `public/media/manifest.json`: scene list with film start times (the `/film` chapter menu).
 
-To hear pacing before the real recording, `.venv/Scripts/python media/voiceover/draft_tts.py` synthesizes a draft voice with Windows' offline speech engine into `media/voiceover/draft/` (gitignored). `NARRATION=draft` makes the build use it.
+To hear the pacing of a new or edited line before it is recorded, `.venv/Scripts/python media/voiceover/draft_tts.py` synthesizes a draft voice with Windows' offline speech engine into `media/voiceover/draft/` (gitignored). `NARRATION=draft` makes the build use the drafts instead of the team's recordings.
 
 ## Brand
 
@@ -73,8 +73,8 @@ To hear pacing before the real recording, `.venv/Scripts/python media/voiceover/
 
 ## Notes on data choices
 
-- Where a scene shows *one* random draw meant to illustrate an average (the "noise sparks" on growing lattices in Chapter 7), the seed is chosen by a recorded typicality rule (counts within 35% of n·p and increasing with d) so a single draw does not suggest the opposite of the average; the rule and seeds are in `media/data/film/threshold.json`. Every other instance is a fixed seed decoded as-is, including the failure in Chapter 5.
-- Decode times in Chapter 8 are the benchmark medians (no per-round jitter); queues follow the exact FIFO rule of `src/core/realtime.ts`.
+- Where a scene shows *one* random draw meant to illustrate an average (the "noise sparks" on growing lattices in Chapter 13), the seed is chosen by a recorded typicality rule (counts within 35% of n·p and increasing with d) so a single draw does not suggest the opposite of the average; the rule and seeds are in `media/data/film/threshold.json`. Every other instance is a fixed seed decoded as-is, including the failure in Chapter 11.
+- Decode times in Chapter 14 are the benchmark medians (no per-round jitter); queues follow the exact FIFO rule of `src/core/realtime.ts`.
 - Willow's Λ ≈ 2.14 is quoted as a citation only (circuit-level noise on hardware); the on-screen Λ values (1.96, 1.75 at p = 4%) are ours, for bit-flip noise.
 
 ## The 3-minute pitch video

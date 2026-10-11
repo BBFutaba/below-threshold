@@ -25,7 +25,7 @@ Every number quoted in the app, pitch or write-up that does not come from our ow
 ## Hardware context
 
 12. Google Quantum AI and collaborators, "Quantum error correction below the surface code threshold", *Nature* 638, 920 (2025); arXiv:2408.13687 (2024). Below-threshold surface-code memory on the Willow processor; error suppression factor Λ ≈ 2.14 per distance step (d = 3 → 5 → 7), roughly a microsecond per cycle, and real-time decoding. The app says "each step from d = 3 to 5 to 7 cut the logical error per cycle by a factor of about 2.1 (Λ ≈ 2.14)". **verify** Λ, the cycle time and the real-time decoding latency figures before quoting them in the pitch.
-13. "Physical error about once per thousand operations" (pitch opening line): a commonly cited ballpark for today's best two-qubit gates. **verify** against a current source (e.g. reference 12's reported gate errors) and adjust.
+13. "Physical error about once per thousand operations" (the pitch video's noise line, the noise beat of the live pitch in docs/pitch.md, and film Chapter 6): a commonly cited ballpark for today's best two-qubit gates. **verify** against a current source (e.g. reference 12's reported gate errors) and adjust.
 
 ## Prior art
 
