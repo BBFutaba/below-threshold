@@ -1,0 +1,31 @@
+{
+ "text": "Then factor fifteen end to end: superposition, modular exponentiation, the Fourier transform, continued fractions, and out come the factors, three times five.",
+ "audio": "shor.flac",
+ "seconds": 11.722,
+ "starts": [
+  0.12,
+  0.501,
+  1.009,
+  1.58,
+  1.82,
+  1.96,
+  2.306,
+  3.344,
+  3.966,
+  5.073,
+  5.419,
+  6.042,
+  6.803,
+  7.564,
+  8.325,
+  8.67,
+  9.016,
+  9.431,
+  9.777,
+  10.4,
+  10.67,
+  11.1
+ ],
+ "anchored": 7,
+ "source": "Windows speech recognition, interpolated by word length"
+}

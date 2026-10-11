@@ -1,0 +1,32 @@
+{
+ "text": "Shor's algorithm needs qubits that survive. That takes error correction, and decoders that keep up. Come and play, and keep it below threshold.",
+ "audio": "close.flac",
+ "seconds": 9.61,
+ "starts": [
+  0.12,
+  0.692,
+  1.59,
+  1.995,
+  2.459,
+  2.806,
+  3.327,
+  3.675,
+  4.08,
+  4.35,
+  5.18,
+  5.4,
+  6.06,
+  6.24,
+  6.52,
+  6.84,
+  7.32,
+  7.44,
+  7.96,
+  8.165,
+  8.41,
+  8.574,
+  8.86
+ ],
+ "anchored": 11,
+ "source": "Windows speech recognition, interpolated by word length"
+}

@@ -11,7 +11,7 @@
    rendered with narration-driven timing (media/voiceover/pitch_script.py).
 2. The scene declares "screen windows" (timings JSON: id, start, end, pixel rect). Real
    recordings of the live app (scripts/record-pitch.ts -> media/build/pitch/clips/<id>.mp4)
-   are fitted to each interval (sped up at most 1.6x, or held on their last frame), faded
+   are fitted to each interval (played at 0.85x to 1.6x speed, then held on their last frame), faded
    in and out, and overlaid into the window.
 3. Recorded narration (media/voiceover/recordings/pitch/<beat>.wav) is mixed at each beat.
 4. The video is cut into the four sections of pitch_script.SECTIONS (one per team member) at
@@ -45,6 +45,7 @@ OUT_SECTIONS = OUT_DOCS / "pitch-sections"
 OUT_PUB = ROOT / "public" / "media"
 DATA = ROOT / "media" / "data" / "film" / "pitch.json"
 MAX_SPEEDUP = 1.6
+MIN_SPEED = 0.85  # a clip a little shorter than its window plays slightly slower rather than freezing
 FADE = 0.35
 
 
@@ -64,7 +65,7 @@ def composite(scene_mp4: Path, timing: dict, audio: Path | None, out: Path) -> N
         mp4, start, length = clip_info(sc["id"])
         cmd += ["-i", str(mp4)]
         D = sc["end"] - sc["start"]
-        speed = min(MAX_SPEEDUP, max(1.0, length / D))
+        speed = min(MAX_SPEEDUP, max(MIN_SPEED, length / D))
         hold = max(0.0, D - length / speed) + 0.1
         r = sc["rect"]
         filt.append(

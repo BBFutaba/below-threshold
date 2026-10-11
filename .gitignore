@@ -20,3 +20,4 @@ media/voiceover/draft/
 media/fonts/
 # Raw voiceover takes; import_takes.py turns them into recordings/<scene>/<beat>.flac
 media/voiceover/recordings/explanation/
+media/voiceover/recordings/pitch/section */

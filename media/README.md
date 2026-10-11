@@ -87,6 +87,13 @@ To hear pacing before the real recording, `.venv/Scripts/python media/voiceover/
 .venv/Scripts/python media/pitch_build.py --split            # only re-cut the four sections from the last build
 ```
 
-The scene marks where footage goes with `screen_window()` / `screen_on(id)` / `screen_off(id)` (`scenes/film.py`). `scripts/record-pitch.ts` records each clip from a production build at 1920x1080 by capturing device-scale screenshots. The build fits each clip to its window, speeding it up by at most 1.6x or holding the last frame, and fades it in and out. It fails if the video runs over 3:00.
+The pitch is narrated by the team too, one section per person. Each section's takes go in their own folder, `media/voiceover/recordings/pitch/section <n>/` (gitignored), in recording order. The sections can be recorded in any order. Then run:
+
+```bash
+.venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/pitch --video pitch
+.venv/Scripts/python media/pitch_build.py --final
+```
+
+The scene marks where footage goes with `screen_window()` / `screen_on(id)` / `screen_off(id)` (`scenes/film.py`). `scripts/record-pitch.ts` records each clip from a production build at 1920x1080 by capturing device-scale screenshots. The build fits each clip to its window, playing it at 0.85x to 1.6x speed and then holding the last frame if needed, and fades it in and out. It fails if the video runs over 3:00.
 
 The video is split into four sections, one per team member (`SECTIONS` in `voiceover/pitch_script.py`): the build cuts it at those beat boundaries into `docs/media/pitch-sections/pitch-<n>-<slug>.mp4` (exact frames, subtitles embedded and as `.srt`), marks the same sections as chapters in the full video, and lists them as jump buttons on the Film page. The recording sheet, grouped by section, and the full script are in [`docs/pitch-video-script.md`](../docs/pitch-video-script.md).

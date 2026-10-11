@@ -1,43 +1,43 @@
 1
-00:00:00,250 --> 00:00:05,250
+00:00:00,320 --> 00:00:05,728
 In the lab, real Monte Carlo runs let you watch the threshold appear:
 
 2
-00:00:05,250 --> 00:00:07,173
+00:00:05,728 --> 00:00:07,617
 below it, bigger codes win.
 
 3
-00:00:07,173 --> 00:00:10,250
+00:00:07,617 --> 00:00:11,240
 And a narrated film walks through every idea.
 
 4
-00:00:10,950 --> 00:00:12,873
+00:00:11,987 --> 00:00:13,770
 None of it is faked.
 
 5
-00:00:12,873 --> 00:00:18,642
+00:00:13,770 --> 00:00:21,109
 Our matching decoder finds the same minimum as PyMatching on all ninety thousand test problems,
 
 6
-00:00:18,642 --> 00:00:23,258
+00:00:21,109 --> 00:00:26,797
 our code layout matches Stim, our thresholds land on the published values,
 
 7
-00:00:23,258 --> 00:00:28,258
+00:00:26,797 --> 00:00:31,585
 and close to two hundred automated tests check the physics and the app.
 
 8
-00:00:28,258 --> 00:00:30,950
+00:00:31,585 --> 00:00:34,777
 We even list exactly what we simplify.
 
 9
-00:00:31,650 --> 00:00:33,958
+00:00:35,520 --> 00:00:38,727
 Shor's algorithm needs qubits that survive.
 
 10
-00:00:33,958 --> 00:00:37,419
+00:00:38,727 --> 00:00:42,240
 That takes error correction, and decoders that keep up.
 
 11
-00:00:37,419 --> 00:00:40,496
+00:00:42,240 --> 00:00:45,060
 Come and play, and keep it below threshold.

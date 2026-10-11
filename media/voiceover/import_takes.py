@@ -1,12 +1,15 @@
-"""Import a folder of raw voiceover takes as the film's narration recordings.
+"""Import a folder of raw voiceover takes as narration recordings, for the film or the pitch.
 
     .venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/explanation
+    .venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/pitch --video pitch
     .venv/Scripts/python media/voiceover/import_takes.py <folder> --dry-run   # only show the pairing
 
-Takes are paired, in order of the number at the end of their file names (retakes may skip
-numbers), with the spoken lines of the film in recording-sheet order (docs/voiceover-script.md).
-The counts must match. Each take is prepared for the mix and written as
-media/voiceover/recordings/<scene>/<beat>.flac:
+Takes are paired, in the order of the numbers in their file names (retakes may skip numbers;
+"Track 1_017_1" sorts by 1, then 17, then 1), with the spoken lines in recording-sheet order
+(docs/voiceover-script.md, docs/pitch-video-script.md). A folder with "section <n>" subfolders
+pairs each subfolder with that section of the pitch (pitch_script.SECTIONS), so sections can be
+recorded in any order and by different people. The counts must match. Each take is prepared for
+the mix and written as media/voiceover/recordings/<scene>/<beat>.flac:
 
   - 70 Hz high-pass (rumble) and light spectral noise reduction at the take's measured room tone;
   - trimmed to the speech, keeping 0.12 s before the first word and 0.3 s after the last, with
@@ -20,7 +23,8 @@ On Windows, the built-in offline speech recognizer (asr.ps1) then
   2. aligns the line's words to the audio, written as <beat>.words.json; the scenes use these
      real word times to land visuals on phrases (scenes/film.py, word_time). Without it they
      assume an even reading pace.
-A summary of every take goes to media/voiceover/recordings/takes.json.
+A summary of every take goes to media/voiceover/recordings/takes.json (the pitch's to
+recordings/pitch/takes.json).
 """
 
 from __future__ import annotations
@@ -46,6 +50,7 @@ sys.path.insert(0, str(ROOT / "media"))
 sys.path.insert(0, str(HERE))
 
 import film_build as fb  # noqa: E402
+from pitch_script import PITCH, SECTIONS  # noqa: E402
 from script import SCRIPT  # noqa: E402
 
 REC = HERE / "recordings"
@@ -57,17 +62,51 @@ TARGET_LUFS = -16.0
 # --------------------------------------------------------------------------- pairing
 
 
-def spoken_lines() -> list[tuple[str, str, str]]:
-    """(scene, beat, text) for every spoken line, in recording-sheet order."""
+def spoken_lines(video: str = "film") -> list[tuple[str, str, str]]:
+    """(scene, beat, text) for every spoken line of the film or the pitch, in recording-sheet order."""
+    if video == "pitch":
+        return [("pitch", b.key, b.text) for b in PITCH.beats if b.text]
     by_id = {s.id: s for s in SCRIPT}
     return [(sid, b.key, b.text) for sid, *_ in fb.SCENES for b in by_id[sid].beats if b.text]
 
 
-def take_number(p: Path) -> int:
-    m = re.search(r"(\d+)\D*$", p.stem)
-    if not m:
-        raise SystemExit(f"{p.name}: no take number at the end of the file name")
-    return int(m.group(1))
+def take_number(p: Path) -> tuple[int, ...]:
+    """Sort key: every number in the file name, in order ("Track 1_017_1" -> (1, 17, 1))."""
+    nums = tuple(int(n) for n in re.findall(r"\d+", p.stem))
+    if not nums:
+        raise SystemExit(f"{p.name}: no take number in the file name")
+    return nums
+
+
+def audio_files(folder: Path) -> list[Path]:
+    return sorted((p for p in folder.iterdir() if p.is_file() and p.suffix.lower() in fb.AUDIO_EXT), key=take_number)
+
+
+def pair_takes(folder: Path, video: str) -> list[tuple[Path, tuple[str, str, str]]]:
+    """Pair the takes with the lines: one flat folder in order, or (pitch) one subfolder per section."""
+    lines = spoken_lines(video)
+    sub = {int(m.group(1)): d for d in folder.iterdir() if d.is_dir() and (m := re.fullmatch(r"section\s*(\d+)", d.name, re.I))}
+    groups: list[tuple[list[Path], list[tuple[str, str, str]], str]] = []
+    if sub:
+        if video != "pitch":
+            raise SystemExit("section subfolders are for the pitch: add --video pitch")
+        by_key = {key: (sid, key, text) for sid, key, text in lines}
+        for n, sec in enumerate(SECTIONS, 1):
+            if n not in sub:
+                raise SystemExit(f"no folder for section {n} ({sec.title}) in {folder}")
+            groups.append((audio_files(sub[n]), [by_key[k] for k in sec.beats if k in by_key], sub[n].name))
+    else:
+        groups.append((audio_files(folder), lines, folder.name))
+    pairs = []
+    for takes, want, where in groups:
+        nums = [take_number(p) for p in takes]
+        dups = sorted({p.name for p, n in zip(takes, nums) if nums.count(n) > 1})
+        if dups:
+            raise SystemExit(f"{where}: several takes share a number, so their order is ambiguous: {', '.join(dups)}")
+        if len(takes) != len(want):
+            raise SystemExit(f"{where}: {len(takes)} takes for {len(want)} lines ({', '.join(k for _, k, _ in want)}); they must match one to one")
+        pairs += list(zip(takes, want))
+    return pairs
 
 
 # --------------------------------------------------------------------------- audio
@@ -276,21 +315,14 @@ def align(text: str, words: list[dict], t_lo: float, t_hi: float) -> tuple[list[
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("folder", type=Path)
+    ap.add_argument("--video", choices=["film", "pitch"], default="film", help="which script the takes are for")
     ap.add_argument("--dry-run", action="store_true", help="only print the pairing")
     args = ap.parse_args()
-    takes = sorted((p for p in args.folder.iterdir() if p.suffix.lower() in fb.AUDIO_EXT), key=take_number)
-    nums = [take_number(p) for p in takes]
-    dups = sorted({n for n in nums if nums.count(n) > 1})
-    if dups:
-        print("several takes share a number, so their order is ambiguous:", ", ".join(p.name for p in takes if take_number(p) in dups))
-        return 1
-    lines = spoken_lines()
-    if len(takes) != len(lines):
-        print(f"{len(takes)} takes for {len(lines)} lines: they must match one to one.")
-        return 1
+    pairs = pair_takes(args.folder, args.video)
+    takes, lines = [p for p, _ in pairs], [line for _, line in pairs]
     ahead = fb.AUDIO_EXT[: fb.AUDIO_EXT.index(".flac")]  # extensions the build would pick before .flac
     for p, (sid, key, _) in zip(takes, lines):
-        print(f"  {p.name:<20} -> {sid}/{key}")
+        print(f"  {p.parent.name + '/' + p.name:<34} -> {sid}/{key}")
         clash = [q for ext in ahead if (q := REC / sid / f"{key}{ext}").exists()]
         if clash:
             print(f"    {clash[0]} exists and would take precedence over the import; remove it first.")
@@ -317,6 +349,7 @@ def main() -> int:
                 wavs.append(w)
             print("recognizing the takes (Windows speech recognition)...")
             asr = run_asr(wavs, tmp)
+            # Compare with every line of the same video (the order of `lines` may differ from the script's).
             sims = similarity_table([a["text"] for a in asr], [t for *_, t in lines])
             bad = []
             for i, (r, a, (sid, key, text)) in enumerate(zip(report, asr, lines)):
@@ -347,7 +380,8 @@ def main() -> int:
                 shutil.move(staged, REC / sid / f"{key}.words.json")
             else:
                 (REC / sid / f"{key}.words.json").unlink(missing_ok=True)  # an old alignment would not fit the new take
-    (REC / "takes.json").write_text(json.dumps(report, indent=1), encoding="utf-8")
+    report_path = REC / "pitch" / "takes.json" if args.video == "pitch" else REC / "takes.json"
+    report_path.write_text(json.dumps(report, indent=1), encoding="utf-8")
     total = sum(r["seconds"] for r in report)
     print(f"imported {len(report)} takes, {total / 60:.1f} min of narration -> {REC.relative_to(ROOT)}/<scene>/<beat>.flac")
     return 0
