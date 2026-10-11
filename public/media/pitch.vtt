@@ -1,0 +1,165 @@
+WEBVTT
+
+1
+00:00:03.287 --> 00:00:08.417
+In 1994, Peter Shor showed that a quantum computer could factor huge numbers,
+
+2
+00:00:08.417 --> 00:00:10.837
+and break the encryption that protects the internet.
+
+3
+00:00:10.837 --> 00:00:15.267
+Thirty years later, no quantum computer has done it at a useful scale.
+
+4
+00:00:15.267 --> 00:00:16.867
+The reason is noise.
+
+5
+00:00:17.653 --> 00:00:18.499
+We are Team PhASE,
+
+6
+00:00:18.499 --> 00:00:22.379
+and Below Threshold is an interactive playground that takes you from a single qubit,
+
+7
+00:00:22.379 --> 00:00:26.813
+through Shor's algorithm, to the error correction that keeps it alive.
+
+8
+00:00:27.553 --> 00:00:32.523
+Every chapter runs on an exact quantum simulator, right in your browser.
+
+9
+00:00:32.523 --> 00:00:34.613
+You do not read about superposition:
+
+10
+00:00:34.613 --> 00:00:38.161
+you build it, measure it, and watch interference cancel.
+
+11
+00:00:38.920 --> 00:00:43.490
+At the heart of Shor's algorithm is the quantum Fourier transform.
+
+12
+00:00:43.490 --> 00:00:47.100
+Step through the real gate circuit, one gate at a time,
+
+13
+00:00:47.100 --> 00:00:51.250
+and watch a repeating pattern turn into sharp peaks.
+
+14
+00:00:52.020 --> 00:00:54.206
+Then factor fifteen end to end:
+
+15
+00:00:54.206 --> 00:01:00.225
+superposition, modular exponentiation, the Fourier transform, continued fractions,
+
+16
+00:01:00.225 --> 00:01:03.672
+and out come the factors, three times five.
+
+17
+00:01:04.420 --> 00:01:05.694
+Now add noise.
+
+18
+00:01:05.694 --> 00:01:10.947
+On ten simulated qubits, the peaks blur, and the answer is lost.
+
+19
+00:01:10.947 --> 00:01:15.374
+Real qubits fail roughly once in every thousand operations.
+
+20
+00:01:16.120 --> 00:01:22.120
+Quantum error correction spreads one qubit across many, and asks them whether they agree,
+
+21
+00:01:22.120 --> 00:01:23.902
+without ever looking at the answer.
+
+22
+00:01:23.902 --> 00:01:29.070
+The lit checks are clues, and a decoder has to work out what went wrong.
+
+23
+00:01:29.820 --> 00:01:31.280
+So you play the decoder.
+
+24
+00:01:31.280 --> 00:01:36.646
+Errors are hidden; only the alarms light up, like real hardware.
+
+25
+00:01:36.646 --> 00:01:41.058
+A guided first level makes it playable with no background,
+
+26
+00:01:41.058 --> 00:01:45.220
+and then a real matching decoder solves the same puzzle.
+
+27
+00:01:45.987 --> 00:01:47.370
+Here is the twist.
+
+28
+00:01:47.370 --> 00:01:51.655
+A real chip produces these puzzles a million times a second.
+
+29
+00:01:51.655 --> 00:01:57.057
+Our real-time mode measures each decoder live in your browser:
+
+30
+00:01:57.057 --> 00:02:03.126
+exact matching falls behind, the backlog grows, and the computation stalls.
+
+31
+00:02:03.887 --> 00:02:09.295
+In the lab, real Monte Carlo runs let you watch the threshold appear:
+
+32
+00:02:09.295 --> 00:02:11.184
+below it, bigger codes win.
+
+33
+00:02:11.184 --> 00:02:14.807
+And a narrated film walks through every idea.
+
+34
+00:02:15.553 --> 00:02:17.336
+None of it is faked.
+
+35
+00:02:17.336 --> 00:02:24.675
+Our matching decoder finds the same minimum as PyMatching on all ninety thousand test problems,
+
+36
+00:02:24.675 --> 00:02:30.363
+our code layout matches Stim, our thresholds land on the published values,
+
+37
+00:02:30.363 --> 00:02:35.151
+and close to two hundred automated tests check the physics and the app.
+
+38
+00:02:35.151 --> 00:02:38.343
+We even list exactly what we simplify.
+
+39
+00:02:39.087 --> 00:02:42.294
+Shor's algorithm needs qubits that survive.
+
+40
+00:02:42.294 --> 00:02:45.807
+That takes error correction, and decoders that keep up.
+
+41
+00:02:45.807 --> 00:02:48.627
+Come and play, and keep it below threshold.

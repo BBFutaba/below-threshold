@@ -34,7 +34,15 @@ Shared code: `scenes/film.py` holds the narration timing, LaTeX helpers, the cha
 
 The script lives in [`media/voiceover/script.py`](voiceover/script.py), one beat per line of voiceover. Scenes play their visuals inside `with self.beat("key") as T:`. Each beat lasts at least as long as its line takes to say: the recording's length if a recording exists, otherwise an estimate at about 155 words per minute. The film is therefore always cut to the voice. Every render writes `media/build/timings/<scene>.json`, which feeds the captions, the audio mix and the recording sheet.
 
-To record the voiceover, follow [`docs/voiceover-script.md`](../docs/voiceover-script.md) (generated, with timestamps and file names). Put one file per line in `media/voiceover/recordings/<scene>/<beat>.wav`, then rebuild.
+The film is narrated by the team: one take per line in `media/voiceover/recordings/<scene>/<beat>.flac`. To re-record, follow [`docs/voiceover-script.md`](../docs/voiceover-script.md) (generated, with timestamps and file names) and put one file per line in `media/voiceover/recordings/<scene>/<beat>.wav`, then rebuild.
+
+Or record every line in order into one folder and import it:
+
+```bash
+.venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/explanation
+```
+
+`voiceover/import_takes.py` pairs the takes (ordered by the number at the end of the file name; retakes may skip numbers) with the lines in sheet order, and refuses if the counts differ. It cleans each take up for the mix: a 70 Hz high-pass, light noise reduction at the take's measured room tone, a trim to the speech, gentle compression, and normalization to -16 LUFS. On Windows it then runs the built-in offline speech recognizer (`voiceover/asr.ps1`). If any take matches another line better than its own, the import stops and nothing is replaced. The recognizer also aligns each line's words to the audio (`<beat>.words.json`, tied to that exact file and its length). Scenes place visuals on phrases with `film.word_time`, which uses those real word times instead of assuming an even reading pace. If a line is edited after it was recorded, or its take is replaced by hand (say a new `<beat>.wav`), its alignment is ignored and that line falls back to the even pace. `recordings/takes.json` records which raw take became which line, with its trim, gain and recognition score. The raw takes folder is gitignored.
 
 ## Build
 
@@ -68,3 +76,24 @@ To hear pacing before the real recording, `.venv/Scripts/python media/voiceover/
 - Where a scene shows *one* random draw meant to illustrate an average (the "noise sparks" on growing lattices in Chapter 7), the seed is chosen by a recorded typicality rule (counts within 35% of n·p and increasing with d) so a single draw does not suggest the opposite of the average; the rule and seeds are in `media/data/film/threshold.json`. Every other instance is a fixed seed decoded as-is, including the failure in Chapter 5.
 - Decode times in Chapter 8 are the benchmark medians (no per-round jitter); queues follow the exact FIFO rule of `src/core/realtime.ts`.
 - Willow's Λ ≈ 2.14 is quoted as a citation only (circuit-level noise on hardware); the on-screen Λ values (1.96, 1.75 at p = 4%) are ours, for bit-flip noise.
+
+## The 3-minute pitch video
+
+`docs/media/below-threshold-pitch.mp4` (also on the site's Film page) is the hackathon demo: a 3b1b-style Manim scene (`scenes/pitch.py`, script in `voiceover/pitch_script.py`) with real screen recordings of the live app composited into its windows.
+
+```bash
+.venv/Scripts/python media/pitch_build.py --final            # render, composite, mix narration, captions
+.venv/Scripts/python media/pitch_build.py --final --record   # also re-record the app (scripts/record-pitch.ts)
+.venv/Scripts/python media/pitch_build.py --split            # only re-cut the four sections from the last build
+```
+
+The pitch is narrated by the team too, one section per person. Each section's takes go in their own folder, `media/voiceover/recordings/pitch/section <n>/` (gitignored), in recording order. The sections can be recorded in any order. Then run:
+
+```bash
+.venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/pitch --video pitch
+.venv/Scripts/python media/pitch_build.py --final
+```
+
+The scene marks where footage goes with `screen_window()` / `screen_on(id)` / `screen_off(id)` (`scenes/film.py`). `scripts/record-pitch.ts` records each clip from a production build at 1920x1080 by capturing device-scale screenshots. The build fits each clip to its window, playing it at 0.85x to 1.6x speed and then holding the last frame if needed, and fades it in and out. It fails if the video runs over 3:00.
+
+The video is split into four sections, one per team member (`SECTIONS` in `voiceover/pitch_script.py`): the build cuts it at those beat boundaries into `docs/media/pitch-sections/pitch-<n>-<slug>.mp4` (exact frames, subtitles embedded and as `.srt`), marks the same sections as chapters in the full video, and lists them as jump buttons on the Film page. The recording sheet, grouped by section, and the full script are in [`docs/pitch-video-script.md`](../docs/pitch-video-script.md).

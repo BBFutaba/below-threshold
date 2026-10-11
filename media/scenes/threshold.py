@@ -68,6 +68,7 @@ from film import (
     NarratedMovingScene,
     load,
     script_scene,
+    word_time,
 )
 
 D_COL = {5: "#4A7DF0", 7: "#7CC4FF", 9: "#F4F6FB"}
@@ -82,10 +83,10 @@ def _norm(w: str) -> str:
 
 
 class Cues:
-    """Beat-relative clock. `at(phrase)` estimates when a phrase is spoken (uniform pace)."""
+    """Beat-relative clock. `at(phrase)` is when a phrase is spoken (real word times if aligned, else an even pace)."""
 
     def __init__(self, scene, key: str, T: float):
-        self.scene, self.T, self.t0 = scene, T, scene.renderer.time
+        self.scene, self.T, self.t0, self.key = scene, T, scene.renderer.time, key
         b = next(b for b in script_scene(scene.scene_id).beats if b.key == key)
         self.tokens = [_norm(w) for w in b.text.replace("—", " ").split() if any(ch.isalnum() for ch in w)]
         self.speech = max(0.5, T - LEAD_IN - TAIL) if b.text else T
@@ -94,7 +95,7 @@ class Cues:
         ws = [_norm(w) for w in phrase.split()]
         for i in range(len(self.tokens)):
             if self.tokens[i : i + len(ws)] == ws:
-                return LEAD_IN + self.speech * i / len(self.tokens)
+                return LEAD_IN + word_time(self.scene.scene_id, self.key, i, self.speech)
         raise KeyError(phrase)
 
     def now(self) -> float:

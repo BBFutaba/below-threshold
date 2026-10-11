@@ -66,6 +66,9 @@ WORDS_PER_SECOND = 2.6  # ~155 wpm, a calm explainer pace
 LEAD_IN = 0.25  # silence before a line starts
 TAIL = 0.45  # breath after a line
 AUDIO_EXT = (".wav", ".m4a", ".mp3", ".flac", ".ogg")
+# Where app screen recordings are composited (scene units; 16:9 interior).
+SCREEN_W = 12.0
+SCREEN_CENTER = np.array([0.0, -0.32, 0.0])
 YELLOW = "#FFD166"  # 3b1b-style "look here" highlight (used sparingly)
 
 # --------------------------------------------------------------------------- LaTeX
@@ -112,6 +115,39 @@ def recording_for(scene_id: str, key: str) -> Path | None:
         if p.exists():
             return p
     return None
+
+
+@lru_cache(maxsize=None)
+def word_starts(scene_id: str, key: str) -> tuple[float, ...] | None:
+    """When each word of a recorded line starts, in seconds into the recording.
+
+    Written next to the recording by media/voiceover/import_takes.py (<beat>.words.json). None if
+    the line has no alignment, if its text changed after it was recorded, or if the recording is
+    no longer the audio the alignment was made from."""
+    rec = recording_for(scene_id, key)
+    if rec is None:
+        return None
+    p = rec.with_name(f"{key}.words.json")
+    if not p.exists():
+        return None
+    data = json.loads(p.read_text(encoding="utf-8"))
+    b = next((b for b in script_scene(scene_id).beats if b.key == key), None)
+    if b is None or data.get("text") != b.text or len(data.get("starts", [])) != words(b.text):
+        return None
+    # Only for the exact audio it was made from: a retake (another file, or a re-recorded one) has other timing.
+    if data.get("audio") != rec.name or abs(float(data.get("seconds", -1)) - _ffprobe_duration(rec)) > 0.02:
+        return None
+    return tuple(float(t) for t in data["starts"])
+
+
+def word_time(scene_id: str, key: str, i: int, speech: float) -> float:
+    """When word i of a line is spoken, in seconds after its speech starts: the recording's real
+    word times when the line has been aligned, otherwise an even pace across `speech` seconds."""
+    starts = word_starts(scene_id, key)
+    if starts is not None and 0 <= i < len(starts):
+        return starts[i]
+    b = next(b for b in script_scene(scene_id).beats if b.key == key)
+    return speech * i / max(1, words(b.text))
 
 
 def speech_seconds(scene_id: str, beat: Beat) -> tuple[float, str]:
@@ -194,6 +230,36 @@ class Narrated:
         self.wait(max(0.1, seconds - 1.3 - 0.6))
         self.play(FadeOut(VGroup(g, rule), shift=0.1 * UP), run_time=0.6)
 
+    # ------------------------------------------------------------------ app footage
+    def screen_window(self, label: str = "") -> VGroup:
+        """The window that real app footage is composited into (see media/pitch_build.py).
+
+        Draw it, then call screen_on(id) when the footage should appear and screen_off(id)
+        before the window leaves. Keep the inside empty: the recording covers it.
+        """
+        from manim import RoundedRectangle
+
+        w, h = SCREEN_W, SCREEN_W * 9 / 16
+        frame = RoundedRectangle(width=w + 0.12, height=h + 0.12, corner_radius=0.16)
+        frame.set_fill(BG, opacity=1).set_stroke(MUTED, width=2.0, opacity=0.9).move_to(SCREEN_CENTER)
+        g = VGroup(frame)
+        if label:
+            t = TX(label, size=30, color=MUTED).next_to(frame, UP, buff=0.14).align_to(frame, LEFT).shift(RIGHT * 0.1)
+            g.add(t)
+        g.frame = frame
+        return g
+
+    def screen_on(self, clip_id: str):
+        self._narration_init()
+        self._nar.setdefault("screens", []).append({"id": clip_id, "start": self.renderer.time, "end": None})
+
+    def screen_off(self, clip_id: str):
+        for sc in reversed(self._nar.get("screens", [])):
+            if sc["id"] == clip_id and sc["end"] is None:
+                sc["end"] = self.renderer.time
+                return
+        raise RuntimeError(f"screen_off({clip_id!r}) without screen_on")
+
     def tear_down(self):
         super().tear_down()
         self._narration_init()
@@ -203,6 +269,20 @@ class Narrated:
             raise RuntimeError(f"{self.scene_id}: beats never played: {missing}")
         TIMINGS.mkdir(parents=True, exist_ok=True)
         data = {"scene": self.scene_id, "duration": self.renderer.time, "beats": self._nar["beats"]}
+        screens = self._nar.get("screens", [])
+        if screens:
+            if any(sc["end"] is None for sc in screens):
+                raise RuntimeError(f"{self.scene_id}: a screen window was never closed")
+            # Pixel rectangle of the window interior, for ffmpeg's overlay.
+            from manim import config
+
+            ppu = config.pixel_width / config.frame_width
+            w = SCREEN_W * ppu
+            h = w * 9 / 16
+            cx = config.pixel_width / 2 + SCREEN_CENTER[0] * ppu
+            cy = config.pixel_height / 2 - SCREEN_CENTER[1] * ppu
+            rect = {"x": round(cx - w / 2), "y": round(cy - h / 2), "w": round(w / 2) * 2, "h": round(h / 2) * 2}
+            data["screens"] = [dict(sc, rect=rect) for sc in screens]
         (TIMINGS / f"{self.scene_id}.json").write_text(json.dumps(data, indent=1), encoding="utf-8")
         over = [b for b in self._nar["beats"] if b["overrun"] > 0.3]
         for b in over:

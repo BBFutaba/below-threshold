@@ -143,3 +143,16 @@ test('footer Team PhASE opens the team page', async ({ page }) => {
   await expect(page).toHaveURL(/\/team$/);
   await expect(page.locator('main').getByRole('link', { name: 'zl2941@nyu.edu' })).toHaveAttribute('href', 'mailto:zl2941@nyu.edu');
 });
+
+test('the pitch video jumps to each of its four sections', async ({ page, request }) => {
+  const manifest = (await (await request.get('/media/manifest.json')).json()) as { pitch: { sections: { startSec: number }[] } };
+  await page.goto('/film');
+  const sections = page.getByRole('list', { name: 'Pitch sections' }).getByRole('button');
+  await expect(sections).toHaveCount(4);
+  await expect(sections.nth(2)).toContainText('Play: error correction and the decoder');
+  const pitch = page.locator('video[aria-label="Below Threshold in three minutes"]');
+  for (const [i, s] of manifest.pitch.sections.entries()) {
+    await sections.nth(i).click();
+    await expect.poll(() => pitch.evaluate((v) => (v as unknown as { currentTime: number }).currentTime)).toBeCloseTo(s.startSec + 0.05, 2);
+  }
+});

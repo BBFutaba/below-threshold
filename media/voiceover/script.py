@@ -530,6 +530,10 @@ def scene(sid: str) -> SceneScript:
     for s in SCRIPT:
         if s.id == sid:
             return s
+    if sid == "pitch":
+        from pitch_script import PITCH  # the 3-minute pitch video has its own script module
+
+        return PITCH
     raise KeyError(sid)
 
 

@@ -1,61 +1,61 @@
 WEBVTT
 
 1
-00:00:02.617 --> 00:00:04.540
+00:00:02.687 --> 00:00:04.392
 That was a perfect machine.
 
 2
-00:00:04.540 --> 00:00:06.078
+00:00:04.392 --> 00:00:06.227
 Real qubits make mistakes.
 
 3
-00:00:06.078 --> 00:00:11.847
+00:00:06.227 --> 00:00:11.522
 So let every qubit, after every step, have a small chance of a random error,
 
 4
-00:00:11.847 --> 00:00:15.309
+00:00:11.522 --> 00:00:15.417
 and run the circuit for fifteen two hundred times.
 
 5
-00:00:15.983 --> 00:00:20.983
+00:00:16.187 --> 00:00:20.141
 At one error in a thousand, most runs still land on a peak.
 
 6
-00:00:20.983 --> 00:00:24.445
+00:00:20.141 --> 00:00:23.237
 At one in a hundred, most of them miss.
 
 7
-00:00:24.445 --> 00:00:27.906
+00:00:23.237 --> 00:00:26.237
 At five in a hundred, the peaks are gone,
 
 8
-00:00:27.906 --> 00:00:31.753
+00:00:26.237 --> 00:00:29.617
 and the quantum computer has become a random number generator.
 
 9
-00:00:32.450 --> 00:00:34.373
+00:00:30.353 --> 00:00:31.528
 And this circuit was tiny.
 
 10
-00:00:34.373 --> 00:00:38.604
+00:00:31.528 --> 00:00:36.773
 Breaking real encryption takes around a million qubits running for days.
 
 11
-00:00:38.604 --> 00:00:44.758
+00:00:36.773 --> 00:00:42.573
 To finish without a single error, each operation could fail only about once in a trillion.
 
 12
-00:00:44.758 --> 00:00:48.604
+00:00:42.573 --> 00:00:45.963
 The best qubits today fail about once in a thousand.
 
 13
-00:00:49.283 --> 00:00:51.591
+00:00:46.720 --> 00:00:48.520
 No physical qubit is that good.
 
 14
-00:00:51.591 --> 00:00:55.437
+00:00:48.520 --> 00:00:52.230
 So we build better ones out of many imperfect ones.
 
 15
-00:00:55.437 --> 00:01:00.437
+00:00:52.230 --> 00:00:56.370
 That is quantum error correction, and it is the rest of this story.

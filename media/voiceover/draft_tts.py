@@ -37,7 +37,9 @@ $s.SetOutputToNull()
 def main() -> None:
     want = set(sys.argv[1:])
     items = []
-    for sc in SCRIPT:
+    from pitch_script import PITCH  # the 3-minute pitch video; only drafted when asked for
+
+    for sc in SCRIPT + ([PITCH] if "pitch" in want else []):
         if want and sc.id not in want:
             continue
         for b in sc.beats:

@@ -1,69 +1,69 @@
 WEBVTT
 
 1
-00:00:02.617 --> 00:00:06.463
+00:00:02.687 --> 00:00:06.757
 Here is the whole algorithm, simulated exactly, factoring twenty one.
 
 2
-00:00:06.463 --> 00:00:07.232
+00:00:06.757 --> 00:00:07.750
 Two registers:
 
 3
-00:00:07.232 --> 00:00:12.617
+00:00:07.750 --> 00:00:12.597
 one counts x, the other will hold two to the x, mod twenty one.
 
 4
-00:00:13.317 --> 00:00:19.086
+00:00:13.353 --> 00:00:20.106
 Hadamards put every x, from zero to one hundred twenty seven, into superposition at once.
 
 5
-00:00:19.783 --> 00:00:26.322
+00:00:21.153 --> 00:00:26.188
 One big circuit computes two to the x, mod twenty one, for all of them in parallel.
 
 6
-00:00:26.322 --> 00:00:29.399
+00:00:26.188 --> 00:00:29.013
 Each x is now entangled with its value.
 
 7
-00:00:30.083 --> 00:00:33.160
+00:00:29.753 --> 00:00:32.773
 We measure the output register and see eight.
 
 8
-00:00:33.160 --> 00:00:36.237
+00:00:32.773 --> 00:00:35.533
 Every x that does not give eight vanishes.
 
 9
-00:00:36.237 --> 00:00:40.083
+00:00:35.533 --> 00:00:40.353
 What survives is a comb, with teeth exactly six apart.
 
 10
-00:00:40.783 --> 00:00:47.706
+00:00:41.120 --> 00:00:47.450
 The quantum Fourier transform turns that comb into peaks near multiples of one hundred twenty eight over six.
 
 11
-00:00:48.383 --> 00:00:50.691
+00:00:48.220 --> 00:00:50.116
 Measure, and we get twenty one.
 
 12
-00:00:50.691 --> 00:00:55.691
+00:00:50.116 --> 00:00:54.930
 Twenty one over one hundred twenty eight is very close to one sixth.
 
 13
-00:00:55.691 --> 00:01:00.306
+00:00:54.930 --> 00:00:59.730
 A continued fraction finds that fraction, and its six is the period.
 
 14
-00:01:00.983 --> 00:01:03.291
+00:01:00.487 --> 00:01:02.197
 Two to the three is eight.
 
 15
-00:01:03.291 --> 00:01:07.137
+00:01:02.197 --> 00:01:06.367
 Seven and nine each share a factor with twenty one:
 
 16
-00:01:07.137 --> 00:01:08.291
+00:01:06.367 --> 00:01:09.077
 seven, and three.
 
 17
-00:01:08.291 --> 00:01:10.599
+00:01:09.077 --> 00:01:12.557
 Twenty one is three times seven.

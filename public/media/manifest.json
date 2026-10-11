@@ -5,215 +5,244 @@
       "chapter": "",
       "part": "",
       "title": "Below Threshold",
-      "durationSec": 19.7,
+      "durationSec": 17.83,
       "filmStartSec": 0.0,
       "mp4": "media/intro.mp4",
       "webm": "media/intro.webm",
       "poster": "media/intro.jpg",
       "captions": "media/intro.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "qubit",
       "chapter": "Chapter 1",
       "part": "Part I \u00b7 Quantum basics",
       "title": "What is a qubit?",
-      "durationSec": 51.63,
-      "filmStartSec": 19.7,
+      "durationSec": 51.17,
+      "filmStartSec": 17.83,
       "mp4": "media/qubit.mp4",
       "webm": "media/qubit.webm",
       "poster": "media/qubit.jpg",
       "captions": "media/qubit.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "entangle",
       "chapter": "Chapter 2",
       "part": "Part I \u00b7 Quantum basics",
       "title": "Many qubits, and entanglement",
-      "durationSec": 71.57,
-      "filmStartSec": 71.33,
+      "durationSec": 73.2,
+      "filmStartSec": 69.0,
       "mp4": "media/entangle.mp4",
       "webm": "media/entangle.webm",
       "poster": "media/entangle.jpg",
       "captions": "media/entangle.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "period",
       "chapter": "Chapter 3",
       "part": "Part II \u00b7 Shor's algorithm",
       "title": "Factoring is a hunt for rhythm",
-      "durationSec": 60.87,
-      "filmStartSec": 142.9,
+      "durationSec": 70.63,
+      "filmStartSec": 142.2,
       "mp4": "media/period.mp4",
       "webm": "media/period.webm",
       "poster": "media/period.jpg",
       "captions": "media/period.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "qft",
       "chapter": "Chapter 4",
       "part": "Part II \u00b7 Shor's algorithm",
       "title": "The quantum Fourier transform",
-      "durationSec": 71.03,
-      "filmStartSec": 203.77,
+      "durationSec": 76.93,
+      "filmStartSec": 212.83,
       "mp4": "media/qft.mp4",
       "webm": "media/qft.webm",
       "poster": "media/qft.jpg",
       "captions": "media/qft.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "shor",
       "chapter": "Chapter 5",
       "part": "Part II \u00b7 Shor's algorithm",
       "title": "Shor's algorithm, end to end",
-      "durationSec": 71.03,
-      "filmStartSec": 274.8,
+      "durationSec": 73.0,
+      "filmStartSec": 289.76,
       "mp4": "media/shor.mp4",
       "webm": "media/shor.webm",
       "poster": "media/shor.jpg",
       "captions": "media/shor.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "noise",
       "chapter": "Chapter 6",
       "part": "Part II \u00b7 Shor's algorithm",
       "title": "Noise ruins the answer",
-      "durationSec": 60.87,
-      "filmStartSec": 345.83,
+      "durationSec": 56.8,
+      "filmStartSec": 362.76,
       "mp4": "media/noise.mp4",
       "webm": "media/noise.webm",
       "poster": "media/noise.jpg",
       "captions": "media/noise.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "fragile",
       "chapter": "Chapter 7",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "A fragile kind of information",
-      "durationSec": 57.0,
-      "filmStartSec": 406.7,
+      "durationSec": 57.97,
+      "filmStartSec": 419.56,
       "mp4": "media/fragile.mp4",
       "webm": "media/fragile.webm",
       "poster": "media/fragile.jpg",
       "captions": "media/fragile.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "parity",
       "chapter": "Chapter 8",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "Ask a different question",
-      "durationSec": 61.93,
-      "filmStartSec": 463.7,
+      "durationSec": 64.9,
+      "filmStartSec": 477.53,
       "mp4": "media/parity.mp4",
       "webm": "media/parity.webm",
       "poster": "media/parity.jpg",
       "captions": "media/parity.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "digital",
       "chapter": "Chapter 9",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "Why errors become digital",
-      "durationSec": 55.1,
-      "filmStartSec": 525.63,
+      "durationSec": 48.6,
+      "filmStartSec": 542.43,
       "mp4": "media/digital.mp4",
       "webm": "media/digital.webm",
       "poster": "media/digital.jpg",
       "captions": "media/digital.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "surface",
       "chapter": "Chapter 10",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "Two kinds of error, one grid",
-      "durationSec": 64.63,
-      "filmStartSec": 580.73,
+      "durationSec": 57.6,
+      "filmStartSec": 591.03,
       "mp4": "media/surface.mp4",
       "webm": "media/surface.webm",
       "poster": "media/surface.jpg",
       "captions": "media/surface.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "matching",
       "chapter": "Chapter 11",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "Decoding is a matching problem",
-      "durationSec": 71.27,
-      "filmStartSec": 645.37,
+      "durationSec": 63.93,
+      "filmStartSec": 648.63,
       "mp4": "media/matching.mp4",
       "webm": "media/matching.webm",
       "poster": "media/matching.jpg",
       "captions": "media/matching.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "spacetime",
       "chapter": "Chapter 12",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "When the checks lie",
-      "durationSec": 41.7,
-      "filmStartSec": 716.63,
+      "durationSec": 40.93,
+      "filmStartSec": 712.56,
       "mp4": "media/spacetime.mp4",
       "webm": "media/spacetime.webm",
       "poster": "media/spacetime.jpg",
       "captions": "media/spacetime.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "threshold",
       "chapter": "Chapter 13",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "Below threshold",
-      "durationSec": 62.3,
-      "filmStartSec": 758.33,
+      "durationSec": 64.06,
+      "filmStartSec": 753.5,
       "mp4": "media/threshold.mp4",
       "webm": "media/threshold.webm",
       "poster": "media/threshold.jpg",
       "captions": "media/threshold.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "realtime",
       "chapter": "Chapter 14",
       "part": "Part III \u00b7 Keeping it alive",
       "title": "A race against the clock",
-      "durationSec": 58.17,
-      "filmStartSec": 820.63,
+      "durationSec": 55.5,
+      "filmStartSec": 817.56,
       "mp4": "media/realtime.mp4",
       "webm": "media/realtime.webm",
       "poster": "media/realtime.jpg",
       "captions": "media/realtime.vtt",
-      "narrated": false
+      "narrated": true
     },
     {
       "id": "outro",
       "chapter": "",
       "part": "",
       "title": "Keep it below threshold",
-      "durationSec": 18.23,
-      "filmStartSec": 878.79,
+      "durationSec": 19.33,
+      "filmStartSec": 873.06,
       "mp4": "media/outro.mp4",
       "webm": "media/outro.webm",
       "poster": "media/outro.jpg",
       "captions": "media/outro.vtt",
-      "narrated": false
+      "narrated": true
     }
   ],
   "film": {
     "mp4": "media/film.mp4",
     "poster": "media/film.jpg",
     "captions": "media/film.vtt",
-    "durationSec": 897.03,
-    "narrated": false
+    "durationSec": 892.39,
+    "narrated": true
+  },
+  "pitch": {
+    "mp4": "media/pitch.mp4",
+    "poster": "media/pitch.jpg",
+    "captions": "media/pitch.vtt",
+    "durationSec": 172.07,
+    "narrated": true,
+    "sections": [
+      {
+        "n": 1,
+        "title": "The problem",
+        "startSec": 0.0
+      },
+      {
+        "n": 2,
+        "title": "Learn: from a qubit to Shor's algorithm",
+        "startSec": 27.23
+      },
+      {
+        "n": 3,
+        "title": "Play: error correction and the decoder",
+        "startSec": 75.8
+      },
+      {
+        "n": 4,
+        "title": "Prove: the lab, the checks, the close",
+        "startSec": 123.57
+      }
+    ]
   }
 }

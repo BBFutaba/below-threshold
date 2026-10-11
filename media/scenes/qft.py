@@ -172,10 +172,11 @@ class QftScene(Cued, NarratedScene):
             playhead = DashedLine([x0, 2.25, 0], [x0, -1.35, 0], dash_length=0.08).set_stroke(AMBER, width=3)
             self.add(playhead)
             cues = {1: "A Hadamard on each qubit", 2: "a half, a quarter", 3: "an eighth"}
-            per = max(0.45, (T - self.now() - 3.2) / len(gates))
             for k in range(1, len(gates) + 1):
                 if k in cues:
                     self.wait_to(self.cue(cues[k]))
+                # Re-plan the pace after every wait, so a slower read never pushes the gates past the line.
+                per = max(0.35, (T - self.now() - 3.2) / (len(gates) - k + 1))
                 hx = x0 + dx * k
                 self.play(playhead.animate.move_to([hx, playhead.get_center()[1], 0]), boxes[k - 1].animate.set_opacity(0.55), *set_hands(k), run_time=per * 0.75)
                 self.wait(per * 0.25)

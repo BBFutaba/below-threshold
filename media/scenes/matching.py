@@ -211,6 +211,7 @@ class MatchingScene(NarratedMovingScene):
 
         # ------------------------------------------------------------------ graph
         with self.beat("graph") as T:
+            fit = min(1.0, (T - 0.15) / 9.6)  # the steps below take 9.6 s; a quicker read speeds them up to fit
             lat.save_state()
             keys = list(lit) + ["B"]
             homes = {i: lat.anchor[i] for i in lit}
@@ -237,7 +238,7 @@ class MatchingScene(NarratedMovingScene):
                 *[lat.dots[i].animate.set_opacity(0) for i in lit],
                 *[Transform(copies[i], self.nodes[i].copy().clear_updaters()) for i in lit],
                 *[lat.tiles[i].animate.set_opacity(0) for i in lit],
-                run_time=2.0,
+                run_time=2.0 * fit,
             )
             # Swap the static copies for the live nodes (same place, same look).
             self.remove(*copies.values())
@@ -252,14 +253,14 @@ class MatchingScene(NarratedMovingScene):
                 edges[1].animate.scale(0.04).move_to(bpos).set_opacity(0),
                 frame.animate.set(width=12.8).move_to([GC[0] + 0.2, 0.0, 0]),
                 p_lab.animate.set_opacity(0.3),
-                run_time=2.4,
+                run_time=2.4 * fit,
                 rate_func=smooth,
             )
             self.remove(edges)
             self.anchors["B"].move_to(bpos)
             self.nodes["B"].move_to(bpos)
             blab = TX(r"\textit{boundary}", size=30, color=MUTED).next_to(bpos, DOWN, buff=0.38)
-            self.play(FadeIn(self.nodes["B"], scale=0.4), FadeIn(blab, shift=0.1 * UP), run_time=0.7)
+            self.play(FadeIn(self.nodes["B"], scale=0.4), FadeIn(blab, shift=0.1 * UP), run_time=0.7 * fit)
             self.blab = blab
 
             # 3. Every pair can be joined; the cost is the real shortest-chain length.
@@ -275,10 +276,10 @@ class MatchingScene(NarratedMovingScene):
             self.add(*self.gedges.values())
             self.play(
                 LaggedStart(*[e.grow.animate.set_value(1) for e in self.gedges.values()], lag_ratio=0.12),
-                run_time=1.9,
+                run_time=1.9 * fit,
             )
-            self.play(LaggedStart(*[FadeIn(l, scale=0.5) for l in self.glabels.values()], lag_ratio=0.1), run_time=1.6)
-            self.play(self.amp.animate.set_value(1.0), run_time=1.0, rate_func=linear)
+            self.play(LaggedStart(*[FadeIn(l, scale=0.5) for l in self.glabels.values()], lag_ratio=0.1), run_time=1.6 * fit)
+            self.play(self.amp.animate.set_value(1.0), run_time=1.0 * fit, rate_func=linear)
 
         # ------------------------------------------------------------------ mwpm
         with self.beat("mwpm") as T:
