@@ -89,6 +89,15 @@ media/             Manim scenes and their data export  docs/        write-up, pi
 
 Built by **Team PhASE** for the Quantum Unlocked track. The logo's wordmark is set in Latin Modern (the OpenType Computer Modern, GUST Font License); the mark is a phase diagram. Sources: `media/brand/`.
 
+All four of us are in the NYU MS in Applied Quantum Science and Technology program (also on the site's [Team page](https://bbfutaba.github.io/below-threshold/team)).
+
+| Member | Email | Roles |
+| --- | --- | --- |
+| Prahlad MV | pmv6845@nyu.edu | Coder, Voice Over, Theory Crafting |
+| Dennis Li | zl2941@nyu.edu | Coder, Voice Over, Theory Crafting |
+| Ben Kahl | bk3362@nyu.edu | Voice Over, Theory Crafting |
+| Siwei Zhang | sz5789@nyu.edu | Voice Over, Theory Crafting |
+
 ## Prior art and credits
 
 Error-correction games exist, notably James Wootton's *Decodoku* (around 2016). Below Threshold adds the quantum basics, a decoder replay, measurement errors, the real-time backlog and a validated threshold lab in one experience. The blossom implementation is a TypeScript port of Joris van Rantwijk's public-domain `mwmatching.py`. Validation uses [Stim](https://github.com/quantumlib/Stim) and [PyMatching](https://github.com/oscarhiggott/PyMatching). Full references: [CITATIONS.md](CITATIONS.md).

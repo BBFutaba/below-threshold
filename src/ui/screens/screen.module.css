@@ -331,3 +331,11 @@
   display: grid;
   gap: 10px;
 }
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 18px;
+}
+.teamGrid > * {
+  min-width: 0;
+}
