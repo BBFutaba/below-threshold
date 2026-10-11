@@ -23,6 +23,7 @@ const Lab = lazy(() => import('./ui/screens/Lab').then((m) => ({ default: m.Lab 
 const Leaderboard = lazy(() => import('./ui/screens/Leaderboard').then((m) => ({ default: m.Leaderboard })));
 const Film = lazy(() => import('./ui/screens/Film').then((m) => ({ default: m.Film })));
 const Honesty = lazy(() => import('./ui/screens/Honesty').then((m) => ({ default: m.Honesty })));
+const Team = lazy(() => import('./ui/screens/Team').then((m) => ({ default: m.Team })));
 
 const CHAPTER_ROUTES: Record<string, React.ComponentType> = {
   superposition: Chapter1,
@@ -73,6 +74,7 @@ export function App() {
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="film" element={<Film />} />
             <Route path="honesty" element={<Honesty />} />
+            <Route path="team" element={<Team />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>

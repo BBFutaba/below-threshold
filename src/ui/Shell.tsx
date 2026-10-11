@@ -85,10 +85,10 @@ export function Shell() {
         <Outlet />
       </main>
       <footer className={css.footer}>
-        <span className={css.footerBrand}>
+        <NavLink to="/team" className={css.footerBrand} aria-label="Made by Team PhASE: meet the team">
           <span className="faint">Made by</span>
           <TeamLogo height={30} />
-        </span>
+        </NavLink>
         <span className="faint">Every number on this site is computed live or comes from our validation suite.</span>
         <NavLink to="/leaderboard" className={css.footerLink}>
           Leaderboard

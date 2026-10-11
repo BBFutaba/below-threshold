@@ -25,6 +25,7 @@ const ROUTES = [
   ['/leaderboard', 'Humans vs the decoder'],
   ['/honesty', 'What we simplify'],
   ['/film', 'The film'],
+  ['/team', 'Team PhASE'],
 ] as const;
 
 test.beforeEach(async ({ page }) => {
@@ -134,4 +135,11 @@ test('explainer clips load under cross-origin isolation', async ({ page }) => {
   const video = page.locator('video').first();
   await expect(video).toBeVisible();
   await expect.poll(() => video.evaluate((v) => (v as unknown as { readyState: number }).readyState), { timeout: 15_000 }).toBeGreaterThan(0);
+});
+
+test('footer Team PhASE opens the team page', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('footer').getByRole('link', { name: /Team PhASE/ }).click();
+  await expect(page).toHaveURL(/\/team$/);
+  await expect(page.locator('main').getByRole('link', { name: 'zl2941@nyu.edu' })).toHaveAttribute('href', 'mailto:zl2941@nyu.edu');
 });
