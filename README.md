@@ -20,7 +20,7 @@
 | **Real-time** | Rounds arrive on a clock; decoder speed is **measured live in your browser**. Slow decoders build a backlog and T gates stall. |
 | **Lab** | Live Monte Carlo in Web Workers: watch curves for different distances cross at the threshold, drag the noise level, read off the suppression factor Λ. |
 | **Leaderboard** | Humans vs the decoder on identical seeded puzzles; QR event mode; optional shared board. |
-| **Film** | A ~15-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), fourteen chapters in the same three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the QFT, then error correction as the wrap-up. Every frame is drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
+| **Film** | The 3-minute pitch video (narrated by the team, with a jump button for each of its four sections), then a ~15-minute explainer narrated by Team PhASE in the style of 3Blue1Brown and 2swap (Manim + LaTeX), fourteen chapters in the same three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the QFT, then error correction as the wrap-up. Every frame is drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
 
 ## Is it real?
 
