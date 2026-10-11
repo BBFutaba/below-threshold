@@ -175,19 +175,22 @@ class Narrated:
         if not sc.chapter:
             return
         self.silent(seconds, "chapter")
-        num = TX(rf"\textsc{{{sc.chapter.lower()}}}", size=30, color=MUTED)
+        label = sc.chapter.lower()
+        parts = []
+        if sc.part:
+            # "Part II · Shor's algorithm": the part's name in italics, then "part ii · chapter 3".
+            pnum, _, pname = sc.part.partition(" · ")
+            label = rf"{pnum.lower()} \textperiodcentered\ {label}"
+            parts.append(TX(rf"\textit{{{pname}}}", size=30, color=FAINT))
+        parts.append(TX(rf"\textsc{{{label}}}", size=30, color=MUTED))
         title = TX(sc.title, size=56)
-        g = VGroup(num, title).arrange(DOWN, buff=0.28)
+        g = VGroup(*parts, title).arrange(DOWN, buff=0.26)
+        head = VGroup(*parts)
         rule = Line(LEFT * 1.6, RIGHT * 1.6, stroke_width=1.5, color=FAINT).next_to(title, DOWN, buff=0.3)
         if isinstance(self, ThreeDScene):
             self.add_fixed_in_frame_mobjects(g, rule)
-            g.set_opacity(0)
-            rule.set_opacity(0)
-            num.set_opacity(1)
-            title.set_opacity(1)
-            rule.set_opacity(1)
             self.remove(g, rule)
-        self.play(FadeIn(num, shift=0.1 * DOWN), Write(title), Create(rule), run_time=1.3)
+        self.play(FadeIn(head, shift=0.1 * DOWN), Write(title), Create(rule), run_time=1.3)
         self.wait(max(0.1, seconds - 1.3 - 0.6))
         self.play(FadeOut(VGroup(g, rule), shift=0.1 * UP), run_time=0.6)
 

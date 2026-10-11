@@ -1,0 +1,77 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.540
+One qubit holds two amplitudes.
+
+2
+00:00:04.540 --> 00:00:07.617
+Two qubits are not just two separate arrows:
+
+3
+00:00:07.617 --> 00:00:13.001
+the pair has four possibilities, zero zero, zero one, one zero and one one,
+
+4
+00:00:13.001 --> 00:00:14.924
+and an amplitude for each.
+
+5
+00:00:15.617 --> 00:00:18.309
+Every qubit you add doubles that list.
+
+6
+00:00:18.309 --> 00:00:21.001
+Ten qubits hold over a thousand amplitudes.
+
+7
+00:00:21.001 --> 00:00:25.232
+Three hundred hold more than there are atoms in the universe.
+
+8
+00:00:25.232 --> 00:00:29.078
+A register of qubits can hold every number at once.
+
+9
+00:00:29.750 --> 00:00:31.288
+Now the strange part.
+
+10
+00:00:31.288 --> 00:00:36.673
+A Hadamard, then a CNOT, leaves amplitude only on zero zero and one one.
+
+11
+00:00:36.673 --> 00:00:38.981
+Measure the pair a hundred times:
+
+12
+00:00:38.981 --> 00:00:43.596
+each qubit alone is a coin flip, but the two always agree.
+
+13
+00:00:44.283 --> 00:00:47.745
+This pair cannot be split into two separate arrows.
+
+14
+00:00:47.745 --> 00:00:50.437
+Each qubit's own arrow shrinks to nothing,
+
+15
+00:00:50.437 --> 00:00:53.514
+because the information lives only in the correlation.
+
+16
+00:00:53.514 --> 00:00:58.514
+That is entanglement, and both Shor's algorithm and error correction depend on it.
+
+17
+00:00:59.217 --> 00:01:04.986
+Line up a few qubits, and their clocks can wind around together, like a wave.
+
+18
+00:01:04.986 --> 00:01:09.217
+Waves of phase are the language of the quantum Fourier transform,
+
+19
+00:01:09.217 --> 00:01:11.140
+the engine of Shor's algorithm.

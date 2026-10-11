@@ -1,13 +1,17 @@
 WEBVTT
 
 1
-00:00:03.850 --> 00:00:05.388
-Quantum computers are fragile.
+00:00:03.850 --> 00:00:08.465
+A quantum computer could crack the codes that keep the internet's secrets.
 
 2
-00:00:05.388 --> 00:00:09.235
-This is the story of how we keep them alive,
+00:00:08.465 --> 00:00:10.773
+This is the story of how:
 
 3
-00:00:09.235 --> 00:00:13.465
-and the race against the clock that decides whether we can.
+00:00:10.773 --> 00:00:14.235
+Shor's algorithm, the quantum Fourier transform at its heart,
+
+4
+00:00:14.235 --> 00:00:19.235
+and the race to keep fragile qubits alive long enough to run it.

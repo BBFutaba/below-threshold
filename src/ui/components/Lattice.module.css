@@ -166,3 +166,12 @@
 .menuBack {
   fill: color-mix(in srgb, var(--bg) 55%, transparent);
 }
+
+.watch {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2.5;
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+  animation: fade-in var(--t-med) var(--ease) both;
+}

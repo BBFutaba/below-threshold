@@ -10,6 +10,12 @@ const Chapter3 = lazy(() => import('./ui/screens/chapters/Chapter3').then((m) =>
 const Chapter4 = lazy(() => import('./ui/screens/chapters/Chapter4').then((m) => ({ default: m.Chapter4 })));
 const Chapter5 = lazy(() => import('./ui/screens/chapters/Chapter5').then((m) => ({ default: m.Chapter5 })));
 const Chapter6 = lazy(() => import('./ui/screens/chapters/Chapter6').then((m) => ({ default: m.Chapter6 })));
+const ChapterMulti = lazy(() => import('./ui/screens/chapters/ChapterMulti').then((m) => ({ default: m.ChapterMulti })));
+const ChapterPhase = lazy(() => import('./ui/screens/chapters/ChapterPhase').then((m) => ({ default: m.ChapterPhase })));
+const ChapterPeriod = lazy(() => import('./ui/screens/chapters/ChapterPeriod').then((m) => ({ default: m.ChapterPeriod })));
+const ChapterQft = lazy(() => import('./ui/screens/chapters/ChapterQft').then((m) => ({ default: m.ChapterQft })));
+const ChapterShor = lazy(() => import('./ui/screens/chapters/ChapterShor').then((m) => ({ default: m.ChapterShor })));
+const ChapterNoise = lazy(() => import('./ui/screens/chapters/ChapterNoise').then((m) => ({ default: m.ChapterNoise })));
 const Bridge = lazy(() => import('./ui/screens/chapters/Bridge').then((m) => ({ default: m.Bridge })));
 const Game = lazy(() => import('./ui/screens/Game').then((m) => ({ default: m.Game })));
 const RealTime = lazy(() => import('./ui/screens/RealTime').then((m) => ({ default: m.RealTime })));
@@ -20,6 +26,12 @@ const Honesty = lazy(() => import('./ui/screens/Honesty').then((m) => ({ default
 
 const CHAPTER_ROUTES: Record<string, React.ComponentType> = {
   superposition: Chapter1,
+  'multi-qubit': ChapterMulti,
+  phase: ChapterPhase,
+  period: ChapterPeriod,
+  qft: ChapterQft,
+  shor: ChapterShor,
+  noise: ChapterNoise,
   'no-cloning': Chapter2,
   entanglement: Chapter3,
   syndrome: Chapter4,
@@ -51,6 +63,8 @@ export function App() {
             <Route index element={<Landing />} />
             <Route path="learn" element={<Library />} />
             <Route path="learn/:slug" element={<ChapterRoute />} />
+            <Route path="shor" element={<Navigate to="/learn/shor" replace />} />
+            <Route path="qft" element={<Navigate to="/learn/qft" replace />} />
             <Route path="bridge" element={<Bridge />} />
             <Route path="play" element={<Game />} />
             <Route path="play/:level" element={<Game />} />

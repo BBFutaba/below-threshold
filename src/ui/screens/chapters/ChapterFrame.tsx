@@ -1,9 +1,10 @@
-// Shared frame for the six chapters: navigation, optional 30-second primer, goal line,
-// task list, the canvas/panel split and the "aha" card on completion.
+// Shared frame for the chapters: navigation (with a stepper across the three parts),
+// optional 30-second primer, goal line, task list, the canvas/panel split and the "aha"
+// card on completion.
 
 import { useEffect, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { CHAPTERS, chapterBySlug, type ChapterMeta } from '../../content';
+import { CHAPTERS, PARTS, chapterBySlug, partById, type ChapterMeta } from '../../content';
 import { useApp } from '../../../store/app';
 import { ButtonLink, Button, GoalLine } from '../../components/ui';
 import { play } from '../../sound';
@@ -48,6 +49,8 @@ export function ChapterFrame({
   }, [complete, done, meta.slug, completeChapter]);
 
   const next = CHAPTERS.find((c) => c.n === meta.n + 1);
+  const part = partById(meta.part);
+  const nextPart = next && next.part !== meta.part ? partById(next.part) : null;
   const needsPrimer =
     !!meta.primer && !seen.includes(meta.slug) && (meta.helpfulFirst ?? []).some((h) => !done.includes(h)) && !done.includes(meta.slug);
   const helpful = (meta.helpfulFirst ?? []).map((h) => chapterBySlug(h)!);
@@ -59,12 +62,10 @@ export function ChapterFrame({
         <ButtonLink to="/learn" variant="ghost" small>
           ← Back to library
         </ButtonLink>
-        <span className="faint" style={{ fontSize: '0.85rem' }}>
-          Chapter {meta.n} of 6 · {meta.minutes}
-        </span>
+        <ChapterStepper current={meta.n} />
         {next ? (
           <ButtonLink to={`/learn/${next.slug}`} small variant={complete ? 'primary' : 'default'}>
-            Next suggested: {next.title} →
+            {nextPart ? `Next: ${nextPart.label}, ${next.title}` : `Next: ${next.title}`} →
           </ButtonLink>
         ) : (
           <ButtonLink to="/bridge" small variant={complete ? 'primary' : 'default'}>
@@ -74,8 +75,11 @@ export function ChapterFrame({
       </nav>
 
       <header className={s.header}>
-        <p className={s.eyebrow}>Chapter {meta.n}</p>
+        <p className={s.eyebrow}>
+          {part.label} · {part.name} · Chapter {meta.n} of {CHAPTERS.length} · {meta.minutes}
+        </p>
         <h1>{meta.title}</h1>
+        <p className={s.question}>{meta.question}</p>
       </header>
 
       {needsPrimer && (
@@ -130,6 +134,39 @@ export function ChapterFrame({
         </section>
       )}
     </div>
+  );
+}
+
+/** Dots for every chapter, grouped by part: where you are, what is done, one click to jump. */
+export function ChapterStepper({ current }: { current: number }) {
+  const done = useApp((st) => st.completedChapters);
+  return (
+    <ol className={s.stepper} aria-label="All chapters">
+      {PARTS.map((p) => (
+        <li key={p.id} className={s.stepperPart}>
+          <span className={s.stepperLabel} aria-hidden>
+            {p.label.replace('Part ', '')}
+          </span>
+          <ol>
+            {CHAPTERS.filter((c) => c.part === p.id).map((c) => (
+              <li key={c.slug}>
+                <Link
+                  to={`/learn/${c.slug}`}
+                  className={s.stepperDot}
+                  data-current={c.n === current ? 1 : 0}
+                  data-done={done.includes(c.slug) ? 1 : 0}
+                  aria-current={c.n === current ? 'step' : undefined}
+                  title={`${p.label} · ${c.n}. ${c.title}`}
+                  aria-label={`Chapter ${c.n}: ${c.title}${done.includes(c.slug) ? ' (completed)' : ''}`}
+                >
+                  {c.n}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </li>
+      ))}
+    </ol>
   );
 }
 

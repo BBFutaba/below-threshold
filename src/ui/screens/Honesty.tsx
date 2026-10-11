@@ -40,6 +40,24 @@ export function Honesty() {
           </ul>
         </Card>
 
+        <Card title="Shor's algorithm and the QFT">
+          <ul style={{ margin: 0 }}>
+            <li>
+              The walkthrough writes down the two registers exactly after each step (superposition, aˣ mod N, measurement, QFT). The noise chapter runs the gate-level circuit
+              on 10 simulated qubits, with each controlled modular multiplication applied as one exact gate; real hardware compiles these into thousands of elementary gates.
+            </li>
+            <li>The numbers are small (15 to 35) and the input register is capped at 9 qubits, below the textbook Q ≥ N² for 33 and 35; the chapter says so.</li>
+            <li>
+              Noise model: after every step, each qubit suffers a random X, Y or Z with probability p. Real devices also have correlated and leakage errors. For a number as
+              small as 15, a random guess often factors it too, so the chapter measures the quantum signal (runs landing on a peak) as well.
+            </li>
+            <li>
+              Checked by tests: the QFT circuit equals the exact discrete Fourier transform on random states (1 to 7 qubits), and without noise the gate-level Shor circuit
+              reproduces the register-level distribution exactly (<span className="mono">tests/core/qft.test.ts</span>, <span className="mono">shor.test.ts</span>).
+            </li>
+          </ul>
+        </Card>
+
         <Card title="Validation: thresholds">
           <p className="muted" style={{ fontSize: '0.9rem' }}>
             From <span className="mono">validate/thresholds.py</span> ({validation.date.slice(0, 10)}, {validation.machine}). Our decoders, plus independent Stim and

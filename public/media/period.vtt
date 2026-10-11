@@ -1,0 +1,65 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.540
+Multiplying two primes is easy.
+
+2
+00:00:04.540 --> 00:00:06.463
+Undoing the multiplication is not.
+
+3
+00:00:06.463 --> 00:00:11.847
+RSA, the encryption that protects much of the internet, is built on that gap.
+
+4
+00:00:12.517 --> 00:00:14.824
+Shor's idea starts with something simple.
+
+5
+00:00:14.824 --> 00:00:20.978
+Pick a number a, and take its powers, keeping only the remainder after dividing by N.
+
+6
+00:00:20.978 --> 00:00:24.055
+For N equals fifteen and a equals seven:
+
+7
+00:00:24.055 --> 00:00:27.132
+one, seven, four, thirteen, and then one again.
+
+8
+00:00:27.917 --> 00:00:30.609
+The pattern repeats, forever, every four steps.
+
+9
+00:00:30.609 --> 00:00:32.532
+Call that the period, r.
+
+10
+00:00:33.217 --> 00:00:36.294
+Once you know r, the factors fall out.
+
+11
+00:00:36.294 --> 00:00:40.524
+Seven to the power two is forty nine, which leaves four.
+
+12
+00:00:40.524 --> 00:00:46.678
+Four minus one is three, four plus one is five, and fifteen is three times five.
+
+13
+00:00:47.350 --> 00:00:53.504
+For a number hundreds of digits long, the period can be hundreds of digits long too.
+
+14
+00:00:53.504 --> 00:00:56.196
+No computer could ever walk that far.
+
+15
+00:00:56.196 --> 00:00:58.504
+A quantum computer does not walk.
+
+16
+00:00:58.504 --> 00:01:00.427
+It listens for the rhythm.

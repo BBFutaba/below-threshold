@@ -1,4 +1,4 @@
-// Chapter 6: Error discretization. A small rotation Rx(theta) on one data qubit; running
+// Error discretization (Part III). A small rotation Rx(theta) on one data qubit; running
 // the checks 200 times gives only two outcomes, "no error" (cos^2(theta/2)) and "full flip
 // on that qubit" (sin^2(theta/2)), and after correction the fidelity is 100% every time.
 
@@ -79,7 +79,7 @@ export function Chapter6() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'digital', caption: 'Film chapter 3: 200 real simulator runs, and why errors become digital.' }}
+      clip={{ id: 'digital', caption: 'From the film: 200 real simulator runs, and why errors become digital.' }}
       goal="Understand why error correction works at all when real errors are small, continuous drifts."
       tasks={tasks}
       complete={tasks.every((t) => t.done)}

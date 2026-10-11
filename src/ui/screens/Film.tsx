@@ -9,6 +9,8 @@ import css from './Film.module.css';
 interface SceneEntry {
   id: string;
   chapter: string;
+  /** Part of the story ("Part II · Shor's algorithm"); absent in older manifests. */
+  part?: string;
   title: string;
   durationSec: number;
   filmStartSec: number;
@@ -20,6 +22,12 @@ interface Manifest {
 
 /** Where to try each chapter's idea in the app. */
 const LEARN: Record<string, string> = {
+  qubit: '/learn/superposition',
+  entangle: '/learn/entanglement',
+  period: '/learn/period',
+  qft: '/learn/qft',
+  shor: '/learn/shor',
+  noise: '/learn/noise',
   fragile: '/learn/no-cloning',
   parity: '/learn/syndrome',
   digital: '/learn/discretization',
@@ -62,8 +70,9 @@ export function Film() {
           <p className={s.eyebrow}>The film</p>
           <h1>Below Threshold, in {m?.film ? Math.round(m.film.durationSec / 60) : 'a few'} minutes</h1>
           <p className={s.lede}>
-            A narrated explainer in the spirit of 3Blue1Brown and 2swap. Every lattice, syndrome, curve and timing on screen comes from the same simulation code as the
-            game.
+            A narrated explainer in the spirit of 3Blue1Brown and 2swap: what a qubit holds, how Shor&apos;s algorithm and the quantum Fourier transform factor a number,
+            and, to close, how error correction keeps the machine alive long enough to do it. Every state, peak, lattice and curve on screen comes from the same
+            simulation code as the app.
           </p>
         </div>
         <TeamLogo height={56} />
@@ -96,8 +105,9 @@ export function Film() {
           </figure>
           <Card title="Chapters">
             <ol className={css.chapters}>
-              {chapters.map((c) => (
-                <li key={c.id} data-current={current === c.id ? 1 : 0}>
+              {chapters.map((c, i) => (
+                <li key={c.id} data-current={current === c.id ? 1 : 0} data-part-start={c.part && c.part !== chapters[i - 1]?.part ? 1 : 0}>
+                  {c.part && c.part !== chapters[i - 1]?.part && <span className={css.partHead}>{c.part}</span>}
                   <button onClick={() => seek(c.filmStartSec)} aria-label={`Play ${c.chapter}: ${c.title}`}>
                     <span className="mono faint">{mmss(c.filmStartSec)}</span>
                     <span>

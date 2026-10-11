@@ -10,10 +10,11 @@ import css from './Shell.module.css';
 
 const NAV = [
   { to: '/learn', label: 'Learn' },
+  { to: '/learn/qft', label: 'QFT' },
+  { to: '/learn/shor', label: "Shor's" },
   { to: '/play', label: 'Play' },
   { to: '/realtime', label: 'Real-time' },
   { to: '/lab', label: 'Lab' },
-  { to: '/leaderboard', label: 'Leaderboard' },
   { to: '/film', label: 'Film' },
 ];
 
@@ -23,6 +24,8 @@ export function Shell() {
   const [drawer, setDrawer] = useState<'glossary' | 'settings' | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const loc = useLocation();
+  // "Learn" covers every chapter except the two with their own nav entries.
+  const inLearn = loc.pathname.startsWith('/learn') && !/^\/learn\/(qft|shor)\/?$/.test(loc.pathname);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -54,7 +57,11 @@ export function Shell() {
         </NavLink>
         <nav className={css.nav} data-open={menuOpen ? 1 : 0} aria-label="Main">
           {NAV.map((n) => (
-            <NavLink key={n.to} to={n.to} className={({ isActive }) => [css.navLink, isActive && css.active].filter(Boolean).join(' ')}>
+            <NavLink
+              key={n.to}
+              to={n.to}
+              className={({ isActive }) => [css.navLink, (n.to === '/learn' ? inLearn : isActive) && css.active].filter(Boolean).join(' ')}
+            >
               {n.label}
             </NavLink>
           ))}
@@ -83,6 +90,9 @@ export function Shell() {
           <TeamLogo height={30} />
         </span>
         <span className="faint">Every number on this site is computed live or comes from our validation suite.</span>
+        <NavLink to="/leaderboard" className={css.footerLink}>
+          Leaderboard
+        </NavLink>
         <NavLink to="/honesty" className={css.footerLink}>
           What we simplify
         </NavLink>
@@ -171,7 +181,7 @@ function Settings() {
         )}
       </div>
       <p className="faint" style={{ fontSize: '0.85rem' }}>
-        Progress is saved in this browser only. Keyboard: arrow keys move over qubits; X, Z, Y apply corrections; Enter submits.
+        Progress is saved in this browser only. In the game: arrow keys move over qubits; X, Z, Y apply corrections; Enter submits.
       </p>
     </div>
   );

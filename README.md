@@ -2,7 +2,7 @@
 
 # Below Threshold
 
-**Keep a quantum computer alive.** An interactive game that teaches quantum error correction, ending on why real-time decoding is the bottleneck for fault-tolerant quantum computing.
+**Factor a number with a quantum computer, then keep it alive.** An interactive guide to Shor's algorithm and the quantum Fourier transform, and to the quantum error correction needed to run them, ending on why real-time decoding is the bottleneck for fault-tolerant quantum computing.
 
 > Live demo: https://bbfutaba.github.io/below-threshold/ (unlisted, `noindex`) · [The film](https://bbfutaba.github.io/below-threshold/film) ([1080p](docs/media/below-threshold-film.mp4), [subtitles](docs/media/below-threshold-film.srt)) · [Technical write-up](docs/writeup.md) · [Validation report](docs/validation-report.md) · [Backup demo video](docs/media/demo.webm)
 
@@ -12,19 +12,22 @@
 
 | | |
 |---|---|
-| **Learn** | Six one-to-two-minute chapters on an exact state-vector simulator: superposition, no-cloning, entanglement, syndrome extraction, phase errors, error discretization. Open any chapter in any order; each has its own URL (`/learn/entanglement`). |
-| **Play** | Protect a logical qubit on a rotated surface code (d = 3, 5, 7). Errors are hidden and only lit checks are visible, like real hardware. Clear them, submit, see what really happened, then watch the decoder play the same seeded puzzle. |
+| **Learn** | Twelve short chapters on an exact state-vector simulator, in three parts. **Part I, Quantum basics:** what a qubit is (superposition, measurement, interference), many qubits at once (2ⁿ amplitudes, product states), and entanglement. **Part II, Shor's algorithm:** factoring as a hunt for a period, phase as a hidden clock, the quantum Fourier transform, Shor's algorithm end to end, and what noise does to it. **Part III, Keeping it alive:** no-cloning, syndrome extraction, phase errors, error discretization. Open any chapter in any order; each has its own URL (`/learn/qft`). |
+| **QFT** | The featured chapter: pick a single number or a repeating pattern, step through the real gate circuit (Hadamards, controlled phase turns, swaps) one gate at a time, and watch amplitudes as clocks, each qubit's Bloch arrow and the output peaks. Ends with a "frequency detective" challenge. |
+| **Shor's** | Factor 15, 21, 33 or 35 in seven steps: superpose, compute aˣ mod N, measure (the comb), QFT (the peaks), measure, continued fractions, gcd. Run it 50 times to see how often one run succeeds. A noise chapter runs the gate-level circuit on 10 qubits and watches the peaks dissolve. |
+| **Play** | Keep a Shor's algorithm run alive by protecting its logical qubit on a rotated surface code (d = 3, 5, 7). Errors are hidden and only lit checks ("alarms") are visible, like real hardware. A guided first level, a plain-language guide for each level, live coaching after every move and alarms that show which qubits they watch make it playable with no background. Clear the alarms, submit, see what really happened, then watch the decoder play the same seeded puzzle. |
 | **Checks that lie** | Measurement errors: label detection-event pairs in a time stack, then see the decoder's space-time matching. |
 | **Real-time** | Rounds arrive on a clock; decoder speed is **measured live in your browser**. Slow decoders build a backlog and T gates stall. |
 | **Lab** | Live Monte Carlo in Web Workers: watch curves for different distances cross at the threshold, drag the noise level, read off the suppression factor Λ. |
 | **Leaderboard** | Humans vs the decoder on identical seeded puzzles; QR event mode; optional shared board. |
-| **Film** | A ~8-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), ten chapters, every frame drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
+| **Film** | A ~15-minute narrated explainer in the style of 3Blue1Brown and 2swap (Manim + LaTeX), fourteen chapters in the same three parts: quantum basics (a qubit, many qubits, entanglement), Shor's algorithm and the QFT, then error correction as the wrap-up. Every frame is drawn from the same simulation code. Each chapter also appears next to its interactive version in the app. |
 
 ## Is it real?
 
 Yes. Every number in the app is computed live or comes from the validation suite in this repo.
 
-- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 106 unit tests, 36 end-to-end checks (desktop and mobile).
+- **Shor and the QFT.** The QFT gate circuit equals the exact discrete Fourier transform on random states (1 to 7 qubits); without noise, the gate-level Shor circuit (Hadamards, controlled modular multiplications, QFT) reproduces the register-level distribution exactly.
+- **Correctness.** Our blossom MWPM matches brute force on every instance with up to 16 defects, and matches PyMatching's correction weight on **100%** of 90,000 exported decoding problems. Our layout equals Stim's generated rotated surface code for d = 3 to 11. 125 unit tests, 54 end-to-end checks (desktop and mobile).
 - **Thresholds**, reproduced with our own decoders up to d = 13:
 
 | Noise | Decoder | Ours | Stim / PyMatching reference | Published |
@@ -37,7 +40,7 @@ Yes. Every number in the app is computed live or comes from the validation suite
 
 ![Threshold crossing, bit-flip noise](validate/plots/bitflip_mwpm.png)
 
-- **What we simplify** (also shown in the app): code-capacity and phenomenological noise, not circuit-level; X and Z decoded separately; a slowed clock and a labeled hardware speed-up in real-time mode; small distances. See [the honesty page](src/ui/screens/Honesty.tsx) and the [write-up](docs/writeup.md).
+- **What we simplify** (also shown in the app): Shor's algorithm on small numbers (15 to 35), with exact registers in the walkthrough and a 10-qubit gate-level noise simulation that treats each controlled modular multiplication as one exact gate; code-capacity and phenomenological noise, not circuit-level; X and Z decoded separately; a slowed clock and a labeled hardware speed-up in real-time mode; small distances. See [the honesty page](src/ui/screens/Honesty.tsx) and the [write-up](docs/writeup.md).
 
 ## Quick start
 
@@ -72,7 +75,7 @@ The explainer film is rendered with Manim from real simulation data, and its tim
 ## Project structure
 
 ```
-src/core/          pure physics, no React: rng, quantum, surfaceCode, pauliFrame, noise,
+src/core/          pure physics, no React: rng, quantum, qft, shor, surfaceCode, pauliFrame, noise,
                    decodingGraph, decoders/ (exactSmall, blossom + mwpm, unionFind, greedy),
                    stats, simulate, game, realtime, timeStack, exportInstances
 src/workers/       Monte Carlo and live decoder timing (Comlink)

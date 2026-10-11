@@ -34,6 +34,8 @@ interface AppState {
   puzzles: PuzzleRecord[];
   scores: ScoreEntry[];
   seenTwist: boolean;
+  /** The guided "how to play" walkthrough on level 1 has been finished or skipped. */
+  seenGameIntro: boolean;
   setTheme: (t: Theme) => void;
   setMotion: (m: Motion) => void;
   setSound: (s: boolean) => void;
@@ -44,6 +46,7 @@ interface AppState {
   recordPuzzle: (r: PuzzleRecord) => void;
   addScore: (e: ScoreEntry) => void;
   setSeenTwist: () => void;
+  setSeenGameIntro: (v: boolean) => void;
   resetProgress: () => void;
 }
 
@@ -59,6 +62,7 @@ const initial = {
   puzzles: [] as PuzzleRecord[],
   scores: [] as ScoreEntry[],
   seenTwist: false,
+  seenGameIntro: false,
 };
 
 export const useApp = create<AppState>()(
@@ -83,6 +87,7 @@ export const useApp = create<AppState>()(
           bestScore: Math.max(s.bestScore, e.score),
         })),
       setSeenTwist: () => set({ seenTwist: true }),
+      setSeenGameIntro: (seenGameIntro) => set({ seenGameIntro }),
       resetProgress: () =>
         set({
           completedChapters: [],
@@ -91,6 +96,7 @@ export const useApp = create<AppState>()(
           bestScore: 0,
           puzzles: [],
           seenTwist: false,
+          seenGameIntro: false,
         }),
     }),
     {

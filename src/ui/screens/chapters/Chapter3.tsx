@@ -1,6 +1,7 @@
-// Chapter 3: Entanglement. Build a Bell pair, then spread alpha|0> + beta|1> across three
-// qubits with two CNOTs. Each qubit's own Bloch arrow shrinks: the information lives in
-// the correlations.
+// Chapter 3: Entanglement. Build a Bell pair and see the correlations, measure one qubit and
+// watch its partner agree, then spread alpha|0> + beta|1> across three qubits with two
+// CNOTs (the encoding Part III builds on). Each qubit's own Bloch arrow shrinks: the
+// information lives in the correlations.
 
 import { useEffect, useMemo, useState } from 'react';
 import { QState } from '../../../core/quantum';
@@ -8,7 +9,13 @@ import { chapterBySlug } from '../../content';
 import { AmplitudeBars, BlochSphere, CircuitStrip, Histogram } from '../../components/QuantumViews';
 import { Button, Card, Row, Segmented, Slider, WhatHappened } from '../../components/ui';
 import { ChapterFrame, GatePalette } from './ChapterFrame';
-import { useCircuit } from './useCircuit';
+import { replay, useCircuit } from './useCircuit';
+import type { Op } from '../../components/QuantumViews';
+
+/** The state just before the last op (here: before the measurement). */
+function replayBefore(ops: Op[]): QState {
+  return replay(2, ops.slice(0, -1));
+}
 import s from '../screen.module.css';
 
 const meta = chapterBySlug('entanglement')!;
@@ -19,20 +26,31 @@ export function Chapter3() {
   const n = part === 'bell' ? 2 : 3;
   const c = useCircuit(n, 303 + (part === 'bell' ? 0 : 1), part === 'encode' ? (st) => st.ry(0, theta) : undefined);
   const [counts, setCounts] = useState<number[] | null>(null);
-  const [done, setDone] = useState([false, false]);
+  const [done, setDone] = useState([false, false, false]);
 
   const bell = useMemo(() => new QState(2).h(0).cnot(0, 1), []);
   const target = useMemo(() => new QState(3).ry(0, theta).cnot(0, 1).cnot(0, 2), [theta]);
   const isBell = part === 'bell' && c.state.fidelity(bell) > 0.999;
   const isEncoded = part === 'encode' && c.state.fidelity(target) > 0.999;
   useEffect(() => {
-    if (isEncoded) setDone((d) => (d[1] ? d : [d[0], true]));
+    if (isEncoded) setDone((d) => (d[2] ? d : [d[0], d[1], true]));
   }, [isEncoded]);
+  // Measured qubit 0 of a Bell pair: the last op is that measurement and qubit 1 now agrees.
+  const last = c.ops.at(-1);
+  const measuredBell =
+    part === 'bell' &&
+    last?.g === 'M' &&
+    last.q === 0 &&
+    replayBefore(c.ops).fidelity(bell) > 0.999 &&
+    Math.abs(c.state.prob1(1) - (last.out ?? 0)) < 1e-9;
+  useEffect(() => {
+    if (measuredBell) setDone((d) => (d[1] ? d : [d[0], true, d[2]]));
+  }, [measuredBell]);
 
   const shots = () => {
     const ct = c.state.sample(100, c.random);
     setCounts(Array.from(ct));
-    if (isBell) setDone((d) => [true, d[1]]);
+    if (isBell) setDone((d) => [true, d[1], d[2]]);
   };
 
   const switchPart = (p: 'bell' | 'encode') => {
@@ -47,6 +65,7 @@ export function Chapter3() {
           { id: 'H0', label: 'H q0', title: 'Hadamard on qubit 0' },
           { id: 'X0', label: 'X q0', title: 'X on qubit 0' },
           { id: 'C01', label: 'CNOT 0→1', title: 'CNOT: control qubit 0, target qubit 1' },
+          { id: 'M0', label: 'Measure q0', title: 'Measure qubit 0 only' },
         ]
       : [
           { id: 'C01', label: 'CNOT 0→1', title: 'CNOT: control 0, target 1' },
@@ -60,12 +79,19 @@ export function Chapter3() {
     if (id === 'C01') c.add({ g: 'CNOT', c: 0, t: 1 });
     if (id === 'C02') c.add({ g: 'CNOT', c: 0, t: 2 });
     if (id === 'C12') c.add({ g: 'CNOT', c: 1, t: 2 });
+    if (id === 'M0') c.add({ g: 'M', q: 0 });
   };
 
   const a2 = Math.cos(theta / 2) ** 2,
     b2 = Math.sin(theta / 2) ** 2;
   let msg: { text: string; deeper?: string; tone?: 'good' | 'info' } | null = null;
-  if (part === 'bell' && counts && isBell) {
+  if (measuredBell && last?.g === 'M') {
+    msg = {
+      tone: 'good',
+      text: `Qubit 0 came out ${last.out}, and qubit 1 is now certain to be ${last.out} too, without being touched. In the last chapter's product state, measuring one qubit left the other at 50/50.`,
+      deeper: 'This is entanglement: the pair has one shared state, (|00⟩ + |11⟩)/√2, and no state for each qubit on its own. It cannot be used to send messages (each result is random), but it is the resource behind Shor’s registers and error correction.',
+    };
+  } else if (part === 'bell' && counts && isBell) {
     msg = {
       tone: 'good',
       text: `Only 00 and 11 appeared (${counts[0]} and ${counts[3]}), never 01 or 10. Each qubit alone is random, but they always agree.`,
@@ -86,11 +112,12 @@ export function Chapter3() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'parity', caption: 'Film chapter 2: spreading one qubit across three, and asking “do these agree?”.' }}
-      goal="Spread one qubit's information across three qubits so no single qubit holds it."
+      clip={{ id: 'entangle', caption: 'From the film: a Bell pair, perfectly correlated, and the arrows that shrink to nothing.' }}
+      goal="Make two qubits that share one fate, then spread one qubit across three."
       tasks={[
         { label: <>Build a Bell pair with <b>H</b> then <b>CNOT</b>, and run 100 shots.</>, done: done[0] },
-        { label: <>Encode α|0⟩ + β|1⟩ into <b>α|000⟩ + β|111⟩</b> with two CNOTs.</>, done: done[1] },
+        { label: <>Then <b>measure qubit 0</b> of the pair and look at qubit 1.</>, done: done[1] },
+        { label: <>Part 2: spread α|0⟩ + β|1⟩ into <b>α|000⟩ + β|111⟩</b> with two CNOTs (Part III uses this).</>, done: done[2] },
       ]}
       complete={done.every(Boolean)}
       canvas={

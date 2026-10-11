@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:02.617 --> 00:00:04.540
+This arrow is a qubit.
+
+2
+00:00:04.540 --> 00:00:07.617
+Straight up means zero, straight down means one,
+
+3
+00:00:07.617 --> 00:00:10.309
+and anywhere in between is a superposition:
+
+4
+00:00:10.309 --> 00:00:12.617
+a blend of both at once.
+
+5
+00:00:13.317 --> 00:00:18.701
+The blend is described by two amplitudes, one for zero and one for one.
+
+6
+00:00:18.701 --> 00:00:22.547
+Square them, and you get the odds of measuring each.
+
+7
+00:00:23.217 --> 00:00:26.294
+But an amplitude is more than a size.
+
+8
+00:00:26.294 --> 00:00:31.678
+It also points in a direction, its phase, like the hand of a clock.
+
+9
+00:00:31.678 --> 00:00:37.063
+Turn that hand, and the odds of a measurement do not change at all.
+
+10
+00:00:37.750 --> 00:00:39.673
+Phase matters when amplitudes meet.
+
+11
+00:00:39.673 --> 00:00:41.981
+A Hadamard gate adds them up:
+
+12
+00:00:41.981 --> 00:00:45.442
+hands pointing the same way reinforce, opposite hands cancel.
+
+13
+00:00:45.442 --> 00:00:51.212
+That is interference, and it turns a hidden phase into an answer you can measure.

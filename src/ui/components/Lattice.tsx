@@ -47,6 +47,10 @@ export interface LatticeProps {
   overlay?: ReactNode;
   /** Fade one check type (e.g. X-checks in bit-flip-only levels). */
   muteType?: 'X' | 'Z';
+  /** Qubits to ring in amber (teaching moments). */
+  highlightQubits?: number[];
+  /** Hovering a check rings the qubits it watches and reports the check here. */
+  onHoverCheck?: (check: number | null) => void;
 }
 
 export function Lattice({
@@ -68,6 +72,8 @@ export function Lattice({
   className,
   overlay,
   muteType,
+  highlightQubits,
+  onHoverCheck,
 }: LatticeProps) {
   const size = viewSize(code.d);
   const [focus, setFocus] = useState<number>(Math.floor(code.n / 2));
@@ -84,6 +90,12 @@ export function Lattice({
     return () => ro.disconnect();
   }, [size]);
   const interactive = mode !== 'none' && !!onCorrect;
+  const [hoverCheck, setHoverCheck] = useState<number | null>(null);
+  const hover = (i: number | null) => {
+    setHoverCheck(i);
+    onHoverCheck?.(i);
+  };
+  const watched = hoverCheck !== null && hoverCheck < code.stabilizers.length ? code.stabilizers[hoverCheck].support : (highlightQubits ?? []);
   const hintSet = useMemo(() => new Set(hinted ?? []), [hinted]);
   const chainSet = useMemo(() => new Set(chain ?? []), [chain]);
 
@@ -184,15 +196,22 @@ export function Lattice({
             .filter(Boolean)
             .join(' ');
           const c = checkCenter(code, i);
+          // Faded (muted) checks are not part of this level: no tooltip about them.
+          const tip = muteType === st.type ? '' : `${st.type === 'Z' ? 'Bit-flip' : 'Phase-flip'} alarm (${st.type}-check)${fired ? ', lit' : ''}: watches ${st.support.length} qubits and lights up when an odd number of them ${st.type === 'Z' ? 'flipped' : 'had a phase flip'}.`;
           return (
-            <g key={`s${i}-${fired ? 1 : 0}`}>
+            <g
+              key={`s${i}-${fired ? 1 : 0}`}
+              // Mouse only: on touch screens a tap would leave the hover rings stuck on.
+              onPointerEnter={(e) => e.pointerType === 'mouse' && muteType !== st.type && hover(i)}
+              onPointerLeave={(e) => e.pointerType === 'mouse' && hover(null)}
+            >
               {sh.kind === 'square' ? (
                 <rect className={cls} x={sh.x + 1} y={sh.y + 1} width={sh.size - 2} height={sh.size - 2} rx={5}>
-                  <title>{`${st.type}-check${fired ? ' (lit)' : ''}: detects ${st.type === 'Z' ? 'bit flips' : 'phase flips'}`}</title>
+                  {tip && <title>{tip}</title>}
                 </rect>
               ) : (
                 <path className={cls} d={halfDiscPath(sh)}>
-                  <title>{`${st.type}-check${fired ? ' (lit)' : ''}: detects ${st.type === 'Z' ? 'bit flips' : 'phase flips'}`}</title>
+                  {tip && <title>{tip}</title>}
                 </path>
               )}
               {fired && <circle className={css.dot} cx={c.x} cy={c.y} r={5.5} />}
@@ -234,6 +253,11 @@ export function Lattice({
               {interactive && <circle className={css.qubitHit} cx={p.x} cy={p.y} r={S * 0.48} />}
             </g>
           );
+        })}
+
+        {watched.map((q) => {
+          const p = qubitPos(code, q);
+          return <circle key={`w${q}`} className={css.watch} cx={p.x} cy={p.y} r={16} />;
         })}
 
         {overlay}

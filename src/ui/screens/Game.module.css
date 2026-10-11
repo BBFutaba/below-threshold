@@ -10,28 +10,146 @@
   color: var(--surface-3);
 }
 .levelPick {
-  display: inline-flex;
-  gap: 4px;
-  flex-wrap: wrap;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin: -4px 0 16px;
+  scrollbar-width: thin;
 }
 .levelPick button {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 12px 0 6px;
+  border-radius: 999px;
   border: 1px solid var(--border-strong);
-  background: var(--surface-2);
+  background: var(--surface);
   color: var(--text-muted);
-  font-family: var(--font-mono);
   cursor: pointer;
+  font-size: 0.85rem;
+}
+.levelPick button:hover {
+  border-color: var(--text-faint);
+}
+.levelNum {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text);
 }
 .levelPick button[data-cleared='1'] {
-  border-color: color-mix(in srgb, var(--green) 60%, transparent);
+  border-color: color-mix(in srgb, var(--green) 55%, transparent);
+}
+.levelPick button[data-cleared='1'] .levelNum {
+  background: var(--green-tint);
   color: var(--green);
 }
 .levelPick button[aria-pressed='true'] {
   background: var(--text);
   color: var(--bg);
   border-color: var(--text);
+}
+.levelPick button[aria-pressed='true'] .levelNum {
+  background: var(--bg);
+  color: var(--text);
+}
+.shorRun {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  min-width: 220px;
+  flex: 1 1 240px;
+  max-width: 380px;
+}
+.shorLabel {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.shorTrack {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.shorFill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--teal), var(--violet));
+  transition: width var(--t-slow) var(--ease);
+}
+.coach {
+  margin: 12px auto 0;
+  max-width: 560px;
+  min-height: 2.8em;
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+.coach[data-tone='good'] {
+  color: var(--green);
+}
+.coach[data-tone='warn'] {
+  color: var(--amber);
+}
+.intro {
+  border: 1px solid color-mix(in srgb, var(--blue) 55%, var(--border));
+  background: linear-gradient(180deg, var(--blue-tint), transparent 80%), var(--surface);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: grid;
+  gap: 8px;
+  animation: fade-in var(--t-slow) var(--ease) both;
+}
+.intro h3 {
+  margin: 0;
+}
+.intro p {
+  margin: 0;
+}
+.introHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.introSkip {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+.introDots {
+  display: flex;
+  gap: 6px;
+}
+.introDots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface-3);
+}
+.introDots span[data-on='1'] {
+  background: var(--blue);
+}
+.levelTitle {
+  margin: 0 0 6px;
+  font-size: 1.3rem;
+}
+.levelWhat {
+  margin: 0 0 10px;
+  color: var(--text);
 }
 .latticeHead {
   display: flex;
@@ -118,4 +236,29 @@
   .twistStats {
     grid-template-columns: 1fr;
   }
+}
+.introMobile {
+  display: none;
+  margin-bottom: 14px;
+}
+@media (max-width: 900px) {
+  .introMobile {
+    display: block;
+  }
+  .introDesk {
+    display: none;
+  }
+}
+.confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin: -8px 0 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--amber) 50%, var(--border));
+  background: var(--amber-tint);
+  font-size: 0.92rem;
 }

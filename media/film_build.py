@@ -46,6 +46,14 @@ from script import SCRIPT, words  # noqa: E402
 # id, file, class, poster beat (frame taken near the end of that beat)
 SCENES = [
     ("intro", "intro.py", "IntroScene", "title"),
+    # Part I and II: quantum basics, then Shor's algorithm and the QFT.
+    ("qubit", "qubit.py", "QubitScene", "interference"),
+    ("entangle", "entangle.py", "EntangleScene", "bell"),
+    ("period", "period.py", "PeriodScene", "recipe"),
+    ("qft", "qft.py", "QftScene", "comb"),
+    ("shor", "shor.py", "ShorScene", "factors"),
+    ("noise", "noise.py", "NoiseScene", "blur"),
+    # Part III, the wrap-up: keeping the machine alive with error correction.
     ("fragile", "fragile.py", "FragileScene", "arrow"),
     ("parity", "parity.py", "ParityScene", "syndrome"),
     ("digital", "digital.py", "DigitalScene", "formula"),
@@ -56,7 +64,7 @@ SCENES = [
     ("realtime", "realtime.py", "RealtimeScene", "stall"),
     ("outro", "outro.py", "OutroScene", "logo"),
 ]
-GIFS = {"matching": "saved", "threshold": "curves"}
+GIFS = {"matching": "saved", "threshold": "curves", "qft": "comb"}
 AUDIO_EXT = (".wav", ".m4a", ".mp3", ".flac", ".ogg")
 
 
@@ -82,9 +90,13 @@ def render_scene(sid: str, file: str, cls: str, final: bool) -> Path:
     qargs, qdir = quality_args(final)
     log = BUILD / f"render-{sid}.log"
     BUILD.mkdir(parents=True, exist_ok=True)
+    # A private LaTeX folder per scene: scenes rendering in parallel typeset many of the same
+    # strings, and a shared folder lets one process clean up another's files mid-compile.
+    cfg = BUILD / f"manim-{sid}.cfg"
+    cfg.write_text(f"[CLI]\ntex_dir = {(BUILD / 'Tex' / sid).as_posix()}\n", encoding="utf-8")
     with open(log, "w", encoding="utf-8") as f:
         subprocess.run(
-            [PY, "-m", "manim", "render", *qargs, "--media_dir", str(BUILD), "--disable_caching", file, cls],
+            [PY, "-m", "manim", "render", *qargs, "-c", str(cfg), "--media_dir", str(BUILD), "--disable_caching", file, cls],
             cwd=SCENES_DIR,
             stdout=f,
             stderr=subprocess.STDOUT,
@@ -269,7 +281,8 @@ def write_sheet(timings: dict[str, dict], film_offsets: dict[str, float]) -> Non
         "",
         "Tips: one take per line keeps retakes cheap; keep the mic distance constant; record in a quiet, soft room; avoid",
         "reading the stage directions (they are context only). Pronunciation: *ancilla* an-SILL-uh; *Edmonds* ED-munds;",
-        "*lambda* LAM-duh; *qubit* CUE-bit; *alpha, beta* as the Greek letters.",
+        "*lambda* LAM-duh; *qubit* CUE-bit; *alpha, beta* as the Greek letters; *Shor* SHORE; *Fourier* FOOR-ee-ay;",
+        "*Hadamard* HAD-uh-mard; *gcd* G-C-D.",
         "",
     ]
     total = 0.0
@@ -279,7 +292,7 @@ def write_sheet(timings: dict[str, dict], film_offsets: dict[str, float]) -> Non
         sc = by_id[sid]
         tm = timings.get(sid)
         off = film_offsets.get(sid)
-        head = f"## {sc.chapter + ': ' if sc.chapter else ''}{sc.title} (`{sid}`)"
+        head = f"## {sc.part + ', ' if sc.part else ''}{sc.chapter + ': ' if sc.chapter else ''}{sc.title} (`{sid}`)"
         L += [head, ""]
         if tm and off is not None:
             L += [f"Starts at **{fmt_ts(off)[3:8]}** in the film; scene length {tm['duration']:.1f} s.", ""]
@@ -396,6 +409,7 @@ def main() -> int:
             {
                 "id": sid,
                 "chapter": sc.chapter,
+                "part": sc.part,
                 "title": sc.title,
                 "durationSec": round(dur, 2),
                 "filmStartSec": round(t, 2),

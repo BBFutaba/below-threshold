@@ -1,4 +1,4 @@
-// Chapter 2: No-cloning. A CNOT "copy machine" copies |0> and |1> perfectly but turns
+// No-cloning (Part III). A CNOT "copy machine" copies |0> and |1> perfectly but turns
 // |+> into an entangled pair with 50% fidelity. "Measure then rebuild" scores 25%.
 
 import { useMemo, useState } from 'react';
@@ -98,7 +98,7 @@ export function Chapter2() {
   return (
     <ChapterFrame
       meta={meta}
-      clip={{ id: 'fragile', caption: 'Film chapter 1: the copy machine and the no-cloning theorem, with real simulator output.' }}
+      clip={{ id: 'fragile', caption: 'From the film: the copy machine and the no-cloning theorem, with real simulator output.' }}
       goal="See why we cannot protect a qubit by backing it up."
       tasks={tasks}
       complete={complete}

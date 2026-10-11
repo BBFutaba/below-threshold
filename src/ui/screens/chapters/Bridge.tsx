@@ -107,7 +107,7 @@ export function Bridge() {
       </div>
       <div style={{ marginTop: 20 }}>
         <Card title="Watch it in motion">
-          <MediaClip id="surface" caption="Chapter 4 of the film: from the repetition code to the surface code, on a real d = 5 layout." />
+          <MediaClip id="surface" caption="From the film: from the repetition code to the surface code, on a real d = 5 layout." />
         </Card>
       </div>
     </div>

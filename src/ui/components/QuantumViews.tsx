@@ -201,7 +201,7 @@ export function Histogram({
 
 export type Op =
   | { g: 'X' | 'Y' | 'Z' | 'H' | 'S'; q: number }
-  | { g: 'Rx' | 'Ry'; q: number; t: number }
+  | { g: 'Rx' | 'Ry' | 'P'; q: number; t: number }
   | { g: 'CNOT'; c: number; t: number }
   | { g: 'M'; q: number; out?: number }
   | { g: 'ERR'; q: number; p: string; hidden?: boolean };
@@ -228,6 +228,9 @@ export function applyOp(s: QState, op: Op, rand?: () => number): number | undefi
       break;
     case 'Ry':
       s.ry(op.q, op.t);
+      break;
+    case 'P':
+      s.phase(op.q, op.t);
       break;
     case 'CNOT':
       s.cnot(op.c, op.t);
