@@ -20,14 +20,16 @@
 .player {
   margin: 0;
 }
-.chapters {
+.chapters,
+.sections {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   gap: 4px;
 }
-.chapters li {
+.chapters li,
+.sections li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,10 +39,12 @@
 .chapters li[data-part-start='1'] {
   flex-wrap: wrap;
 }
-.chapters li[data-current='1'] {
+.chapters li[data-current='1'],
+.sections li[data-current='1'] {
   background: var(--blue-tint);
 }
-.chapters button {
+.chapters button,
+.sections button {
   flex: 1;
   display: flex;
   gap: 12px;
@@ -54,7 +58,8 @@
   min-height: 44px;
   font-size: 0.95rem;
 }
-.chapters button:hover {
+.chapters button:hover,
+.sections button:hover {
   color: var(--blue);
 }
 .chap {
@@ -88,4 +93,11 @@
   .pitch {
     grid-template-columns: 1fr;
   }
+}
+.sections {
+  margin-top: 12px;
+}
+.sections button {
+  padding: 6px 10px;
+  font-size: 0.9rem;
 }

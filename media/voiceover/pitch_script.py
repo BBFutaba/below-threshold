@@ -3,7 +3,8 @@
 Same format as script.py (the long film). Each beat is one line of voiceover; the scene
 re-times itself to the team's recordings in media/voiceover/recordings/pitch/<beat>.wav.
 The video must stay under 3:00 (the hackathon's demo limit): at ~155 words per minute
-this script runs about 2:50, and media/pitch_build.py fails loudly if a build goes over.
+this script is about 2:26 of narration (about 2:40 of video), and media/pitch_build.py
+fails loudly if a build goes over. The recording sheet gives each section its time budget.
 
 Beats marked `screen` show a real screen recording of the live app (scripts/record-pitch.ts)
 inside a window drawn by the scene; the rest is Manim. `judging` notes which judging
@@ -11,6 +12,8 @@ component each beat serves (from docs/PLAN.md, "Likely evaluation components").
 """
 
 from __future__ import annotations
+
+from dataclasses import dataclass
 
 from script import Beat, SceneScript
 
@@ -86,3 +89,47 @@ PITCH = SceneScript(
 )
 
 LIMIT_SECONDS = 180.0
+
+
+@dataclass
+class Section:
+    """A run of consecutive beats that one team member reviews and records."""
+
+    slug: str
+    title: str
+    summary: str
+    beats: list[str]
+
+
+# Four sections, one per team member, in order and covering every beat exactly once.
+# media/pitch_build.py cuts the video at these beat boundaries (docs/media/pitch-sections/),
+# marks them as chapters in the full video and groups the recording sheet by them.
+SECTIONS = [
+    Section(
+        "problem",
+        "The problem",
+        "Why Shor's algorithm has not broken encryption yet, and what Below Threshold is.",
+        ["logo", "hook", "product"],
+    ),
+    Section(
+        "learn",
+        "Learn: from a qubit to Shor's algorithm",
+        "Parts I and II of the app, recorded from the live site: a qubit chapter, the QFT, Shor on 15, then noise.",
+        ["learn", "qft", "shor", "noise"],
+    ),
+    Section(
+        "play",
+        "Play: error correction and the decoder",
+        "Part III: the error-correction idea on a real lattice, the decoding game and the real-time mode.",
+        ["qec", "game", "realtime"],
+    ),
+    Section(
+        "prove",
+        "Prove: the lab, the checks, the close",
+        "The threshold lab, how we checked the physics, and the end card with the URL and QR code.",
+        ["lab", "rigor", "close", "card"],
+    ),
+]
+
+_order = [k for s in SECTIONS for k in s.beats]
+assert _order == [b.key for b in PITCH.beats], "SECTIONS must cover every pitch beat once, in order"

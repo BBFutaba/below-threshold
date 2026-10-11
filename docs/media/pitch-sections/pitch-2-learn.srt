@@ -1,0 +1,47 @@
+1
+00:00:00,250 --> 00:00:04,865
+Every chapter runs on an exact quantum simulator, right in your browser.
+
+2
+00:00:04,865 --> 00:00:07,173
+You do not read about superposition:
+
+3
+00:00:07,173 --> 00:00:10,635
+you build it, measure it, and watch interference cancel.
+
+4
+00:00:11,317 --> 00:00:15,547
+At the heart of Shor's algorithm is the quantum Fourier transform.
+
+5
+00:00:15,547 --> 00:00:19,778
+Step through the real gate circuit, one gate at a time,
+
+6
+00:00:19,778 --> 00:00:23,240
+and watch a repeating pattern turn into sharp peaks.
+
+7
+00:00:23,917 --> 00:00:26,224
+Then factor fifteen end to end:
+
+8
+00:00:26,224 --> 00:00:29,301
+superposition, modular exponentiation, the Fourier transform, continued fractions,
+
+9
+00:00:29,301 --> 00:00:32,378
+and out come the factors, three times five.
+
+10
+00:00:33,050 --> 00:00:34,204
+Now add noise.
+
+11
+00:00:34,204 --> 00:00:38,819
+On ten simulated qubits, the peaks blur, and the answer is lost.
+
+12
+00:00:38,819 --> 00:00:42,281
+Real qubits fail roughly once in every thousand operations.

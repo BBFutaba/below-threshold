@@ -18,8 +18,15 @@ interface SceneEntry {
 interface Manifest {
   scenes: SceneEntry[];
   film: { mp4: string; poster: string; captions: string; durationSec: number; narrated: boolean } | null;
-  /** The 3-minute pitch video (media/pitch_build.py). */
-  pitch?: { mp4: string; poster: string; captions: string; durationSec: number; narrated: boolean };
+  /** The 3-minute pitch video (media/pitch_build.py), in four sections (one per team member). */
+  pitch?: {
+    mp4: string;
+    poster: string;
+    captions: string;
+    durationSec: number;
+    narrated: boolean;
+    sections?: { n: number; title: string; startSec: number }[];
+  };
 }
 
 /** Where to try each chapter's idea in the app. */
@@ -46,7 +53,9 @@ export function Film() {
   const [m, setM] = useState<Manifest | null>(null);
   const [failed, setFailed] = useState(false);
   const [now, setNow] = useState(0);
+  const [pitchNow, setPitchNow] = useState(0);
   const video = useRef<HTMLVideoElement>(null);
+  const pitchVideo = useRef<HTMLVideoElement>(null);
   const base = import.meta.env.BASE_URL;
 
   useEffect(() => {
@@ -56,14 +65,15 @@ export function Film() {
       .catch(() => setFailed(true));
   }, [base]);
 
-  const seek = (t: number) => {
-    const v = video.current;
+  const seek = (t: number, v = video.current) => {
     if (!v) return;
     v.currentTime = t + 0.05;
     void v.play().catch(() => undefined);
   };
   const chapters = m?.scenes.filter((x) => x.chapter) ?? [];
   const current = chapters.filter((c) => c.filmStartSec <= now).at(-1)?.id;
+  const sections = m?.pitch?.sections ?? [];
+  const currentSection = sections.filter((x) => x.startSec <= pitchNow).at(-1)?.n;
 
   return (
     <div className={s.page}>
@@ -92,8 +102,32 @@ export function Film() {
             <p className="muted" style={{ margin: 0 }}>
               The 3-minute overview: the problem, a tour of the playground recorded from the live site, and how we checked the physics.
             </p>
+            {sections.length > 0 && (
+              <ol className={css.sections} aria-label="Pitch sections">
+                {sections.map((x) => (
+                  <li key={x.n} data-current={currentSection === x.n ? 1 : 0}>
+                    <button onClick={() => seek(x.startSec, pitchVideo.current)} aria-label={`Play section ${x.n}: ${x.title}`}>
+                      <span className="mono faint">{mmss(x.startSec)}</span>
+                      <span>
+                        <span className={css.chap}>{x.n}</span> {x.title}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
           </div>
-          <video className={s.video} controls playsInline crossOrigin="anonymous" preload="metadata" poster={`${base}${m.pitch.poster}`} aria-label="Below Threshold in three minutes">
+          <video
+            ref={pitchVideo}
+            className={s.video}
+            controls
+            playsInline
+            crossOrigin="anonymous"
+            preload="metadata"
+            poster={`${base}${m.pitch.poster}`}
+            onTimeUpdate={(e) => setPitchNow(e.currentTarget.currentTime)}
+            aria-label="Below Threshold in three minutes"
+          >
             <source src={`${base}${m.pitch.mp4}`} type="video/mp4" />
             <track kind="captions" src={`${base}${m.pitch.captions}`} srcLang="en" label="English" default />
           </video>

@@ -1,0 +1,43 @@
+1
+00:00:00,250 --> 00:00:05,635
+Quantum error correction spreads one qubit across many, and asks them whether they agree,
+
+2
+00:00:05,635 --> 00:00:07,942
+without ever looking at the answer.
+
+3
+00:00:07,942 --> 00:00:13,712
+The lit checks are clues, and a decoder has to work out what went wrong.
+
+4
+00:00:14,383 --> 00:00:16,306
+So you play the decoder.
+
+5
+00:00:16,306 --> 00:00:20,537
+Errors are hidden; only the alarms light up, like real hardware.
+
+6
+00:00:20,537 --> 00:00:24,383
+A guided first level makes it playable with no background,
+
+7
+00:00:24,383 --> 00:00:28,229
+and then a real matching decoder solves the same puzzle.
+
+8
+00:00:28,917 --> 00:00:30,455
+Here is the twist.
+
+9
+00:00:30,455 --> 00:00:34,686
+A real chip produces these puzzles a million times a second.
+
+10
+00:00:34,686 --> 00:00:38,532
+Our real-time mode measures each decoder live in your browser:
+
+11
+00:00:38,532 --> 00:00:42,763
+exact matching falls behind, the backlog grows, and the computation stalls.
