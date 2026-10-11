@@ -7,8 +7,8 @@ import s from './screen.module.css';
 const PROGRAM = 'NYU MS in Applied Quantum Science and Technology';
 
 const MEMBERS: { name: string; email: string; roles: string[] }[] = [
-  { name: 'Prahlad MV', email: 'pmv6845@nyu.edu', roles: ['Coder', 'Voice Over', 'Theory Crafting'] },
-  { name: 'Dennis Li', email: 'zl2941@nyu.edu', roles: ['Coder', 'Voice Over', 'Theory Crafting'] },
+  { name: 'Prahlad MV', email: 'pmv6845@nyu.edu', roles: ['Develop', 'Design', 'Voice Over', 'Theory Crafting'] },
+  { name: 'Dennis Li', email: 'zl2941@nyu.edu', roles: ['Develop', 'Design', 'Voice Over', 'Theory Crafting'] },
   { name: 'Ben Kahl', email: 'bk3362@nyu.edu', roles: ['Voice Over', 'Theory Crafting'] },
   { name: 'Siwei Zhang', email: 'sz5789@nyu.edu', roles: ['Voice Over', 'Theory Crafting'] },
 ];

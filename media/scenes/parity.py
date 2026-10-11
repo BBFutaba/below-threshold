@@ -16,6 +16,7 @@ digit-by-digit ket morphs).
 from __future__ import annotations
 
 import math
+import re
 from contextlib import contextmanager
 
 import numpy as np
@@ -54,7 +55,7 @@ from manim import (
 )
 
 from common import AMBER, BG, BLUE, CORAL, FAINT, GREEN, MUTED, TEAL, TEXT
-from film import LEAD_IN, MX, TAIL, TX, YELLOW, NarratedMovingScene, load
+from film import LEAD_IN, MX, TAIL, TX, YELLOW, NarratedMovingScene, load, word_time
 from script import scene as script_scene, words
 
 
@@ -65,8 +66,8 @@ class Cued:
     """Mixin: place visuals on phrases of the beat's spoken line.
 
     `with self.cued("key") as T:` behaves like `self.beat("key")`; inside it,
-    `self.wait_to(self.cue("some phrase"))` waits until that phrase is (about to be) spoken,
-    assuming an even speaking rate across the line (true for the estimate, close for a recording).
+    `self.wait_to(self.cue("some phrase"))` waits until that phrase is (about to be) spoken: at the
+    recording's real word time when the line is aligned (film.word_time), else at an even pace.
     """
 
     @contextmanager
@@ -74,16 +75,18 @@ class Cued:
         with self.beat(key) as T:
             self._t0 = self.renderer.time
             self._T = T
+            self._key = key
             self._text = next(b for b in script_scene(self.scene_id).beats if b.key == key).text
             yield T
 
     def cue(self, phrase: str, lead: float = 0.15) -> float:
-        i = self._text.find(phrase)
+        m = re.search(r"(?<![\w-])" + re.escape(phrase), self._text)  # from a word start ("sine", not inside "cosine")
+        i = m.start() if m else -1
         if i < 0:  # the line was edited: do not wait, but say so
             print(f"[cue] {self.scene_id}: phrase {phrase!r} not found in its beat line; not waiting")
             return 0.0
         speech = max(0.1, self._T - LEAD_IN - TAIL)
-        return max(0.0, LEAD_IN + speech * words(self._text[:i]) / max(1, words(self._text)) - lead)
+        return max(0.0, LEAD_IN + word_time(self.scene_id, self._key, words(self._text[:i]), speech) - lead)
 
     def now(self) -> float:
         return self.renderer.time - self._t0

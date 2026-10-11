@@ -63,7 +63,7 @@ npm run export:instances                 # seeded instances -> validate/data/
 npm run bench                            # decoder timing -> src/data/bench.json
 ```
 
-The explainer film is rendered with Manim from real simulation data, and its timing follows the narration script: see [media/README.md](media/README.md). To record the voiceover, follow [docs/voiceover-script.md](docs/voiceover-script.md) (one file per line into `media/voiceover/recordings/`, then `media/film_build.py --final`).
+The explainer film is rendered with Manim from real simulation data, and its timing follows the narration script: see [media/README.md](media/README.md). The narration is recorded by the team. To re-record a line, follow [docs/voiceover-script.md](docs/voiceover-script.md) and save the new take as `media/voiceover/recordings/<scene>/<beat>.wav`. To re-record the whole film, record every line in order into one folder and run `media/voiceover/import_takes.py` on it. Then run `media/film_build.py --final`.
 
 ## Deploy
 
@@ -93,8 +93,8 @@ All four of us are in the NYU MS in Applied Quantum Science and Technology progr
 
 | Member | Email | Roles |
 | --- | --- | --- |
-| Prahlad MV | pmv6845@nyu.edu | Coder, Voice Over, Theory Crafting |
-| Dennis Li | zl2941@nyu.edu | Coder, Voice Over, Theory Crafting |
+| Prahlad MV | pmv6845@nyu.edu | Develop, Design, Voice Over, Theory Crafting |
+| Dennis Li | zl2941@nyu.edu | Develop, Design, Voice Over, Theory Crafting |
 | Ben Kahl | bk3362@nyu.edu | Voice Over, Theory Crafting |
 | Siwei Zhang | sz5789@nyu.edu | Voice Over, Theory Crafting |
 

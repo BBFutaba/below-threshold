@@ -1,0 +1,24 @@
+{
+ "text": "Hadamards put every x, from zero to one hundred twenty seven, into superposition at once.",
+ "audio": "superpose.flac",
+ "seconds": 6.823,
+ "starts": [
+  0.12,
+  0.773,
+  1.07,
+  1.35,
+  1.86,
+  2.08,
+  2.292,
+  2.433,
+  2.61,
+  3.35,
+  3.67,
+  4.29,
+  4.737,
+  5.855,
+  6.153
+ ],
+ "anchored": 8,
+ "source": "Windows speech recognition, interpolated by word length"
+}

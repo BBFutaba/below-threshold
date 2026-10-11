@@ -145,16 +145,40 @@ def split_line(text: str) -> list[str]:
     return [o for o in out if o]
 
 
+def recorded_word_starts(sid: str, key: str, text: str) -> list[float] | None:
+    """Real word start times of a recorded line (media/voiceover/import_takes.py), if still valid."""
+    rec = recording(sid, key)
+    p = rec.with_name(f"{key}.words.json") if rec else None
+    if p is None or not p.exists():
+        return None
+    data = json.loads(p.read_text(encoding="utf-8"))
+    starts = data.get("starts", [])
+    if data.get("text") != text or len(starts) != words(text):
+        return None
+    if data.get("audio") != rec.name or abs(float(data.get("seconds", -1)) - ffprobe_duration(rec)) > 0.02:
+        return None  # made for another take
+    return starts
+
+
 def cues(timing: dict, offset: float = 0.0) -> list[tuple[float, float, str]]:
+    """Caption cues: each line split into short chunks, timed to the recording's real word times
+    when the line is aligned, otherwise spread evenly over the line by word count."""
     out = []
     for b in timing["beats"]:
         if not b["text"] or b["speech"] <= 0:
             continue
         chunks = split_line(b["text"])
-        total_w = sum(max(1, words(c)) for c in chunks)
+        sizes = [words(c) for c in chunks]
+        starts = recorded_word_starts(timing.get("scene", ""), b["key"], b["text"]) if b.get("source") == "recording" else None
+        if starts and sum(sizes) == len(starts):
+            first = [sum(sizes[:i]) for i in range(len(chunks))]
+            ts = [b["speechStart"] + max(0.0, starts[i] - 0.05) for i in first] + [b["speechStart"] + b["speech"]]
+            out += [(offset + ts[i], offset + ts[i + 1], c) for i, c in enumerate(chunks)]
+            continue
+        total_w = sum(max(1, n) for n in sizes)
         t = b["speechStart"]
-        for c in chunks:
-            dur = b["speech"] * max(1, words(c)) / total_w
+        for c, n in zip(chunks, sizes):
+            dur = b["speech"] * max(1, n) / total_w
             out.append((offset + t, offset + t + dur, c))
             t += dur
     return out
@@ -272,6 +296,9 @@ def write_sheet(timings: dict[str, dict], film_offsets: dict[str, float]) -> Non
         "",
         "1. Record **one file per line** below, named exactly as shown, into `media/voiceover/recordings/<scene>/`.",
         "   WAV (48 kHz, mono, 24-bit) is best; `.m4a`, `.mp3` and `.flac` also work. Leave about 0.3 s of room tone at each end.",
+        "   Or record the lines in order into one folder (numbered takes; skipped numbers for retakes are fine) and run",
+        "   `.venv/Scripts/python media/voiceover/import_takes.py <folder>`: it pairs the takes with the lines, checks each",
+        "   take says its line, trims and levels them, and aligns their words so the visuals land on the right phrases.",
         "2. Read at a relaxed explainer pace (about 150 words per minute). Lines may run longer or shorter than the estimate:",
         "   the build re-times each beat to the real recording, so the picture always waits for the voice.",
         "3. Rebuild: `.venv/Scripts/python media/film_build.py --final` (re-renders with the new timings, mixes the narration",
@@ -445,7 +472,11 @@ def main() -> int:
         print(f"film not stitched: {len(parts)}/{len(SCENES)} scenes available at this quality")
 
     PUB.mkdir(parents=True, exist_ok=True)
-    (PUB / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    # Keep entries other builds own (the pitch video, from media/pitch_build.py).
+    man_p = PUB / "manifest.json"
+    old = json.loads(man_p.read_text(encoding="utf-8")) if man_p.exists() else {}
+    manifest = {**manifest, **{k: v for k, v in old.items() if k not in manifest}}
+    man_p.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     write_sheet(timings, offsets)
     over = [(sid, b["key"], b["overrun"]) for sid, tm in timings.items() for b in tm["beats"] if b["overrun"] > 0.3]
     for sid, key, o in over:

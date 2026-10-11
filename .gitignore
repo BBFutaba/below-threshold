@@ -18,3 +18,5 @@ media/voiceover/draft/
 .scratch/
 
 media/fonts/
+# Raw voiceover takes; import_takes.py turns them into recordings/<scene>/<beat>.flac
+media/voiceover/recordings/explanation/

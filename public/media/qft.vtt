@@ -1,73 +1,73 @@
 WEBVTT
 
 1
-00:00:02.617 --> 00:00:06.463
+00:00:02.687 --> 00:00:06.962
 Listening for a rhythm is what the Fourier transform does.
 
 2
-00:00:06.463 --> 00:00:13.001
+00:00:06.962 --> 00:00:13.778
 Feed it a signal that repeats, and it answers with a sharp spike at the repetition rate.
 
 3
-00:00:13.683 --> 00:00:15.991
+00:00:14.520 --> 00:00:17.800
 The quantum version works on amplitudes.
 
 4
-00:00:15.991 --> 00:00:20.991
+00:00:17.800 --> 00:00:21.800
 Give it a single number x, and it returns every value at once,
 
 5
-00:00:20.991 --> 00:00:24.837
+00:00:21.800 --> 00:00:26.860
 with value y's clock turned x times y over N.
 
 6
-00:00:24.837 --> 00:00:29.453
+00:00:26.860 --> 00:00:32.490
 The clocks wind around x times, a wave whose speed encodes x.
 
 7
-00:00:30.150 --> 00:00:32.073
+00:00:33.253 --> 00:00:35.240
 And it is astonishingly cheap.
 
 8
-00:00:32.073 --> 00:00:36.304
+00:00:35.240 --> 00:00:40.514
 A Hadamard on each qubit, then smaller and smaller controlled turns:
 
 9
-00:00:36.304 --> 00:00:38.612
+00:00:40.514 --> 00:00:42.837
 a half, a quarter, an eighth.
 
 10
-00:00:38.612 --> 00:00:42.842
+00:00:42.837 --> 00:00:47.403
 Each qubit becomes one clock hand, spinning at its own speed.
 
 11
-00:00:44.550 --> 00:00:46.473
+00:00:48.153 --> 00:00:49.933
 Now feed it a rhythm:
 
 12
-00:00:46.473 --> 00:00:48.781
+00:00:49.933 --> 00:00:52.873
 equal amplitude on every fourth value.
 
 13
-00:00:48.781 --> 00:00:53.781
+00:00:52.873 --> 00:00:56.998
 Each output adds up one clock hand from every tooth of the comb.
 
 14
-00:00:53.781 --> 00:00:56.473
+00:00:56.998 --> 00:00:59.673
 Where the hands agree, they add up.
 
 15
-00:00:56.473 --> 00:00:58.012
+00:00:59.673 --> 00:01:01.883
 Everywhere else they cancel.
 
 16
-00:00:58.683 --> 00:01:02.145
+00:01:02.653 --> 00:01:06.709
 Four sharp peaks, at multiples of sixteen over four.
 
 17
-00:01:02.145 --> 00:01:04.453
+00:01:06.709 --> 00:01:09.438
 Their spacing gives away the period.
 
 18
-00:01:04.453 --> 00:01:10.606
+00:01:09.438 --> 00:01:16.513
 When the period does not divide evenly, the peaks blur, but they still point the way.

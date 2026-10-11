@@ -34,7 +34,15 @@ Shared code: `scenes/film.py` holds the narration timing, LaTeX helpers, the cha
 
 The script lives in [`media/voiceover/script.py`](voiceover/script.py), one beat per line of voiceover. Scenes play their visuals inside `with self.beat("key") as T:`. Each beat lasts at least as long as its line takes to say: the recording's length if a recording exists, otherwise an estimate at about 155 words per minute. The film is therefore always cut to the voice. Every render writes `media/build/timings/<scene>.json`, which feeds the captions, the audio mix and the recording sheet.
 
-To record the voiceover, follow [`docs/voiceover-script.md`](../docs/voiceover-script.md) (generated, with timestamps and file names). Put one file per line in `media/voiceover/recordings/<scene>/<beat>.wav`, then rebuild.
+The film is narrated by the team: one take per line in `media/voiceover/recordings/<scene>/<beat>.flac`. To re-record, follow [`docs/voiceover-script.md`](../docs/voiceover-script.md) (generated, with timestamps and file names) and put one file per line in `media/voiceover/recordings/<scene>/<beat>.wav`, then rebuild.
+
+Or record every line in order into one folder and import it:
+
+```bash
+.venv/Scripts/python media/voiceover/import_takes.py media/voiceover/recordings/explanation
+```
+
+`voiceover/import_takes.py` pairs the takes (ordered by the number at the end of the file name; retakes may skip numbers) with the lines in sheet order, and refuses if the counts differ. It cleans each take up for the mix: a 70 Hz high-pass, light noise reduction at the take's measured room tone, a trim to the speech, gentle compression, and normalization to -16 LUFS. On Windows it then runs the built-in offline speech recognizer (`voiceover/asr.ps1`). If any take matches another line better than its own, the import stops and nothing is replaced. The recognizer also aligns each line's words to the audio (`<beat>.words.json`, tied to that exact file and its length). Scenes place visuals on phrases with `film.word_time`, which uses those real word times instead of assuming an even reading pace. If a line is edited after it was recorded, or its take is replaced by hand (say a new `<beat>.wav`), its alignment is ignored and that line falls back to the even pace. `recordings/takes.json` records which raw take became which line, with its trim, gain and recognition score. The raw takes folder is gitignored.
 
 ## Build
 

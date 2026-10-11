@@ -1,0 +1,27 @@
+{
+ "text": "The quantum Fourier transform turns that comb into peaks near multiples of one hundred twenty eight over six.",
+ "audio": "transform.flac",
+ "seconds": 6.4,
+ "starts": [
+  0.12,
+  0.334,
+  0.72,
+  1.106,
+  1.578,
+  1.878,
+  2.135,
+  2.393,
+  2.65,
+  3.13,
+  3.32,
+  4.11,
+  4.26,
+  4.45,
+  4.7,
+  5.13,
+  5.4,
+  5.64
+ ],
+ "anchored": 10,
+ "source": "Windows speech recognition, interpolated by word length"
+}

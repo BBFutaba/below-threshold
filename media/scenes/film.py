@@ -117,6 +117,39 @@ def recording_for(scene_id: str, key: str) -> Path | None:
     return None
 
 
+@lru_cache(maxsize=None)
+def word_starts(scene_id: str, key: str) -> tuple[float, ...] | None:
+    """When each word of a recorded line starts, in seconds into the recording.
+
+    Written next to the recording by media/voiceover/import_takes.py (<beat>.words.json). None if
+    the line has no alignment, if its text changed after it was recorded, or if the recording is
+    no longer the audio the alignment was made from."""
+    rec = recording_for(scene_id, key)
+    if rec is None:
+        return None
+    p = rec.with_name(f"{key}.words.json")
+    if not p.exists():
+        return None
+    data = json.loads(p.read_text(encoding="utf-8"))
+    b = next((b for b in script_scene(scene_id).beats if b.key == key), None)
+    if b is None or data.get("text") != b.text or len(data.get("starts", [])) != words(b.text):
+        return None
+    # Only for the exact audio it was made from: a retake (another file, or a re-recorded one) has other timing.
+    if data.get("audio") != rec.name or abs(float(data.get("seconds", -1)) - _ffprobe_duration(rec)) > 0.02:
+        return None
+    return tuple(float(t) for t in data["starts"])
+
+
+def word_time(scene_id: str, key: str, i: int, speech: float) -> float:
+    """When word i of a line is spoken, in seconds after its speech starts: the recording's real
+    word times when the line has been aligned, otherwise an even pace across `speech` seconds."""
+    starts = word_starts(scene_id, key)
+    if starts is not None and 0 <= i < len(starts):
+        return starts[i]
+    b = next(b for b in script_scene(scene_id).beats if b.key == key)
+    return speech * i / max(1, words(b.text))
+
+
 def speech_seconds(scene_id: str, beat: Beat) -> tuple[float, str]:
     if not beat.text:
         return 0.0, "silent"
