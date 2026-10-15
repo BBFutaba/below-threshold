@@ -15,7 +15,9 @@
 
 ## About this branch
 
-This is the Qollab edition of the repository. It fits Qollab's limits of 100 files and 2 MB per file: 62 files, about 10 MB in total.
+This is the Qollab edition of the repository. It fits Qollab's limits of 100 files and 2 MB per file: 67 files, about 10 MB in total.
+
+- **Entry points:** the app is a web app, so on Qollab the entry points hand over to the live deployment. [`index.html`](index.html) and [`main.js`](main.js) show the live app in a frame, with direct links. [`main.py`](main.py) prints where to open it and checks the bundled source archive. It uses only the Python standard library, so [`requirements.txt`](requirements.txt) lists nothing to install.
 
 - **Complete source:** [`below-threshold-source.zip`](below-threshold-source.zip) holds the complete source tree (214 files) at `main` commit `4318c4f`. That covers the app, tests, validation, the Manim film pipeline and the voiceover tools.
 - **Left out:** the 1080p films and the narration recordings, which are far over 2 MB each. The live site streams both videos.

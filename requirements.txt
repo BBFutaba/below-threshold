@@ -1,0 +1,2 @@
+# main.py uses only the Python standard library; nothing to install.
+# The validation suite has its own requirements: validate/requirements.txt (Stim, PyMatching).
